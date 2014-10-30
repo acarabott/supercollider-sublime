@@ -52,8 +52,10 @@ class SuperColliderProcess():
         SuperColliderProcess.sclang_queue = Queue()
         SuperColliderProcess.sclang_thread = threading.Thread(
             target = enqueue_output,
-            args = (SuperColliderProcess.sclang_process.stdout,
-                    SuperColliderProcess.sclang_queue)
+            args = (
+                SuperColliderProcess.sclang_process.stdout,
+                SuperColliderProcess.sclang_queue
+            )
         )
         SuperColliderProcess.sclang_thread.daemon = True #dies with the program
         SuperColliderProcess.sclang_thread.start()
