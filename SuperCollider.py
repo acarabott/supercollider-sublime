@@ -15,6 +15,9 @@ class SuperColliderProcess():
     sclang_queue = None
     sclang_thread = None
 
+    post_view_name = "SuperCollider - Post"
+    post_view = None
+
     def start():
         if SuperColliderProcess.is_alive():
             return
@@ -70,14 +73,57 @@ class SuperColliderProcess():
         SuperColliderProcess.sclang_process.stdin.write(bytes("\x0c", 'utf-8'))
         SuperColliderProcess.sclang_process.stdin.flush()
 
+    def has_post_view():
+        return SuperColliderProcess.post_view is not None
+
+    def create_post_view():
+        if len(sublime.windows()) is 0:
+            sublime.run_command('new_window')
+
+        # TODO add hook when post view closed
+        # TODO set post_buffer_id to None when all closed
+        # TODO return to original view
+        # TODO clear buffer if too big?
+        window = sublime.active_window()
+        post_view = window.new_file()
+        post_view.set_name(SuperColliderProcess.post_view_name)
+        post_view.set_scratch(True)
+        post_view.settings().set('rulers', 0)
+
+        SuperColliderProcess.post_view = post_view
+
+        sublime.set_timeout(SuperColliderProcess.update_post_view, 100)
+
+    def update_post_view():
+        if SuperColliderProcess.has_post_view():
+            SuperColliderProcess.post_view.run_command('super_collider_update_post_window')
+            sublime.set_timeout(SuperColliderProcess.update_post_view, 100)
+        else:
+            sublime.status_message("SCLang has no post window!")
+
+class SuperColliderUpdatePostWindowCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        if SuperColliderProcess.has_post_view():
+            SuperColliderProcess.post_view.insert(edit, 0, "Hi!")
+        else:
+            sublime.status_message("SCLang has no post window!")
+
 class SuperColliderStartCommand(sublime_plugin.ApplicationCommand):
     def run(self):
         SuperColliderProcess.start()
 
 class SuperColliderStopCommand(sublime_plugin.ApplicationCommand):
     def run(self):
-        if SuperColliderProcess.isAlive():
+        if SuperColliderProcess.is_alive():
             SuperColliderProcess.execute("0.exit;")
             sublime.status_message("Stopped SCLang")
         else:
             sublime.status_message("SCLang not started")
+
+class SuperColliderPostCommand(sublime_plugin.ApplicationCommand):
+    def run(self):
+        SuperColliderProcess.window_has_post_view()
+
+class SuperColliderCreatePostWindow(sublime_plugin.ApplicationCommand):
+    def run(self):
+        SuperColliderProcess.create_post_view()
