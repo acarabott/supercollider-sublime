@@ -16,7 +16,7 @@ class SuperColliderProcess():
     sclang_thread = None
 
     def start():
-        if SuperColliderProcess.isAlive():
+        if SuperColliderProcess.is_alive():
             return
 
         settings = sublime.load_settings("SuperCollider.sublime-settings")
@@ -61,7 +61,7 @@ class SuperColliderProcess():
         SuperColliderProcess.sclang_thread.start()
         sublime.status_message("Starting SuperCollider")
 
-    def isAlive():
+    def is_alive():
         return (SuperColliderProcess.sclang_thread is not None and
                 SuperColliderProcess.sclang_thread.isAlive())
 
