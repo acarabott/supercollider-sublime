@@ -116,17 +116,15 @@ class SuperColliderProcess():
 class SuperColliderUpdatePostWindowCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         if SuperColliderProcess.has_post_view():
+            view = SuperColliderProcess.post_view
             try:
                 line = SuperColliderProcess.sclang_queue.get_nowait()
             except Empty:
                 pass
             else:
                 try:
-                    SuperColliderProcess.post_view.insert(
-                        edit,
-                        SuperColliderProcess.post_view.size(),
-                        line
-                    )
+                    view.insert(edit, view.size(), line)
+                    view.show(view.size())
                 except UnicodeDecodeError:
                     sublime.status_message("SCLang Encoding error!")
         else:
