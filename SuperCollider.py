@@ -1,13 +1,9 @@
 import sublime, sublime_plugin
 import os
+import sys
 import subprocess
-from queue import Queue, Empty
 import threading
-
-def enqueue_output(out, queue):
-    for line in iter(out.readline, b''):
-        queue.put(line)
-    out.close()
+from queue import Queue, Empty
 
 class SuperColliderProcess():
     sclang_thread = None
@@ -52,6 +48,11 @@ class SuperColliderProcess():
             shell = shell
         )
 
+        def enqueue_output(out, queue):
+            for line in iter(out.readline, b''):
+                queue.put(line.decode('utf-8'))
+            out.close()
+
         SuperColliderProcess.sclang_queue = Queue()
         SuperColliderProcess.sclang_thread = threading.Thread(
             target = enqueue_output,
@@ -63,6 +64,11 @@ class SuperColliderProcess():
         SuperColliderProcess.sclang_thread.daemon = True #dies with the program
         SuperColliderProcess.sclang_thread.start()
         sublime.status_message("Starting SuperCollider")
+        SuperColliderProcess.create_post_view()
+
+    def stop():
+        SuperColliderProcess.execute("0.exit;")
+        SuperColliderProcess.remove_post_view()
 
     def is_alive():
         return (SuperColliderProcess.sclang_thread is not None and
@@ -94,6 +100,9 @@ class SuperColliderProcess():
 
         sublime.set_timeout(SuperColliderProcess.update_post_view, 100)
 
+    def remove_post_view():
+        SuperColliderProcess.post_view = None
+
     def update_post_view():
         if SuperColliderProcess.has_post_view():
             SuperColliderProcess.post_view.run_command('super_collider_update_post_window')
@@ -104,7 +113,19 @@ class SuperColliderProcess():
 class SuperColliderUpdatePostWindowCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         if SuperColliderProcess.has_post_view():
-            SuperColliderProcess.post_view.insert(edit, 0, "Hi!")
+            try:
+                line = SuperColliderProcess.sclang_queue.get_nowait()
+            except Empty:
+                pass
+            else:
+                try:
+                    SuperColliderProcess.post_view.insert(
+                        edit,
+                        SuperColliderProcess.post_view.size(),
+                        line
+                    )
+                except UnicodeDecodeError:
+                    sublime.status_message("SCLang Encoding error!")
         else:
             sublime.status_message("SCLang has no post window!")
 
@@ -115,15 +136,7 @@ class SuperColliderStartCommand(sublime_plugin.ApplicationCommand):
 class SuperColliderStopCommand(sublime_plugin.ApplicationCommand):
     def run(self):
         if SuperColliderProcess.is_alive():
-            SuperColliderProcess.execute("0.exit;")
+            SuperColliderProcess.stop()
             sublime.status_message("Stopped SCLang")
         else:
             sublime.status_message("SCLang not started")
-
-class SuperColliderPostCommand(sublime_plugin.ApplicationCommand):
-    def run(self):
-        SuperColliderProcess.window_has_post_view()
-
-class SuperColliderCreatePostWindow(sublime_plugin.ApplicationCommand):
-    def run(self):
-        SuperColliderProcess.create_post_view()
