@@ -91,9 +91,8 @@ class SuperColliderProcess():
             sublime.run_command('new_window')
 
         # TODO add hook when post view closed
-        # TODO set post_buffer_id to None when all closed
         # TODO return to original view
-        # TODO clear buffer if too big?
+        # TODO clear buffer if too big? - option
         window = sublime.active_window()
         post_view = window.new_file()
         post_view.set_name(SuperColliderProcess.post_view_name)
