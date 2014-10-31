@@ -75,6 +75,10 @@ class SuperColliderProcess():
                 SuperColliderProcess.sclang_thread.isAlive())
 
     def execute(cmd):
+        if SuperColliderProcess.sclang_process is None:
+            sublime.status_message("SCLang not running")
+            return
+
         SuperColliderProcess.sclang_process.stdin.write(bytes(cmd, 'utf-8'))
         SuperColliderProcess.sclang_process.stdin.write(bytes("\x0c", 'utf-8'))
         SuperColliderProcess.sclang_process.stdin.flush()
