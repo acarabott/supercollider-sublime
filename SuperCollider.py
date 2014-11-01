@@ -17,6 +17,10 @@ def view_is_at_bottom(view):
 
     return view_taller_than_content or at_bottom_of_content
 
+def plugin_unloaded():
+    SuperColliderProcess.stop()
+    SuperColliderProcess.deactivate_post_view('SublimeText: sclang terminated!\n')
+
 class SuperColliderProcess():
     settings = sublime.load_settings("SuperCollider.sublime-settings")
     settings.add_on_change('max_post_view_lines', SuperColliderProcess.update_post_view_max_lines)
