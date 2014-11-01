@@ -196,7 +196,7 @@ class SuperColliderProcess():
 
         # deactivate old view
         if old_view is not None:
-            SuperColliderProcess.deactivate_post_view('Sublime Text: This post window now deactivated!')
+            SuperColliderProcess.deactivate_post_view('Sublime Text: This post window now deactivated!\n')
 
         # update post view to newly created
         SuperColliderProcess.post_view = post_view
