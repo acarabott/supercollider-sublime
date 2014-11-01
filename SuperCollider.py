@@ -68,7 +68,7 @@ class SuperColliderProcess():
             for line in iter(input.readline, b''):
                 queue.put(line.decode('utf-8'))
             input.close()
-            SuperColliderProcess.remove_post_view()
+            SuperColliderProcess.deactive_post_view()
 
         SuperColliderProcess.sclang_queue = Queue()
         SuperColliderProcess.sclang_thread = threading.Thread(
@@ -111,7 +111,7 @@ class SuperColliderProcess():
     def cache_post_view(content):
         SuperColliderProcess.post_view_cache = content
 
-    def remove_post_view():
+    def deactive_post_view():
         if SuperColliderProcess.has_post_view():
             SuperColliderProcess.post_view.set_name(SuperColliderProcess.post_view_name + ' - Inactive')
             SuperColliderProcess.post_view = None
@@ -120,27 +120,39 @@ class SuperColliderProcess():
         if len(sublime.windows()) is 0:
             sublime.run_command('new_window')
 
+        window = sublime.active_window()
+
         old_view = None
         if SuperColliderProcess.has_post_view():
-            old_view = SuperColliderProcess.post_view
-            content = old_view.substr(sublime.Region(0, old_view.size()))
-            SuperColliderProcess.cache_post_view(content)
+            # switch to the post window if it is in the current window
+            if window.views().count(old_view):
+                window.focus_view(old_view)
+                return
+            else:
+                # cache old post view contents
+                old_view = SuperColliderProcess.post_view
+                content = old_view.substr(sublime.Region(0, old_view.size()))
+                SuperColliderProcess.cache_post_view(content)
 
-        window = sublime.active_window()
+
+        # create new post view
         post_view = window.new_file()
         post_view.set_name(SuperColliderProcess.post_view_name)
         post_view.set_scratch(True)
         post_view.settings().set('rulers', 0)
 
+        # update the view with previoius view content if possible
         if SuperColliderProcess.post_view_cache is not None:
             post_view.run_command('super_collider_clone_post_view', {
                 'content': SuperColliderProcess.post_view_cache
             })
             SuperColliderProcess.post_view_cache = None
 
+        # deactivate old view
         if old_view is not None:
-            SuperColliderProcess.remove_post_view()
+            SuperColliderProcess.deactive_post_view()
 
+        # update post view to newly created
         SuperColliderProcess.post_view = post_view
         SuperColliderProcess.update_post_view()
 
