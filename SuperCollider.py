@@ -120,20 +120,21 @@ class SuperColliderProcess():
         if len(sublime.windows()) is 0:
             sublime.run_command('new_window')
 
-        window = sublime.active_window()
-
         old_view = None
+
         if SuperColliderProcess.has_post_view():
+            old_view = SuperColliderProcess.post_view
             # switch to the post window if it is in the current window
-            if window.views().count(old_view):
-                window.focus_view(old_view)
-                return
+            for window in sublime.windows():
+                if window.views().count(old_view):
+                    window.focus_view(old_view)
+                    return
             else:
                 # cache old post view contents
-                old_view = SuperColliderProcess.post_view
                 content = old_view.substr(sublime.Region(0, old_view.size()))
                 SuperColliderProcess.cache_post_view(content)
 
+        window = sublime.active_window()
 
         # create new post view
         post_view = window.new_file()
@@ -209,3 +210,4 @@ class SuperColliderListener(sublime_plugin.EventListener):
 # TODO clear buffer if too big? - option
 # TODO notify when sclang is quit
 # TODO if re-open last tab and context SC, then open new post window
+# TODO option on where to open post window: new tab, new group, new window, terminal
