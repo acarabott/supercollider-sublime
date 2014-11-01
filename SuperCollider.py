@@ -102,7 +102,10 @@ class SuperColliderProcess():
         sublime.status_message("Starting SuperCollider")
 
     def stop():
-        SuperColliderProcess.execute("0.exit;")
+        if SuperColliderProcess.is_alive():
+            SuperColliderProcess.execute("0.exit;")
+        else:
+            sublime.status_message("sclang not running")
 
     def is_alive():
         return (SuperColliderProcess.sclang_thread is not None and
@@ -118,6 +121,12 @@ class SuperColliderProcess():
 
     def has_post_view():
         return SuperColliderProcess.post_view is not None
+
+    def post_view_id():
+        if SuperColliderProcess.has_post_view():
+            return SuperColliderProcess.post_view.id()
+        else:
+            return None
 
     def update_post_view():
         if SuperColliderProcess.is_alive() and SuperColliderProcess.has_post_view():
@@ -195,11 +204,7 @@ class SuperColliderStartCommand(sublime_plugin.ApplicationCommand):
 
 class SuperColliderStopCommand(sublime_plugin.ApplicationCommand):
     def run(self):
-        if SuperColliderProcess.is_alive():
-            SuperColliderProcess.stop()
-            sublime.status_message("Stopped sclang")
-        else:
-            sublime.status_message("sclang not started")
+        SuperColliderProcess.stop()
 
 class SuperColliderUpdatePostViewCommand(sublime_plugin.TextCommand):
     def run(self, edit, content, max_lines=-1, force_scroll=False):
@@ -223,10 +228,9 @@ class SuperColliderOpenPostViewCommand(sublime_plugin.ApplicationCommand):
 
 class SuperColliderListener(sublime_plugin.EventListener):
     def on_close(self, view):
-        if SuperColliderProcess.has_post_view():
-            if view.id() is SuperColliderProcess.post_view.id():
-                content = view.substr(sublime.Region(0, view.size()))
-                SuperColliderProcess.cache_post_view(content)
+        if view.id() is SuperColliderProcess.post_view_id():
+            content = view.substr(sublime.Region(0, view.size()))
+            SuperColliderProcess.cache_post_view(content)
 
 class SuperColliderLoop(sublime_plugin.ApplicationCommand):
     def run(self):
@@ -238,3 +242,4 @@ class SuperColliderTest(sublime_plugin.ApplicationCommand):
 
 # TODO if re-open last tab and context SC, then open new post window
 # TODO option on where to open post window: new tab, new group, new window, terminal
+# TODO re-write with plugin_loaded and process instance?
