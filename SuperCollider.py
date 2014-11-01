@@ -240,10 +240,14 @@ class SuperColliderListener(sublime_plugin.EventListener):
 class SuperColliderSendCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         for sel in self.view.sel():
+            cmd = None
             # "selection" is a single point
             if sel.a == sel.b:
-                line = self.view.substr(self.view.line(sel))
-                SuperColliderProcess.execute(line)
+                cmd = self.view.substr(self.view.line(sel))
+            else:
+                cmd = self.view.substr(sel)
+
+            SuperColliderProcess.execute(cmd)
 
 class SuperColliderLoop(sublime_plugin.ApplicationCommand):
     def run(self):
