@@ -68,7 +68,7 @@ class SuperColliderProcess():
             for line in iter(input.readline, b''):
                 queue.put(line.decode('utf-8'))
             input.close()
-            SuperColliderProcess.deactive_post_view()
+            SuperColliderProcess.deactivate_post_view('SublimeText: sclang terminated!\n')
 
         SuperColliderProcess.sclang_queue = Queue()
         SuperColliderProcess.sclang_thread = threading.Thread(
@@ -102,17 +102,26 @@ class SuperColliderProcess():
         return SuperColliderProcess.post_view is not None
 
     def update_post_view():
-        if SuperColliderProcess.has_post_view():
-            SuperColliderProcess.post_view.run_command('super_collider_update_post_view')
-            sublime.set_timeout(SuperColliderProcess.update_post_view, 20)
-        else:
-            sublime.status_message("sclang has no post window!")
+        if SuperColliderProcess.is_alive() and SuperColliderProcess.has_post_view():
+            try:
+                line = SuperColliderProcess.sclang_queue.get_nowait()
+            except Empty:
+                pass
+            else:
+                SuperColliderProcess.post_view.run_command('super_collider_update_post_view', {
+                    'content': line
+                })
+
+        sublime.set_timeout(SuperColliderProcess.update_post_view, 20)
 
     def cache_post_view(content):
         SuperColliderProcess.post_view_cache = content
 
-    def deactive_post_view():
+    def deactivate_post_view(msg):
         if SuperColliderProcess.has_post_view():
+            SuperColliderProcess.post_view.run_command('super_collider_update_post_view', {
+                'content': msg
+            })
             SuperColliderProcess.post_view.set_name(SuperColliderProcess.post_view_name + ' - Inactive')
             SuperColliderProcess.post_view = None
 
@@ -129,10 +138,10 @@ class SuperColliderProcess():
                 if window.views().count(old_view):
                     window.focus_view(old_view)
                     return
-            else:
-                # cache old post view contents
-                content = old_view.substr(sublime.Region(0, old_view.size()))
-                SuperColliderProcess.cache_post_view(content)
+                else:
+                    # cache old post view contents
+                    content = old_view.substr(sublime.Region(0, old_view.size()))
+                    SuperColliderProcess.cache_post_view(content)
 
         window = sublime.active_window()
 
@@ -144,36 +153,18 @@ class SuperColliderProcess():
 
         # update the view with previoius view content if possible
         if SuperColliderProcess.post_view_cache is not None:
-            post_view.run_command('super_collider_clone_post_view', {
+            post_view.run_command('super_collider_update_post_view', {
                 'content': SuperColliderProcess.post_view_cache
             })
             SuperColliderProcess.post_view_cache = None
 
         # deactivate old view
         if old_view is not None:
-            SuperColliderProcess.deactive_post_view()
+            SuperColliderProcess.deactivate_post_view('Sublime Text: This post window now deactivated!')
 
         # update post view to newly created
         SuperColliderProcess.post_view = post_view
         SuperColliderProcess.update_post_view()
-
-class SuperColliderUpdatePostViewCommand(sublime_plugin.TextCommand):
-    def run(self, edit):
-        if SuperColliderProcess.is_alive():
-            try:
-                line = SuperColliderProcess.sclang_queue.get_nowait()
-            except Empty:
-                pass
-            else:
-                self.view.insert(edit, self.view.size(), line)
-                self.view.show(self.view.size())
-        else:
-            sublime.status_message("sclang not running")
-
-class SuperColliderClonePostViewCommand(sublime_plugin.TextCommand):
-    def run(self, edit, content):
-        self.view.insert(edit, 0, content)
-        self.view.show(self.view.size())
 
 class SuperColliderStartCommand(sublime_plugin.ApplicationCommand):
     def run(self):
@@ -187,13 +178,14 @@ class SuperColliderStopCommand(sublime_plugin.ApplicationCommand):
         else:
             sublime.status_message("sclang not started")
 
+class SuperColliderUpdatePostViewCommand(sublime_plugin.TextCommand):
+    def run(self, edit, content):
+        self.view.insert(edit, self.view.size(), content)
+        self.view.show(self.view.size())
+
 class SuperColliderOpenPostViewCommand(sublime_plugin.ApplicationCommand):
     def run(self):
         SuperColliderProcess.open_post_view()
-
-class SuperColliderLoop(sublime_plugin.ApplicationCommand):
-    def run(self):
-        SuperColliderProcess.execute("{inf.do{|x| x.postln; 0.5.wait; }}.fork")
 
 class SuperColliderListener(sublime_plugin.EventListener):
     def on_close(self, view):
@@ -201,6 +193,11 @@ class SuperColliderListener(sublime_plugin.EventListener):
             if view.id() is SuperColliderProcess.post_view.id():
                 content = view.substr(sublime.Region(0, view.size()))
                 SuperColliderProcess.cache_post_view(content)
+
+class SuperColliderLoop(sublime_plugin.ApplicationCommand):
+    def run(self):
+        SuperColliderProcess.execute("{inf.do{|x| x.postln; 0.5.wait; }}.fork")
+
 
 # TODO return to original view
 # TODO clear buffer if too big? - option
