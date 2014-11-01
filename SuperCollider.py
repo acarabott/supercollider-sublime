@@ -6,6 +6,17 @@ import threading
 import tempfile
 from queue import Queue, Empty
 
+def view_is_at_bottom(view):
+    layout_h = view.layout_extent()[1]
+    view_h = view.viewport_extent()[1]
+    view_y = view.viewport_position()[1]
+    line_h = view.line_height()
+
+    view_taller_than_content = layout_h <= view_h
+    at_bottom_of_content = view_y + view_h >= layout_h - line_h
+
+    return view_taller_than_content or at_bottom_of_content
+
 class SuperColliderProcess():
     sclang_thread = None
     sclang_process = None
@@ -120,7 +131,8 @@ class SuperColliderProcess():
     def deactivate_post_view(msg):
         if SuperColliderProcess.has_post_view():
             SuperColliderProcess.post_view.run_command('super_collider_update_post_view', {
-                'content': msg
+                'content': msg,
+                'force_scroll': True
             })
             SuperColliderProcess.post_view.set_name(SuperColliderProcess.post_view_name + ' - Inactive')
             SuperColliderProcess.post_view = None
@@ -154,7 +166,8 @@ class SuperColliderProcess():
         # update the view with previoius view content if possible
         if SuperColliderProcess.post_view_cache is not None:
             post_view.run_command('super_collider_update_post_view', {
-                'content': SuperColliderProcess.post_view_cache
+                'content': SuperColliderProcess.post_view_cache,
+                'force_scroll': True
             })
             SuperColliderProcess.post_view_cache = None
 
@@ -179,9 +192,10 @@ class SuperColliderStopCommand(sublime_plugin.ApplicationCommand):
             sublime.status_message("sclang not started")
 
 class SuperColliderUpdatePostViewCommand(sublime_plugin.TextCommand):
-    def run(self, edit, content):
+    def run(self, edit, content, force_scroll=False):
         self.view.insert(edit, self.view.size(), content)
-        self.view.show(self.view.size())
+        if force_scroll or view_is_at_bottom(self.view):
+            self.view.show(self.view.size())
 
 class SuperColliderOpenPostViewCommand(sublime_plugin.ApplicationCommand):
     def run(self):
