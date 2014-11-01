@@ -1,0 +1,12 @@
+{
+    // SuperCollider directory (use double \\ in Windows)
+    "sc_dir": "/Applications/SuperCollider/SuperCollider.app/Contents/Resources/",
+    // SCLang command name
+    "sc_exe": "sclang",
+    // Maximum number of lines in for Post window
+    // -1 for no limit
+    "max_post_view_lines": -1,
+    // options: tab|window|group-up|group-right|group-down|group-left
+    "open_post_view_in": "tab",
+    "word_separators": "./\\()\"'-:,.;<>!@#$%^&*|+=[]{}`?"
+}

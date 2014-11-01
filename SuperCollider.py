@@ -18,6 +18,8 @@ def view_is_at_bottom(view):
     return view_taller_than_content or at_bottom_of_content
 
 class SuperColliderProcess():
+    settings = sublime.load_settings("SuperCollider.sublime-settings")
+    settings.add_on_change('max_post_view_lines', SuperColliderProcess.update_post_view_max_lines)
     sclang_thread = None
     sclang_process = None
     sclang_queue = None
@@ -26,6 +28,7 @@ class SuperColliderProcess():
     post_view_name = 'SuperCollider - Post'
     post_view = None
     post_view_cache = None
+    post_view_max_lines = None
     # the post view buffer is kept alive, even when the views into it are closed
     # with this cache, we can restore the previous state when re-opening the
     # window
@@ -34,15 +37,19 @@ class SuperColliderProcess():
     # Instead using an explicit cache, updated lazily when view is closed and
     # new view being opened
 
+    def update_post_view_max_lines():
+        SuperColliderProcess.post_view_max_lines = SuperColliderProcess.settings.get('max_post_view_lines')
+
     def start():
         if SuperColliderProcess.is_alive():
             sublime.status_message("sclang already running!")
             return
 
         # load settings
-        settings = sublime.load_settings("SuperCollider.sublime-settings")
-        sc_dir = settings.get("sc_dir")
-        sc_exe = settings.get("sc_exe")
+        sc_dir = SuperColliderProcess.settings.get("sc_dir")
+        sc_exe = SuperColliderProcess.settings.get("sc_exe")
+        SuperColliderProcess.update_post_view_max_lines()
+
 
         # create subprocess
         path = None
@@ -120,7 +127,8 @@ class SuperColliderProcess():
                 pass
             else:
                 SuperColliderProcess.post_view.run_command('super_collider_update_post_view', {
-                    'content': line
+                    'content': line,
+                    'max_lines': SuperColliderProcess.post_view_max_lines
                 })
 
         sublime.set_timeout(SuperColliderProcess.update_post_view, 20)
@@ -162,11 +170,13 @@ class SuperColliderProcess():
         post_view.set_name(SuperColliderProcess.post_view_name)
         post_view.set_scratch(True)
         post_view.settings().set('rulers', 0)
+        post_view.settings().set('line_numbers', False)
 
         # update the view with previoius view content if possible
         if SuperColliderProcess.post_view_cache is not None:
             post_view.run_command('super_collider_update_post_view', {
                 'content': SuperColliderProcess.post_view_cache,
+                'max_lines': SuperColliderProcess.post_view_max_lines,
                 'force_scroll': True
             })
             SuperColliderProcess.post_view_cache = None
@@ -192,8 +202,18 @@ class SuperColliderStopCommand(sublime_plugin.ApplicationCommand):
             sublime.status_message("sclang not started")
 
 class SuperColliderUpdatePostViewCommand(sublime_plugin.TextCommand):
-    def run(self, edit, content, force_scroll=False):
+    def run(self, edit, content, max_lines=-1, force_scroll=False):
+        # insert text
         self.view.insert(edit, self.view.size(), content)
+
+        # erase overspill
+        all_lines = self.view.lines(sublime.Region(0, self.view.size()))
+        total_lines = len(all_lines)
+        if total_lines > max_lines and max_lines >= 1:
+            end = all_lines[total_lines - max_lines].b + 1
+            self.view.erase(edit, sublime.Region(0, end))
+
+        # scroll
         if force_scroll or view_is_at_bottom(self.view):
             self.view.show(self.view.size())
 
@@ -210,11 +230,11 @@ class SuperColliderListener(sublime_plugin.EventListener):
 
 class SuperColliderLoop(sublime_plugin.ApplicationCommand):
     def run(self):
-        SuperColliderProcess.execute("{inf.do{|x| x.postln; 0.5.wait; }}.fork")
+        SuperColliderProcess.execute("{inf.do{|x| x.postln; 0.1.wait; }}.fork")
 
+class SuperColliderTest(sublime_plugin.ApplicationCommand):
+    def run(self, count):
+        SuperColliderProcess.execute(str(count) + ".do {|i| i.postln; };")
 
-# TODO return to original view
-# TODO clear buffer if too big? - option
-# TODO notify when sclang is quit
 # TODO if re-open last tab and context SC, then open new post window
 # TODO option on where to open post window: new tab, new group, new window, terminal
