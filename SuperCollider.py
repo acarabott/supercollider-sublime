@@ -191,10 +191,6 @@ class SuperColliderOpenPostViewCommand(sublime_plugin.ApplicationCommand):
     def run(self):
         SuperColliderProcess.open_post_view()
 
-class SuperColliderTest(sublime_plugin.ApplicationCommand):
-    def run(self):
-        SuperColliderProcess.execute("\"hi\".postln;")
-
 class SuperColliderLoop(sublime_plugin.ApplicationCommand):
     def run(self):
         SuperColliderProcess.execute("{inf.do{|x| x.postln; 0.5.wait; }}.fork")
