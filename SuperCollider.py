@@ -90,7 +90,8 @@ class SuperColliderProcess():
             for line in iter(input.readline, b''):
                 queue.put(line.decode('utf-8'))
             input.close()
-            SuperColliderProcess.deactivate_post_view('SublimeText: sclang terminated!\n')
+            if SuperColliderProcess.has_post_view():
+                SuperColliderProcess.deactivate_post_view('SublimeText: sclang terminated!\n')
 
         SuperColliderProcess.sclang_queue = Queue()
         SuperColliderProcess.sclang_thread = threading.Thread(
