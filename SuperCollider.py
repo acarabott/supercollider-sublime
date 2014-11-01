@@ -237,6 +237,14 @@ class SuperColliderListener(sublime_plugin.EventListener):
             content = view.substr(sublime.Region(0, view.size()))
             SuperColliderProcess.cache_post_view(content)
 
+class SuperColliderSendCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        for sel in self.view.sel():
+            # "selection" is a single point
+            if sel.a == sel.b:
+                line = self.view.substr(self.view.line(sel))
+                SuperColliderProcess.execute(line)
+
 class SuperColliderLoop(sublime_plugin.ApplicationCommand):
     def run(self):
         SuperColliderProcess.execute("{inf.do{|x| x.postln; 0.1.wait; }}.fork")
