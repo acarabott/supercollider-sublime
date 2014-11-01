@@ -15,6 +15,13 @@ class SuperColliderProcess():
     post_view_name = 'SuperCollider - Post'
     post_view = None
     post_view_cache = None
+    # the post view buffer is kept alive, even when the views into it are closed
+    # with this cache, we can restore the previous state when re-opening the
+    # window
+    # Just trying to pull the content from the view doesn't work as sometimes
+    # content is empty (problem with async timeout? being garbage collected?)
+    # Instead using an explicit cache, updated lazily when view is closed and
+    # new view being opened
 
     def start():
         if SuperColliderProcess.is_alive():
@@ -61,6 +68,7 @@ class SuperColliderProcess():
             for line in iter(input.readline, b''):
                 queue.put(line.decode('utf-8'))
             input.close()
+            SuperColliderProcess.remove_post_view()
 
         SuperColliderProcess.sclang_queue = Queue()
         SuperColliderProcess.sclang_thread = threading.Thread(
@@ -96,16 +104,27 @@ class SuperColliderProcess():
     def update_post_view():
         if SuperColliderProcess.has_post_view():
             SuperColliderProcess.post_view.run_command('super_collider_update_post_view')
-            sublime.set_timeout(SuperColliderProcess.update_post_view, 50)
+            sublime.set_timeout(SuperColliderProcess.update_post_view, 20)
         else:
             sublime.status_message("sclang has no post window!")
 
     def cache_post_view(content):
         SuperColliderProcess.post_view_cache = content
 
+    def remove_post_view():
+        if SuperColliderProcess.has_post_view():
+            SuperColliderProcess.post_view.set_name(SuperColliderProcess.post_view_name + ' - Inactive')
+            SuperColliderProcess.post_view = None
+
     def open_post_view():
         if len(sublime.windows()) is 0:
             sublime.run_command('new_window')
+
+        old_view = None
+        if SuperColliderProcess.has_post_view():
+            old_view = SuperColliderProcess.post_view
+            content = old_view.substr(sublime.Region(0, old_view.size()))
+            SuperColliderProcess.cache_post_view(content)
 
         window = sublime.active_window()
         post_view = window.new_file()
@@ -113,24 +132,17 @@ class SuperColliderProcess():
         post_view.set_scratch(True)
         post_view.settings().set('rulers', 0)
 
-        if SuperColliderProcess.has_post_view():
-            view = SuperColliderProcess.post_view
-            content = view.substr(sublime.Region(0, view.size()))
-            SuperColliderProcess.cache_post_view(content)
-
         if SuperColliderProcess.post_view_cache is not None:
             post_view.run_command('super_collider_clone_post_view', {
                 'content': SuperColliderProcess.post_view_cache
             })
             SuperColliderProcess.post_view_cache = None
 
+        if old_view is not None:
+            SuperColliderProcess.remove_post_view()
+
         SuperColliderProcess.post_view = post_view
         SuperColliderProcess.update_post_view()
-
-    def remove_post_view():
-        SuperColliderProcess.post_view.set_name(post_view_name + ' - Closed')
-        SuperColliderProcess.post_view = None
-
 
 class SuperColliderUpdatePostViewCommand(sublime_plugin.TextCommand):
     def run(self, edit):
@@ -181,8 +193,6 @@ class SuperColliderListener(sublime_plugin.EventListener):
                 content = view.substr(sublime.Region(0, view.size()))
                 SuperColliderProcess.cache_post_view(content)
 
-# TODO add hook when post view closed
-# TODO label post window when closed
 # TODO return to original view
 # TODO clear buffer if too big? - option
 # TODO notify when sclang is quit
