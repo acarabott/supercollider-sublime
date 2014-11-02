@@ -217,6 +217,7 @@ class SuperColliderStopInterpreterCommand(sublime_plugin.ApplicationCommand):
         return sc.is_alive()
 
 class SuperColliderUpdatePostViewCommand(sublime_plugin.TextCommand):
+    global sc
     def view_is_at_bottom(self):
         layout_h = self.view.layout_extent()[1]
         view_h = self.view.viewport_extent()[1]
@@ -247,16 +248,16 @@ class SuperColliderUpdatePostViewCommand(sublime_plugin.TextCommand):
         return sc.is_alive()
 
 class SuperColliderOpenPostViewCommand(sublime_plugin.ApplicationCommand):
+    global sc
     def run(self):
-        global sc
         sc.open_post_view()
 
     def is_enabled(self):
         return sc.is_alive()
 
 class SuperColliderClearPostViewCommand(sublime_plugin.TextCommand):
+    global sc
     def run(self, edit):
-        global sc
         sc.clear_post_view(edit)
 
     def is_enabled(self):
