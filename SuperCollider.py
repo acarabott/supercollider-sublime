@@ -198,6 +198,8 @@ class SuperColliderProcess():
         if self.has_post_view():
             self.post_view.erase(edit, sublime.Region(0, self.post_view.size()))
 
+# Commands
+# ------------------------------------------------------------------------------
 class SuperColliderStartInterpreterCommand(sublime_plugin.ApplicationCommand):
     global sc
     def run(self):

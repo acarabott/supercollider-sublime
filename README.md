@@ -20,7 +20,6 @@ Occasionally when re-opening the post window, or whenever re-opening in a differ
 - if re-open last tab and context SC, then open new post window
 - option on where to open post window: new tab, new group, new window,terminal
 - refocus on original window on open_post_view
-- re-write with plugin_loaded and process instance?
 - default keymaps for other OSs
 - command: show server meter
 - command: dump node terminated
