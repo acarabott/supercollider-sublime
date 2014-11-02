@@ -33,6 +33,7 @@ Occasionally when re-opening the post window, or whenever re-opening in a differ
 - option: boot interpreter on set syntax
 - Include schelp syntax by CrucialFelix, in Geoffroy Montel repo
 - Check out Thor's package https://github.com/thormagnusson/Sublime-Supercollider
+
 ### Auto complete
 
 - Make easy to do ctags
