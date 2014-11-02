@@ -3,22 +3,14 @@
 Rewritten for Sublime Text 3 based on ST2 plugin by [geoffroymontel](https://github.com/geoffroymontel/supercollider-package-for-sublime-text).
 
 Also includes:
-- SCLang Syntax by [rfwatson](https://github.com/rfwatson/supercollider-tmbundle)
-- SCHelp Syntax by [crucialfelix](https://github.com/crucialfelix)
+- sclang Syntax by [rfwatson](https://github.com/rfwatson/supercollider-tmbundle)
+- schelp Syntax by [crucialfelix](https://github.com/crucialfelix)
 
 ## Known Issues
 
-### Single SCLang instance
-
-This plugin currently only supports a single instance of SCLang.
-To run multiple instances would require:
-
-- Rewriting SuperColliderProcess to create instances
-- Different names for each temp file
-
 ### Empty Post window
 
-Occasionally when re-opening the post window, or whenever re-opening in a different window/tab, cached content isn't retrieved...
+Occasionally when re-opening the post window, or whenever re-opening in a different window/tab, cached content isn't retrieved and the post window is empty
 
 ## TODO
 
@@ -30,14 +22,12 @@ Occasionally when re-opening the post window, or whenever re-opening in a differ
 - refocus on original window on open_post_view
 - re-write with plugin_loaded and process instance?
 - default keymaps for other OSs
-- command: stop sclang key binding
 - command: recompile class library
 - command: show server meter
 - command: dump node terminated
 - command: dump node tree with controls
 - command: evaluate file
 - command: Stop
-- command: rename start/stop StartSCLang etc
 - command: look up implementations for selection
 - command: look up references
 - command: reboot
@@ -59,3 +49,13 @@ Occasionally when re-opening the post window, or whenever re-opening in a differ
 ### Menu
 
 ### Include schelp syntax by CrucialFelix, in Geoffroy Montel repo
+
+## Future Work
+
+### Multiple sclang instances
+
+In theory this plugin could support multiple instances of sclang, however some mechanism would be required to tell the commands (start, stop execute etc) which instance to send the message to.
+
+#### Possibile approaches:
+
+- Selectable 'current sclang' menu item
