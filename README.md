@@ -33,7 +33,6 @@ Occasionally when re-opening the post window, or whenever re-opening in a differ
 - default keymaps for other OSs
 - command: dump node terminated
 - command: dump node tree with controls
-- command: evaluate file
 - command: look up implementations for selection
 - command: look up references
 - option: boot interpreter on set syntax
