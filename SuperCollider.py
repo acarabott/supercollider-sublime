@@ -27,6 +27,9 @@ class SuperColliderProcess():
         self.post_view_max_lines = self.settings.get('max_post_view_lines')
         self.settings.add_on_change('max_post_view_lines',
                                     self.update_post_view_max_lines)
+        self.stdout_flag = self.settings.get('stdout_flag')
+        self.settings.add_on_change('stdout_flag', self.update_stdout_flag)
+
         self.sclang_thread = None
         self.sclang_process = None
         self.sclang_queue = None
@@ -52,6 +55,9 @@ class SuperColliderProcess():
 
     def update_post_view_max_lines(self):
         self.post_view_max_lines = self.settings.get('max_post_view_lines')
+
+    def update_stdout_flag(self):
+        self.stdout_flag = self.settings.get('stdout_flag')
 
     def start(self):
         if self.is_alive():
@@ -90,7 +96,10 @@ class SuperColliderProcess():
         # is terminated, after which it closes the input and deactivates post
         def enqueue_output(input, queue):
             for line in iter(input.readline, b''):
-                queue.put(line.decode('utf-8'))
+                decoded = line.decode('utf-8')
+                if self.stdout_flag in decoded:
+                    self.handle_flagged_output(decoded)
+                queue.put(decoded)
             input.close()
             if self.has_post_view():
                 self.deactivate_post_view('SublimeText: sclang terminated!\n')
@@ -119,6 +128,27 @@ class SuperColliderProcess():
         if self.is_alive():
             self.sclang_process.stdin.write(bytes(cmd + '\x0c', 'utf-8'))
             self.sclang_process.stdin.flush()
+
+    def execute_flagged(self, flag, cmd):
+        msg = '"' + self.stdout_flag + flag + self.stdout_flag + '".post;' + cmd
+        self.execute(msg)
+
+    def handle_flagged_output(self, output):
+        split = output.split(self.stdout_flag)
+        action = split[1]
+        arg = split[2].rstrip()
+
+        print(action, arg)
+
+        if action == 'open_file':
+            if not os.path.isfile(arg):
+                open(arg, 'a').close()
+
+            if len(sublime.windows()) is 0:
+                sublime.run_command('new_window')
+
+            window = sublime.active_window()
+            window.open_file(arg)
 
     # Post View
     # --------------------------------------------------------------------------
@@ -338,7 +368,6 @@ class SuperColliderShowServerMeterCommand(sublime_plugin.ApplicationCommand):
     def is_enabled(self):
         return sc.is_alive()
 
-
 class SuperColliderStopCommand(sublime_plugin.ApplicationCommand):
     global sc
 
@@ -353,6 +382,17 @@ class SuperColliderRecompileCommand(sublime_plugin.ApplicationCommand):
 
     def run(self):
         sc.execute('\x18')
+
+    def is_enabled(self):
+        return sc.is_alive()
+
+class SuperColliderOpenStartupFileCommand(sublime_plugin.ApplicationCommand):
+# class SuperColliderOpenUserSupportDirCommand(sublime_plugin.ApplicationCommand):
+    global sc
+
+    def run(self):
+        sc.execute_flagged('open_file',
+            '(Platform.userConfigDir +/+ "startup.scd").postln')
 
     def is_enabled(self):
         return sc.is_alive()

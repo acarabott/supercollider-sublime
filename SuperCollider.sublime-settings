@@ -8,5 +8,10 @@
     "max_post_view_lines": -1,
     // options: tab|window|group-up|group-right|group-down|group-left
     "open_post_view_in": "tab",
-    "word_separators": "./\\()\"'-:,.;<>!@#$%^&*|+=[]{}`?"
+    "word_separators": "./\\()\"'-:,.;<>!@#$%^&*|+=[]{}`?",
+    // this flag is prefixed to messages that should be handled differently by
+    // SublimeText, i.e. not just appended to the post window
+    // If you are using this string in your code (for some reason) and are
+    // getting conflicts, change it to something else
+    "stdout_flag": "***___SUBLIME___***"
 }
