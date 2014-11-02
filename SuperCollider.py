@@ -250,7 +250,7 @@ class SuperColliderListener(sublime_plugin.EventListener):
             content = view.substr(sublime.Region(0, view.size()))
             SuperColliderProcess.cache_post_view(content)
 
-class SuperColliderSendCommand(sublime_plugin.TextCommand):
+class SuperColliderEvaluateCommand(sublime_plugin.TextCommand):
     def run(self, edit, expand=False):
         if expand:
             reached_limit = False
