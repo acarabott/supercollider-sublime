@@ -6,6 +6,7 @@
     // Maximum number of lines in for Post window
     // -1 for no limit
     "max_post_view_lines": -1,
+    // Where to open the post view
     // options: tab|window|group-up|group-right|group-down|group-left
     "open_post_view_in": "tab",
     "word_separators": "./\\()\"'-:,.;<>!@#$%^&*|+=[]{}`?",

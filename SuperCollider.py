@@ -29,6 +29,9 @@ class SuperColliderProcess():
                                     self.update_post_view_max_lines)
         self.stdout_flag = self.settings.get('stdout_flag')
         self.settings.add_on_change('stdout_flag', self.update_stdout_flag)
+        self.open_post_view_in = self.settings.get('open_post_view_in')
+        self.settings.add_on_change('open_post_view_in',
+                                    self.update_open_post_view_in)
 
         self.sclang_thread = None
         self.sclang_process = None
@@ -47,17 +50,24 @@ class SuperColliderProcess():
         # Instead using an explicit cache, updated lazily when view is closed
         # and new view being opened
 
-    # Interpreter
+
+    # Settings callbacks
     # --------------------------------------------------------------------------
-    def is_alive(self):
-        return (self.sclang_thread is not None and
-                self.sclang_thread.isAlive())
 
     def update_post_view_max_lines(self):
         self.post_view_max_lines = self.settings.get('max_post_view_lines')
 
     def update_stdout_flag(self):
         self.stdout_flag = self.settings.get('stdout_flag')
+
+    def update_open_post_view_in(self):
+        self.open_post_view_in = self.settings.get('open_post_view_in')
+
+    # Interpreter
+    # --------------------------------------------------------------------------
+    def is_alive(self):
+        return (self.sclang_thread is not None and
+                self.sclang_thread.isAlive())
 
     def start(self):
         if self.is_alive():
@@ -169,9 +179,6 @@ class SuperColliderProcess():
             return None
 
     def open_post_view(self):
-        if len(sublime.windows()) is 0:
-            sublime.run_command('new_window')
-
         # focus the post window if it currently open
         if self.has_post_view():
             old = self.post_view
@@ -184,9 +191,16 @@ class SuperColliderProcess():
                 self.cache_post_view(old.substr(sublime.Region(0, old.size())))
                 self.deactivate_post_view('Sublime Text: Window deactivated!\n')
 
+        window = None
 
-        # create new post view
-        window = sublime.active_window()
+        if len(sublime.windows()) is 0:
+                sublime.run_command('new_window')
+
+        if self.open_post_view_in in ['tab', 'window']:
+            if self.open_post_view_in == 'window':
+                sublime.run_command('new_window')
+            window = sublime.active_window()
+
         self.post_view = window.new_file()
         self.post_view.set_name(self.post_view_name)
         self.post_view.set_scratch(True)
