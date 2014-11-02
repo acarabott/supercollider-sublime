@@ -25,6 +25,11 @@
         "command": "super_collider_clear_post_view",
         "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
     },
+    {
+        "keys": ["super+b"],
+        "command": "super_collider_start_server",
+        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
+    }
     // {
     //     "keys": ["ctrl+s","ctrl+s"],
     //     "command": "sc_start",

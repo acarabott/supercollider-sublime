@@ -309,6 +309,16 @@ class SuperColliderEvaluateCommand(sublime_plugin.TextCommand):
     def is_enabled(self):
         return sc.is_alive()
 
+class SuperColliderStartServerCommand(sublime_plugin.ApplicationCommand):
+    global sc
+
+    def run(self):
+        sc.execute("Server.default.boot;")
+
+    def is_enabled(self):
+        return sc.is_alive()
+
+
 class SuperColliderListener(sublime_plugin.EventListener):
     def on_close(self, view):
         global sc
