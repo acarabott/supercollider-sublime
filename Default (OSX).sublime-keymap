@@ -35,4 +35,9 @@
         "command": "super_collider_show_server_meter",
         "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
     },
+    {
+        "keys": ["ctrl+s", "ctrl+k"],
+        "command": "super_collider_recompile",
+        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
+    },
 ]
