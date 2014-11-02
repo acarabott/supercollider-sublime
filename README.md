@@ -27,7 +27,6 @@ Occasionally when re-opening the post window, or whenever re-opening in a differ
 ### SuperCollider.py
 
 - if post window moved to another pane/window, can't restore
-- if re-open last tab and context SC, then open new post window
 - option on where to open post window: new tab, new group, new window,terminal
 - refocus on original window on open_post_view
 - default keymaps for other OSs
