@@ -29,87 +29,10 @@
         "keys": ["super+b"],
         "command": "super_collider_start_server",
         "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
-    }
-    // {
-    //     "keys": ["ctrl+s","ctrl+s"],
-    //     "command": "sc_start",
-    //     "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
-    // },
-    // {
-    //     "keys": ["ctrl+s","ctrl+t"],
-    //     "command": "sc_stop",
-    //     "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
-    // },
-    // {
-    //     "keys": ["super+b"],
-    //     "command": "sc_server_boot",
-    //     "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
-    // },
-    // {
-    //     "keys": ["ctrl+s","ctrl+b"],
-    //     "command": "sc_server_reboot",
-    //     "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
-    // },
-    // { "keys": ["shift+enter"],
-    //     "command": "sc_send",
-    //     "args": {"expand": "True"},
-    //     "context": [
-    //         {"key": "setting.command_mode"},
-    //         {"key": "selector", "operator": "equal", "operand": "source.supercollider" }
-
-    //     ]
-    // },
-    // {
-    //     "keys": ["shift+enter"],
-    //     "command": "sc_send",
-    //     "args": {"expand": "True"},
-    //     "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
-    // },
-    // {
-    //     "keys": ["ctrl+enter"],
-    //     "command": "sc_send",
-    //     "args": {"expand": "False"},
-    //     "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
-    // },
-    // {
-    //     "keys": ["keypad_enter"],
-    //     "command": "sc_send",
-    //     "args": {"expand": "True"},
-    //     "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
-    // },
-    // {
-    //     "keys": ["ctrl+."],
-    //     "command": "sc_stop_all_sounds",
-    //     "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
-    // },
-    // {
-    //     "keys": ["ctrl+s","ctrl+p"],
-    //     "command": "sc_show_console",
-    //     "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
-    // },
-    // {
-    //     "keys": ["ctrl+s","ctrl+o"],
-    //     "command": "sc_hide_console",
-    //     "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
-    // },
-    // {
-    //     "keys": ["super+shift+c"],
-    //     "command": "sc_clear_console",
-    //     "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
-    // },
-    // {
-    //     "keys": ["ctrl+s","ctrl+d"],
-    //     "command": "sc_search_help",
-    //     "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
-    // },
-    // {
-    //     "keys": ["ctrl+s","ctrl+l"],
-    //     "command": "sc_recompile",
-    //     "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
-    // },
-    // {
-    //     "keys": ["ctrl+s","ctrl+c"],
-    //     "command": "sc_open_class_file",
-    //     "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
-    // }
+    },
+    {
+        "keys": ["ctrl+s", "ctrl+m"],
+        "command": "super_collider_show_server_meter",
+        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
+    },
 ]

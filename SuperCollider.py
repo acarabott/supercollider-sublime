@@ -329,6 +329,16 @@ class SuperColliderRebootServerCommand(sublime_plugin.ApplicationCommand):
     def is_enabled(self):
         return sc.is_alive()
 
+class SuperColliderShowServerMeterCommand(sublime_plugin.ApplicationCommand):
+    global sc
+
+    def run(self):
+        sc.execute("Server.default.meter;")
+
+    def is_enabled(self):
+        return sc.is_alive()
+
+
 class SuperColliderStopCommand(sublime_plugin.ApplicationCommand):
     global sc
 
