@@ -157,7 +157,8 @@ class SuperColliderProcess():
                 'content': msg,
                 'force_scroll': True
             })
-            SuperColliderProcess.post_view.set_name(SuperColliderProcess.post_view_name + ' - Inactive')
+            if SuperColliderProcess.post_view is not None:
+                SuperColliderProcess.post_view.set_name(SuperColliderProcess.post_view_name + ' - Inactive')
             SuperColliderProcess.post_view = None
 
     def open_post_view():
