@@ -351,13 +351,3 @@ class SuperColliderListener(sublime_plugin.EventListener):
         if sc is not None and view.id() is sc.post_view_id():
             content = view.substr(sublime.Region(0, view.size()))
             sc.cache_post_view(content)
-
-class SuperColliderLoop(sublime_plugin.ApplicationCommand):
-    global sc
-    def run(self):
-        sc.execute("{inf.do{|x| x.postln; 0.1.wait; }}.fork")
-
-class SuperColliderTest(sublime_plugin.ApplicationCommand):
-    global sc
-    def run(self, count):
-        sc.execute(str(count) + ".do {|i| i.postln; };")
