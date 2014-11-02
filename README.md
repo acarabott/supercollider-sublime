@@ -21,7 +21,6 @@ Occasionally when re-opening the post window, or whenever re-opening in a differ
 - option on where to open post window: new tab, new group, new window,terminal
 - refocus on original window on open_post_view
 - default keymaps for other OSs
-- command: show server meter
 - command: dump node terminated
 - command: dump node tree with controls
 - command: evaluate file
