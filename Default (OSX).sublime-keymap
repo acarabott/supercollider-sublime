@@ -1,7 +1,7 @@
 [
     {
         "keys": ["ctrl+s","ctrl+s"],
-        "command": "super_collider_start",
+        "command": "super_collider_start_interpreter",
         "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
     },
     {
@@ -21,7 +21,7 @@
         "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
     },
     {
-        "keys": ["ctrl+s","ctrl+c"],
+        "keys": ["super+shift+c"],
         "command": "super_collider_clear_post_view",
         "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
     },

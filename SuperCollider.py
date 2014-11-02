@@ -6,55 +6,57 @@ import threading
 import tempfile
 from queue import Queue, Empty
 
-def view_is_at_bottom(view):
-    layout_h = view.layout_extent()[1]
-    view_h = view.viewport_extent()[1]
-    view_y = view.viewport_position()[1]
-    line_h = view.line_height()
+sc = None
 
-    view_taller_than_content = layout_h <= view_h
-    at_bottom_of_content = view_y + view_h >= layout_h - line_h
-
-    return view_taller_than_content or at_bottom_of_content
+def plugin_loaded():
+    global sc
+    sc = SuperColliderProcess()
 
 def plugin_unloaded():
-    SuperColliderProcess.stop()
-    SuperColliderProcess.deactivate_post_view('SublimeText: sclang terminated!\n')
+    global sc
+    if sc is not None:
+        sc.stop()
+        sc.deactivate_post_view('SublimeText: sclang terminated!\n')
 
 class SuperColliderProcess():
-    settings = sublime.load_settings("SuperCollider.sublime-settings")
-    sclang_thread = None
-    sclang_process = None
-    sclang_queue = None
-    sclang_thread = None
+    def __init__(self):
+        self.settings = sublime.load_settings("SuperCollider.sublime-settings")
+        # load settings
+        self.sc_dir = self.settings.get("sc_dir")
+        self.sc_exe = self.settings.get("sc_exe")
+        self.post_view_max_lines = self.settings.get('max_post_view_lines')
+        self.settings.add_on_change('max_post_view_lines',
+                                    self.update_post_view_max_lines)
+        self.sclang_thread = None
+        self.sclang_process = None
+        self.sclang_queue = None
+        self.sclang_thread = None
 
-    post_view_name = 'SuperCollider - Post'
-    post_view = None
-    post_view_cache = None
-    post_view_max_lines = None
-    # the post view buffer is kept alive, even when the views into it are closed
-    # with this cache, we can restore the previous state when re-opening the
-    # window
-    # Just trying to pull the content from the view doesn't work as sometimes
-    # content is empty (problem with async timeout? being garbage collected?)
-    # Instead using an explicit cache, updated lazily when view is closed and
-    # new view being opened
+        self.post_view_name = 'SuperCollider - Post'
+        self.post_view = None
+        self.post_view_cache = None
+        # the post view buffer is kept alive, even when the views into it are
+        # closed with this cache, we can restore the previous state when
+        # re-opening the window
+        # Just trying to pull the content from the view doesn't work as
+        # sometimes content is empty (problem with async timeout? being garbage
+        # collected?)
+        # Instead using an explicit cache, updated lazily when view is closed
+        # and new view being opened
 
-    def update_post_view_max_lines():
-        SuperColliderProcess.post_view_max_lines = SuperColliderProcess.settings.get('max_post_view_lines')
+    # Interpreter
+    # --------------------------------------------------------------------------
+    def is_alive(self):
+        return (self.sclang_thread is not None and
+                self.sclang_thread.isAlive())
 
-    def start():
-        if SuperColliderProcess.is_alive():
+    def update_post_view_max_lines(self):
+        self.post_view_max_lines = self.settings.get('max_post_view_lines')
+
+    def start(self):
+        if self.is_alive():
             sublime.status_message("sclang already running!")
             return
-
-        # load settings
-        sc_dir = SuperColliderProcess.settings.get("sc_dir")
-        sc_exe = SuperColliderProcess.settings.get("sc_exe")
-        SuperColliderProcess.update_post_view_max_lines()
-        SuperColliderProcess.settings.add_on_change('max_post_view_lines',
-            SuperColliderProcess.update_post_view_max_lines)
-
 
         # create subprocess
         path = None
@@ -63,16 +65,16 @@ class SuperColliderProcess():
         shell = None
 
         if os.name is 'posix':
-            path = sc_dir + sc_exe
+            path = self.sc_dir + self.sc_exe
             close_fds = True
             shell = False
         else:
-            path = sc_exe
-            cwd = sc_dir
+            path = self.sc_exe
+            cwd = self.sc_dir
             close_fds = False
             shell = True
 
-        SuperColliderProcess.sclang_process = subprocess.Popen(
+        self.sclang_process = subprocess.Popen(
             args = [path, '-i', 'sublime'],
             cwd = cwd,
             bufsize = 0,
@@ -83,144 +85,149 @@ class SuperColliderProcess():
             shell = shell
         )
 
-        # create post window temp file
-        SuperColliderProcess.open_post_view()
-
         # create post window update queue and thread
+        # this function is the thread target, it reads input until the process
+        # is terminated, after which it closes the input and deactivates post
         def enqueue_output(input, queue):
             for line in iter(input.readline, b''):
                 queue.put(line.decode('utf-8'))
             input.close()
-            if SuperColliderProcess.has_post_view():
-                SuperColliderProcess.deactivate_post_view('SublimeText: sclang terminated!\n')
+            if self.has_post_view():
+                self.deactivate_post_view('SublimeText: sclang terminated!\n')
 
-        SuperColliderProcess.sclang_queue = Queue()
-        SuperColliderProcess.sclang_thread = threading.Thread(
+        # queue and thread for getting sclang output
+        self.sclang_queue = Queue()
+        self.sclang_thread = threading.Thread(
             target = enqueue_output,
             args = (
-                SuperColliderProcess.sclang_process.stdout,
-                SuperColliderProcess.sclang_queue
+                self.sclang_process.stdout,
+                self.sclang_queue
             )
         )
 
-        SuperColliderProcess.sclang_thread.daemon = True # dies with the program
-        SuperColliderProcess.sclang_thread.start()
+        self.sclang_thread.daemon = True # dies with the program
+        self.sclang_thread.start()
         sublime.status_message("Starting SuperCollider")
 
-    def stop():
-        if SuperColliderProcess.is_alive():
-            SuperColliderProcess.execute("0.exit;")
+    def stop(self):
+        if self.is_alive():
+            self.execute("0.exit;")
         else:
             sublime.status_message("sclang not running")
 
-    def is_alive():
-        return (SuperColliderProcess.sclang_thread is not None and
-                SuperColliderProcess.sclang_thread.isAlive())
+    def execute(self, cmd):
+        if self.is_alive():
+            self.sclang_process.stdin.write(bytes(cmd + '\x0c', 'utf-8'))
+            self.sclang_process.stdin.flush()
 
-    def execute(cmd):
-        if SuperColliderProcess.sclang_process is None:
-            sublime.status_message("sclang not running")
-            return
+    # Post View
+    # --------------------------------------------------------------------------
+    def has_post_view(self):
+        return self.post_view is not None
 
-        SuperColliderProcess.sclang_process.stdin.write(bytes(cmd + '\x0c', 'utf-8'))
-        SuperColliderProcess.sclang_process.stdin.flush()
-
-    def has_post_view():
-        return SuperColliderProcess.post_view is not None
-
-    def post_view_id():
-        if SuperColliderProcess.has_post_view():
-            return SuperColliderProcess.post_view.id()
+    def post_view_id(self):
+        if self.has_post_view():
+            return self.post_view.id()
         else:
             return None
 
-    def update_post_view():
-        if SuperColliderProcess.is_alive() and SuperColliderProcess.has_post_view():
-            try:
-                line = SuperColliderProcess.sclang_queue.get_nowait()
-            except Empty:
-                pass
-            else:
-                SuperColliderProcess.post_view.run_command('super_collider_update_post_view', {
-                    'content': line,
-                    'max_lines': SuperColliderProcess.post_view_max_lines
-                })
-
-        sublime.set_timeout(SuperColliderProcess.update_post_view, 20)
-
-    def cache_post_view(content):
-        SuperColliderProcess.post_view_cache = content
-
-    def deactivate_post_view(msg):
-        if SuperColliderProcess.has_post_view():
-            SuperColliderProcess.post_view.run_command('super_collider_update_post_view', {
-                'content': msg,
-                'force_scroll': True
-            })
-            if SuperColliderProcess.post_view is not None:
-                SuperColliderProcess.post_view.set_name(SuperColliderProcess.post_view_name + ' - Inactive')
-            SuperColliderProcess.post_view = None
-
-    def open_post_view():
+    def open_post_view(self):
         if len(sublime.windows()) is 0:
             sublime.run_command('new_window')
 
-        old_view = None
+        # focus the post window if it currently open
+        if self.has_post_view():
+            old = self.post_view
+            window = old.window()
+            if window is not None:
+                window.focus_view(old)
+                return
+            else:
+                # cache old post view contents
+                self.cache_post_view(old.substr(sublime.Region(0, old.size())))
+                self.deactivate_post_view('Sublime Text: Window deactivated!\n')
 
-        if SuperColliderProcess.has_post_view():
-            old_view = SuperColliderProcess.post_view
-            # switch to the post window if it is in the current window
-            for window in sublime.windows():
-                if window.views().count(old_view):
-                    window.focus_view(old_view)
-                    return
-                else:
-                    # cache old post view contents
-                    content = old_view.substr(sublime.Region(0, old_view.size()))
-                    SuperColliderProcess.cache_post_view(content)
-
-        window = sublime.active_window()
 
         # create new post view
-        post_view = window.new_file()
-        post_view.set_name(SuperColliderProcess.post_view_name)
-        post_view.set_scratch(True)
-        post_view.settings().set('rulers', 0)
-        post_view.settings().set('line_numbers', False)
+        window = sublime.active_window()
+        self.post_view = window.new_file()
+        self.post_view.set_name(self.post_view_name)
+        self.post_view.set_scratch(True)
+        self.post_view.settings().set('rulers', 0)
+        self.post_view.settings().set('line_numbers', False)
 
-        # update the view with previoius view content if possible
-        if SuperColliderProcess.post_view_cache is not None:
-            post_view.run_command('super_collider_update_post_view', {
-                'content': SuperColliderProcess.post_view_cache,
-                'max_lines': SuperColliderProcess.post_view_max_lines,
+        # update the view with previous view content if possible
+        if self.post_view_cache is not None:
+            self.post_view.run_command('super_collider_update_post_view', {
+                'content': self.post_view_cache,
+                'max_lines': self.post_view_max_lines,
                 'force_scroll': True
             })
-            SuperColliderProcess.post_view_cache = None
+            self.post_view_cache = None
 
-        # deactivate old view
-        if old_view is not None:
-            SuperColliderProcess.deactivate_post_view('Sublime Text: This post window now deactivated!\n')
+        self.update_post_view()
 
-        # update post view to newly created
-        SuperColliderProcess.post_view = post_view
-        SuperColliderProcess.update_post_view()
+    def update_post_view(self):
+        if self.is_alive() and self.has_post_view():
+            try:
+                line = self.sclang_queue.get_nowait()
+            except Empty:
+                pass
+            else:
+                self.post_view.run_command('super_collider_update_post_view', {
+                    'content': line,
+                    'max_lines': self.post_view_max_lines
+                })
 
-    def clear_post_view(edit):
-        if SuperColliderProcess.has_post_view():
-            SuperColliderProcess.post_view.erase(
-                edit,
-                sublime.Region(0, SuperColliderProcess.post_view.size())
-            )
+        sublime.set_timeout(self.update_post_view, 20)
 
-class SuperColliderStartCommand(sublime_plugin.ApplicationCommand):
+    def cache_post_view(self, content):
+        self.post_view_cache = content
+
+    def deactivate_post_view(self, msg):
+        if self.has_post_view():
+            self.post_view.run_command('super_collider_update_post_view', {
+                'content': msg,
+                'force_scroll': True
+            })
+            if self.post_view is not None:
+                self.post_view.set_name(self.post_view_name + ' - Inactive')
+            # self.post_view = None
+
+    def clear_post_view(self, edit):
+        if self.has_post_view():
+            self.post_view.erase(edit, sublime.Region(0, self.post_view.size()))
+
+class SuperColliderStartInterpreterCommand(sublime_plugin.ApplicationCommand):
+    global sc
     def run(self):
-        SuperColliderProcess.start()
+        sc.start()
+        sc.open_post_view()
 
-class SuperColliderStopCommand(sublime_plugin.ApplicationCommand):
+    def is_enabled(self):
+        return not sc.is_alive()
+
+class SuperColliderStopInterpreterCommand(sublime_plugin.ApplicationCommand):
+    global sc
+
     def run(self):
-        SuperColliderProcess.stop()
+        sc.stop()
+
+    def is_enabled(self):
+        return sc.is_alive()
 
 class SuperColliderUpdatePostViewCommand(sublime_plugin.TextCommand):
+    def view_is_at_bottom(self):
+        layout_h = self.view.layout_extent()[1]
+        view_h = self.view.viewport_extent()[1]
+        view_y = self.view.viewport_position()[1]
+        line_h = self.view.line_height()
+
+        view_taller_than_content = layout_h <= view_h
+        at_bottom_of_content = view_y + view_h >= layout_h - line_h
+
+        return view_taller_than_content or at_bottom_of_content
+
     def run(self, edit, content, max_lines=-1, force_scroll=False):
         # insert text
         self.view.insert(edit, self.view.size(), content)
@@ -233,48 +240,58 @@ class SuperColliderUpdatePostViewCommand(sublime_plugin.TextCommand):
             self.view.erase(edit, sublime.Region(0, end))
 
         # scroll
-        if force_scroll or view_is_at_bottom(self.view):
+        if force_scroll or self.view_is_at_bottom():
             self.view.show(self.view.size())
+
+    def is_enabled(self):
+        return sc.is_alive()
 
 class SuperColliderOpenPostViewCommand(sublime_plugin.ApplicationCommand):
     def run(self):
-        SuperColliderProcess.open_post_view()
+        global sc
+        sc.open_post_view()
+
+    def is_enabled(self):
+        return sc.is_alive()
 
 class SuperColliderClearPostViewCommand(sublime_plugin.TextCommand):
     def run(self, edit):
-        SuperColliderProcess.clear_post_view(edit)
+        global sc
+        sc.clear_post_view(edit)
 
-class SuperColliderListener(sublime_plugin.EventListener):
-    def on_close(self, view):
-        if view.id() is SuperColliderProcess.post_view_id():
-            content = view.substr(sublime.Region(0, view.size()))
-            SuperColliderProcess.cache_post_view(content)
+    def is_enabled(self):
+        return sc.is_alive()
+
 
 class SuperColliderEvaluateCommand(sublime_plugin.TextCommand):
+    global sc
+
+    def expand_selections(self):
+        reached_limit = False
+        expanded = False
+        # expand selection to brackets until the selections are the same as
+        # the previous selections (no further expansion possible)
+        while not reached_limit:
+            old = list(map(lambda s: sublime.Region(s.a, s.b), self.view.sel()))
+
+            # nested selections get merged by this, so number of selections can
+            # get reduced
+            self.view.run_command('expand_selection', {'to': 'brackets'})
+
+            reached_limit = all(s.a == old[i].a and s.b == old[i].b
+                                for i, s, in enumerate(self.view.sel()))
+
+            if not reached_limit:
+                expanded = True
+
+        # if we expanded, expand further to whole line, makes it possible
+        # to execute blocks without surrouding with parenthesis
+        if expanded:
+            self.view.run_command('expand_selection', {'to': 'line'})
+
     def run(self, edit, expand=False):
         if expand:
-            reached_limit = False
-            expanded = False
-            while not reached_limit:
-                prev = list(map(
-                    lambda sel: sublime.Region(sel.a, sel.b),
-                    self.view.sel()
-                ))
-                # nested selections get merged by this, so nested selections
-                # get reduced
-                self.view.run_command('expand_selection', {'to': 'brackets'})
-
-                sels = enumerate(self.view.sel())
-                if all(sel.a == prev[i].a and sel.b == prev[i].b for i, sel in sels):
-                    reached_limit = True
-
-                if not reached_limit:
-                    expanded = True
-
-            # if we expanded, expand further to whole line, makes it possible
-            # to execute blocks without surrouding with parenthesis
-            if expanded:
-                self.view.run_command('expand_selection', {'to': 'line'})
+            self.expand_selections()
 
         for sel in self.view.sel():
             cmd = None
@@ -286,12 +303,24 @@ class SuperColliderEvaluateCommand(sublime_plugin.TextCommand):
                 # send actual selection
                 cmd = self.view.substr(sel)
 
-            SuperColliderProcess.execute(cmd)
+            sc.execute(cmd)
+
+    def is_enabled(self):
+        return sc.is_alive()
+
+class SuperColliderListener(sublime_plugin.EventListener):
+    def on_close(self, view):
+        global sc
+        if sc is not None and view.id() is sc.post_view_id():
+            content = view.substr(sublime.Region(0, view.size()))
+            sc.cache_post_view(content)
 
 class SuperColliderLoop(sublime_plugin.ApplicationCommand):
+    global sc
     def run(self):
-        SuperColliderProcess.execute("{inf.do{|x| x.postln; 0.1.wait; }}.fork")
+        sc.execute("{inf.do{|x| x.postln; 0.1.wait; }}.fork")
 
 class SuperColliderTest(sublime_plugin.ApplicationCommand):
+    global sc
     def run(self, count):
-        SuperColliderProcess.execute(str(count) + ".do {|i| i.postln; };")
+        sc.execute(str(count) + ".do {|i| i.postln; };")
