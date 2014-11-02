@@ -1,0 +1,38 @@
+[
+{
+  "id": "tools",
+  "children":
+  [
+    {
+        "caption": "SuperCollider",
+        "children":
+        [
+            {
+                "command": "super_collider_start_interpreter",
+                "caption": "Start Interpreter"
+            },
+            {
+                "command": "super_collider_stop_interpreter",
+                "caption": "Stop Interpreter"
+            },
+            {
+                "command": "super_collider_start_server",
+                "caption": "Boot Server"
+            },
+            {
+                "command": "super_collider_reboot_server",
+                "caption": "Reboot Server"
+            },
+            {
+                "command": "super_collider_show_server_meter",
+                "caption": "Show Server Meter"
+            },
+            {
+                "command": "super_collider_recompile",
+                "caption": "Recompile Class Library"
+            },
+        ]
+    }
+  ]
+}
+]
