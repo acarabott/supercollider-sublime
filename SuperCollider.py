@@ -23,7 +23,6 @@ def plugin_unloaded():
 
 class SuperColliderProcess():
     settings = sublime.load_settings("SuperCollider.sublime-settings")
-    settings.add_on_change('max_post_view_lines', SuperColliderProcess.update_post_view_max_lines)
     sclang_thread = None
     sclang_process = None
     sclang_queue = None
@@ -53,6 +52,8 @@ class SuperColliderProcess():
         sc_dir = SuperColliderProcess.settings.get("sc_dir")
         sc_exe = SuperColliderProcess.settings.get("sc_exe")
         SuperColliderProcess.update_post_view_max_lines()
+        SuperColliderProcess.settings.add_on_change('max_post_view_lines',
+            SuperColliderProcess.update_post_view_max_lines)
 
 
         # create subprocess
