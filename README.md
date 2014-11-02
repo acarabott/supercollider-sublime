@@ -30,11 +30,11 @@ Occasionally when re-opening the post window, or whenever re-opening in a differ
 - command: Stop
 - command: look up implementations for selection
 - command: look up references
-- command: reboot
 - command: open user support dir
 - command: open startup file
 - option: boot interpreter on set syntax
-
+- Include schelp syntax by CrucialFelix, in Geoffroy Montel repo
+- Check out Thor's package https://github.com/thormagnusson/Sublime-Supercollider
 ### Auto complete
 
 - Make easy to do ctags
@@ -47,8 +47,6 @@ Occasionally when re-opening the post window, or whenever re-opening in a differ
 - OS X
 
 ### Menu
-
-### Include schelp syntax by CrucialFelix, in Geoffroy Montel repo
 
 ## Future Work
 
