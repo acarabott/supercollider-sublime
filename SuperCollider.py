@@ -295,10 +295,3 @@ class SuperColliderLoop(sublime_plugin.ApplicationCommand):
 class SuperColliderTest(sublime_plugin.ApplicationCommand):
     def run(self, count):
         SuperColliderProcess.execute(str(count) + ".do {|i| i.postln; };")
-
-# TODO if post window moved to another pane/window, can't restore
-# TODO if re-open last tab and context SC, then open new post window
-# TODO option on where to open post window: new tab, new group, new window, terminal
-# TODO refocus on original window on open_post_view
-# TODO re-write with plugin_loaded and process instance?
-# TODO default keymaps for other OS
