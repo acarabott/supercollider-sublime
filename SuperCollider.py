@@ -205,6 +205,13 @@ class SuperColliderProcess():
         SuperColliderProcess.post_view = post_view
         SuperColliderProcess.update_post_view()
 
+    def clear_post_view(edit):
+        if SuperColliderProcess.has_post_view():
+            SuperColliderProcess.post_view.erase(
+                edit,
+                sublime.Region(0, SuperColliderProcess.post_view.size())
+            )
+
 class SuperColliderStartCommand(sublime_plugin.ApplicationCommand):
     def run(self):
         SuperColliderProcess.start()
@@ -232,6 +239,10 @@ class SuperColliderUpdatePostViewCommand(sublime_plugin.TextCommand):
 class SuperColliderOpenPostViewCommand(sublime_plugin.ApplicationCommand):
     def run(self):
         SuperColliderProcess.open_post_view()
+
+class SuperColliderClearPostViewCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        SuperColliderProcess.clear_post_view(edit)
 
 class SuperColliderListener(sublime_plugin.EventListener):
     def on_close(self, view):
@@ -290,3 +301,4 @@ class SuperColliderTest(sublime_plugin.ApplicationCommand):
 # TODO option on where to open post window: new tab, new group, new window, terminal
 # TODO refocus on original window on open_post_view
 # TODO re-write with plugin_loaded and process instance?
+# TODO default keymaps for other OS
