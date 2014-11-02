@@ -1,6 +1,6 @@
 # SuperCollider Sublime Text 3 Plugin
 
-Rewritten for Sublime Text 3 based on ST2 plugin by[geoffroymontel](https://github.com/geoffroymontel/supercollider-package-for-sublime-text).
+Rewritten for Sublime Text 3 based on ST2 plugin by [geoffroymontel](https://github.com/geoffroymontel/supercollider-package-for-sublime-text).
 
 Also includes:
 - SCLang Syntax by [rfwatson](https://github.com/rfwatson/supercollider-tmbundle)
