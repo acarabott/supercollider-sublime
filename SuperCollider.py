@@ -240,13 +240,39 @@ class SuperColliderListener(sublime_plugin.EventListener):
             SuperColliderProcess.cache_post_view(content)
 
 class SuperColliderSendCommand(sublime_plugin.TextCommand):
-    def run(self, edit):
+    def run(self, edit, expand=False):
+        if expand:
+            reached_limit = False
+            expanded = False
+            while not reached_limit:
+                prev = list(map(
+                    lambda sel: sublime.Region(sel.a, sel.b),
+                    self.view.sel()
+                ))
+                # nested selections get merged by this, so nested selections
+                # get reduced
+                self.view.run_command('expand_selection', {'to': 'brackets'})
+
+                sels = enumerate(self.view.sel())
+                if all(sel.a == prev[i].a and sel.b == prev[i].b for i, sel in sels):
+                    reached_limit = True
+
+                if not reached_limit:
+                    expanded = True
+
+            # if we expanded, expand further to whole line, makes it possible
+            # to execute blocks without surrouding with parenthesis
+            if expanded:
+                self.view.run_command('expand_selection', {'to': 'line'})
+
         for sel in self.view.sel():
             cmd = None
-            # "selection" is a single point
+
             if sel.a == sel.b:
+                # "selection" is a single point
                 cmd = self.view.substr(self.view.line(sel))
             else:
+                # send actual selection
                 cmd = self.view.substr(sel)
 
             SuperColliderProcess.execute(cmd)
@@ -259,6 +285,7 @@ class SuperColliderTest(sublime_plugin.ApplicationCommand):
     def run(self, count):
         SuperColliderProcess.execute(str(count) + ".do {|i| i.postln; };")
 
+# TODO if post window moved to another pane/window, can't restore
 # TODO if re-open last tab and context SC, then open new post window
 # TODO option on where to open post window: new tab, new group, new window, terminal
 # TODO refocus on original window on open_post_view
