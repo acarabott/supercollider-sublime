@@ -31,6 +31,14 @@
                 "command": "super_collider_recompile",
                 "caption": "Recompile Class Library"
             },
+            {
+                "command": "super_collider_open_user_support_dir",
+                "caption": "Open User Support Directory"
+            },
+            {
+                "command": "super_collider_open_startup_file",
+                "caption": "Open Startup File"
+            },
         ]
     }
   ]

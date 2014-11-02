@@ -130,15 +130,15 @@ class SuperColliderProcess():
             self.sclang_process.stdin.flush()
 
     def execute_flagged(self, flag, cmd):
-        msg = '"' + self.stdout_flag + flag + self.stdout_flag + '".post;' + cmd
+        msg = '"' + self.stdout_flag + flag + self.stdout_flag + '".post;'
+        msg += '(' + cmd + ').postln;'
+
         self.execute(msg)
 
     def handle_flagged_output(self, output):
         split = output.split(self.stdout_flag)
         action = split[1]
         arg = split[2].rstrip()
-
-        print(action, arg)
 
         if action == 'open_file':
             if not os.path.isfile(arg):
@@ -149,6 +149,13 @@ class SuperColliderProcess():
 
             window = sublime.active_window()
             window.open_file(arg)
+        elif action == 'open_dir':
+            if sublime.platform() == 'osx':
+                subprocess.Popen(['open', arg])
+            elif sublime.platform() == 'linux':
+                subprocess.Popen(['xdg-open', arg])
+            elif sublime.platform() == 'windows':
+                os.startfile(arg)
 
     # Post View
     # --------------------------------------------------------------------------
@@ -386,13 +393,21 @@ class SuperColliderRecompileCommand(sublime_plugin.ApplicationCommand):
     def is_enabled(self):
         return sc.is_alive()
 
+class SuperColliderOpenUserSupportDirCommand(sublime_plugin.ApplicationCommand):
+    global sc
+
+    def run(self):
+        sc.execute_flagged('open_dir', 'Platform.userConfigDir')
+
+    def is_enabled(self):
+        return sc.is_alive()
+
 class SuperColliderOpenStartupFileCommand(sublime_plugin.ApplicationCommand):
-# class SuperColliderOpenUserSupportDirCommand(sublime_plugin.ApplicationCommand):
     global sc
 
     def run(self):
         sc.execute_flagged('open_file',
-            '(Platform.userConfigDir +/+ "startup.scd").postln')
+                           'Platform.userConfigDir +/+ "startup.scd"')
 
     def is_enabled(self):
         return sc.is_alive()

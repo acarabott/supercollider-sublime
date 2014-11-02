@@ -6,6 +6,16 @@ Also includes:
 - sclang Syntax by [rfwatson](https://github.com/rfwatson/supercollider-tmbundle)
 - schelp Syntax by [crucialfelix](https://github.com/crucialfelix)
 
+## Testing TODO
+
+- Windows
+    - Communication with sclang
+    - 'Open Startup File' command
+    - 'Open User Support Directory' command
+- Linux
+    - 'Open Startup File' command
+    - 'Open User Support Directory' command
+
 ## Known Issues
 
 ### Empty Post window
@@ -26,8 +36,6 @@ Occasionally when re-opening the post window, or whenever re-opening in a differ
 - command: evaluate file
 - command: look up implementations for selection
 - command: look up references
-- command: open user support dir
-- command: open startup file
 - option: boot interpreter on set syntax
 - Include schelp syntax by CrucialFelix, in Geoffroy Montel repo
 - Check out Thor's package https://github.com/thormagnusson/Sublime-Supercollider
