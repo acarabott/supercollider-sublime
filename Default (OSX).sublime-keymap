@@ -41,6 +41,11 @@
         "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
     },
     {
+        "keys": ["super+."],
+        "command": "super_collider_stop",
+        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
+    },
+    {
         "keys": ["ctrl+s", "ctrl+m"],
         "command": "super_collider_show_server_meter",
         "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
