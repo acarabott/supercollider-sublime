@@ -35,7 +35,6 @@ Occasionally when re-opening the post window, or whenever re-opening in a differ
 
 ### SuperCollider.py
 
-- command: look up documentation for (input panel)
 - command: look up references
 - command: look up implementations for selection
 - command: dump node terminated

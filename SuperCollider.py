@@ -282,6 +282,9 @@ class SuperColliderProcess():
         if self.has_post_view():
             self.post_view.erase(edit, sublime.Region(0, self.post_view.size()))
 
+    def open_help_for(self, word):
+        self.execute('HelpBrowser.openHelpFor("' + word + '");')
+
 # Commands
 # ------------------------------------------------------------------------------
 class SuperColliderStartInterpreterCommand(sublime_plugin.ApplicationCommand):
@@ -464,7 +467,17 @@ class SuperColliderOpenHelpForWord(sublime_plugin.TextCommand):
 
     def run(self, edit):
         word = self.view.substr(self.view.word(self.view.sel()[0]))
-        sc.execute('HelpBrowser.openHelpFor("' + word + '");')
+        sc.open_help_for(word)
+
+class SuperColliderSearchHelp(sublime_plugin.WindowCommand):
+    global sc
+
+    def run(self):
+        self.window.show_input_panel(caption = "Search Help for",
+                                     initial_text = "",
+                                     on_done = lambda x: sc.open_help_for(x),
+                                     on_change = None,
+                                     on_cancel = None)
 
 class SuperColliderListener(sublime_plugin.EventListener):
     def on_close(self, view):
