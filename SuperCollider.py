@@ -179,32 +179,44 @@ class SuperColliderProcess():
             return None
 
     def open_post_view(self):
+        # create a new window if necessary
+        if len(sublime.windows()) is 0:
+            sublime.run_command('new_window')
+
+        # remember the original view
+        focus_window = sublime.active_window()
+        prev_view = focus_window.active_view()
+
         # focus the post window if it currently open
         if self.has_post_view():
             old = self.post_view
             window = old.window()
             if window is not None:
                 window.focus_view(old)
+                # focus on original view
+                focus_window.focus_view(prev_view)
                 return
             else:
                 # cache old post view contents
                 self.cache_post_view(old.substr(sublime.Region(0, old.size())))
                 self.deactivate_post_view('Sublime Text: Window deactivated!\n')
 
-        window = None
-
-        if len(sublime.windows()) is 0:
-            sublime.run_command('new_window')
-
+        # create a new window if post window should open in it
         if self.open_post_view_in == 'window':
             sublime.run_command('new_window')
 
+        # create new post view in the active window
         window = sublime.active_window()
         self.post_view = window.new_file()
 
-        if self.open_post_view_in == 'pane':
-            window.run_command('new_pane')
+        # move post view to new pane if set
+        if self.open_post_view_in == 'group':
+            if window.num_groups() is 1:
+                window.run_command('new_pane')
+            else:
+                window.set_view_index(self.post_view, 1, 0)
 
+        # set post view attributes
         self.post_view.set_name(self.post_view_name)
         self.post_view.set_scratch(True)
         self.post_view.settings().set('rulers', 0)
@@ -219,7 +231,11 @@ class SuperColliderProcess():
             })
             self.post_view_cache = None
 
+        # start updating post view
         self.update_post_view()
+
+        # focus on original view
+        focus_window.focus_view(prev_view)
 
     def update_post_view(self):
         if self.is_alive() and self.has_post_view():
