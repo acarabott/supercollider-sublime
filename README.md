@@ -6,6 +6,14 @@ Also includes:
 - sclang Syntax by [rfwatson](https://github.com/rfwatson/supercollider-tmbundle)
 - schelp Syntax by [crucialfelix](https://github.com/crucialfelix)
 
+## Features
+
+- Post window can open in a new tab, group, window, or output panel
+- Optional max length for post window
+- Post window scrolls if at the bottom, doesn't if user scrolls up
+- Fancy block evaluation, expands to lines containing brackets
+- Near parity with SCIDE commands, e.g. Open User Support Directory, and Open Startup File
+
 ## Testing TODO
 
 - Windows
@@ -32,11 +40,18 @@ Occasionally when re-opening the post window, or whenever re-opening in a differ
 - command: look up implementations for selection
 - command: dump node terminated
 - command: dump node tree with controls
+- command: show server gui
+- SuperCollider.sublime-commands file
+- Menu: add all commands
+- Add snippets
 - if post window moved to another pane/window, doesn't restore previous content
+- decide on best keymaps
 - default keymaps for other OSs
 - option: boot interpreter on set syntax
 - Include schelp syntax by CrucialFelix, in Geoffroy Montel repo
 - Check out Thor's package https://github.com/thormagnusson/Sublime-Supercollider
+    - Shift double click
+
 
 ### Auto complete
 
