@@ -8,7 +8,7 @@ Also includes:
 
 ## Features
 
-- Post window can open in a new tab, group, window, or output panel
+- Post window can open in a new tab, group, window, or output panel (see settings file)
 - Optional max length for post window
 - Post window scrolls if at the bottom, doesn't if user scrolls up
 - Fancy block evaluation, expands to lines containing brackets
