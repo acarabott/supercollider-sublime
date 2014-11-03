@@ -39,6 +39,10 @@
                 "command": "super_collider_open_startup_file",
                 "caption": "Open Startup File"
             },
+            {
+                "command": "super_collider_close_inactive_posts",
+                "caption": "Close Inactive Post Views"
+            }
         ]
     }
   ]

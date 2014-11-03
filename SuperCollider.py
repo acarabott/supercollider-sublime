@@ -39,6 +39,7 @@ class SuperColliderProcess():
         self.sclang_thread = None
 
         self.post_view_name = 'SuperCollider - Post'
+        self.inactive_post_view_name = self.post_view_name + ' - Inactive'
         self.post_view = None
         self.post_view_cache = None
         # the post view buffer is kept alive, even when the views into it are
@@ -223,6 +224,7 @@ class SuperColliderProcess():
             })
         else:
             self.post_view = window.new_file()
+            self.post_view.set_name(self.post_view_name)
             # move post view to new pane if set
             if self.open_post_view_in == 'group':
                 if window.num_groups() is 1:
@@ -275,8 +277,7 @@ class SuperColliderProcess():
                 'force_scroll': True
             })
             if self.post_view is not None:
-                self.post_view.set_name(self.post_view_name + ' - Inactive')
-            # self.post_view = None
+                self.post_view.set_name(self.inactive_post_view_name)
 
     def clear_post_view(self, edit):
         if self.has_post_view():
@@ -352,6 +353,15 @@ class SuperColliderClearPostViewCommand(sublime_plugin.TextCommand):
     def is_enabled(self):
         return sc.is_alive()
 
+class SuperColliderCloseInactivePostsCommand(sublime_plugin.ApplicationCommand):
+    global sc
+
+    def run(self):
+        for window in sublime.windows():
+            for view in window.views():
+                if view.name() == sc.inactive_post_view_name:
+                    view.window().focus_view(view)
+                    view.window().run_command('close_file')
 
 class SuperColliderEvaluateCommand(sublime_plugin.TextCommand):
     global sc
