@@ -55,4 +55,9 @@
         "command": "super_collider_recompile",
         "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
     },
+    {
+        "keys": ["super+d"],
+        "command": "super_collider_open_help_for_word",
+        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
+    },
 ]

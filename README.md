@@ -8,10 +8,11 @@ Also includes:
 
 ## Features
 
+- Execute with multiple cursors
 - Post window can open in a new tab, group, window, or output panel (see settings file)
 - Optional max length for post window
 - Post window scrolls if at the bottom, doesn't if user scrolls up
-- Fancy block evaluation, expands to lines containing brackets
+- Fancy block evaluation, expands to lines containing brackets, e.g. executing with the cursor inside a SynthDef will evaluate it without containing parentheses.
 - Near parity with SCIDE commands, e.g. Open User Support Directory, and Open Startup File
 
 ## Testing TODO
@@ -34,7 +35,6 @@ Occasionally when re-opening the post window, or whenever re-opening in a differ
 
 ### SuperCollider.py
 
-- command: look up documention (help)
 - command: look up documentation for (input panel)
 - command: look up references
 - command: look up implementations for selection

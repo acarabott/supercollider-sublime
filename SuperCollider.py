@@ -459,6 +459,13 @@ class SuperColliderOpenStartupFileCommand(sublime_plugin.ApplicationCommand):
     def is_enabled(self):
         return sc.is_alive()
 
+class SuperColliderOpenHelpForWord(sublime_plugin.TextCommand):
+    global sc
+
+    def run(self, edit):
+        word = self.view.substr(self.view.word(self.view.sel()[0]))
+        sc.execute('HelpBrowser.openHelpFor("' + word + '");')
+
 class SuperColliderListener(sublime_plugin.EventListener):
     def on_close(self, view):
         global sc
