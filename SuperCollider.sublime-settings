@@ -7,7 +7,7 @@
     // -1 for no limit
     "max_post_view_lines": -1,
     // Where to open the post view
-    // options: group|tab|window
+    // options: group|tab|window|panel
     "open_post_view_in": "group",
     "word_separators": "./\\()\"'-:,.;<>!@#$%^&*|+=[]{}`?",
     // this flag is prefixed to messages that should be handled differently by

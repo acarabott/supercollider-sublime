@@ -189,6 +189,14 @@ class SuperColliderProcess():
 
         # focus the post window if it currently open
         if self.has_post_view():
+            # show panel if used
+            if self.open_post_view_in == 'panel':
+                sublime.active_window().run_command("show_panel", {
+                    "panel": "output." + self.post_view_name
+                })
+                return
+
+            # show view if not using panel
             old = self.post_view
             window = old.window()
             if window is not None:
@@ -207,20 +215,26 @@ class SuperColliderProcess():
 
         # create new post view in the active window
         window = sublime.active_window()
-        self.post_view = window.new_file()
 
-        # move post view to new pane if set
-        if self.open_post_view_in == 'group':
-            if window.num_groups() is 1:
-                window.run_command('new_pane')
-            else:
-                window.set_view_index(self.post_view, 1, 0)
+        if self.open_post_view_in == 'panel':
+            self.post_view = window.get_output_panel(self.post_view_name)
+            sublime.active_window().run_command("show_panel", {
+                "panel": "output." + self.post_view_name
+            })
+        else:
+            self.post_view = window.new_file()
+            # move post view to new pane if set
+            if self.open_post_view_in == 'group':
+                if window.num_groups() is 1:
+                    window.run_command('new_pane')
+                else:
+                    window.set_view_index(self.post_view, 1, 0)
 
-        # set post view attributes
-        self.post_view.set_name(self.post_view_name)
-        self.post_view.set_scratch(True)
-        self.post_view.settings().set('rulers', 0)
-        self.post_view.settings().set('line_numbers', False)
+            # set post view attributes
+            self.post_view.set_name(self.post_view_name)
+            self.post_view.set_scratch(True)
+            self.post_view.settings().set('rulers', 0)
+            self.post_view.settings().set('line_numbers', False)
 
         # update the view with previous view content if possible
         if self.post_view_cache is not None:
