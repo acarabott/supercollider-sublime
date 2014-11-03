@@ -26,12 +26,14 @@ Occasionally when re-opening the post window, or whenever re-opening in a differ
 
 ### SuperCollider.py
 
-- if post window moved to another pane/window, can't restore
-- default keymaps for other OSs
+- command: look up documention (help)
+- command: look up documentation for (input panel)
+- command: look up references
+- command: look up implementations for selection
 - command: dump node terminated
 - command: dump node tree with controls
-- command: look up implementations for selection
-- command: look up references
+- if post window moved to another pane/window, doesn't restore previous content
+- default keymaps for other OSs
 - option: boot interpreter on set syntax
 - Include schelp syntax by CrucialFelix, in Geoffroy Montel repo
 - Check out Thor's package https://github.com/thormagnusson/Sublime-Supercollider
