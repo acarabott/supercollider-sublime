@@ -7,8 +7,9 @@
     // -1 for no limit
     "max_post_view_lines": -1,
     // Where to open the post view
-    // options: tab|window|group-up|group-right|group-down|group-left
-    "open_post_view_in": "tab",
+    // options: pane|tab|window
+    "open_post_view_in": "pane",
+    // "open_post_view_in": "window",
     "word_separators": "./\\()\"'-:,.;<>!@#$%^&*|+=[]{}`?",
     // this flag is prefixed to messages that should be handled differently by
     // SublimeText, i.e. not just appended to the post window

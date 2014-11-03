@@ -194,14 +194,17 @@ class SuperColliderProcess():
         window = None
 
         if len(sublime.windows()) is 0:
-                sublime.run_command('new_window')
+            sublime.run_command('new_window')
 
-        if self.open_post_view_in in ['tab', 'window']:
-            if self.open_post_view_in == 'window':
-                sublime.run_command('new_window')
-            window = sublime.active_window()
+        if self.open_post_view_in == 'window':
+            sublime.run_command('new_window')
 
+        window = sublime.active_window()
         self.post_view = window.new_file()
+
+        if self.open_post_view_in == 'pane':
+            window.run_command('new_pane')
+
         self.post_view.set_name(self.post_view_name)
         self.post_view.set_scratch(True)
         self.post_view.settings().set('rulers', 0)
