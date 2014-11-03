@@ -5,6 +5,11 @@
         "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
     },
     {
+        "keys": ["ctrl+s","ctrl+t","ctrl+t"],
+        "command": "super_collider_stop_interpreter",
+        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
+    },
+    {
         "keys": ["shift+enter"],
         "command": "super_collider_evaluate",
         "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
@@ -28,6 +33,11 @@
     {
         "keys": ["super+b"],
         "command": "super_collider_start_server",
+        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
+    },
+    {
+        "keys": ["ctrl+s", "ctrl+b", "ctrl+b"],
+        "command": "super_collider_reboot_server",
         "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
     },
     {
