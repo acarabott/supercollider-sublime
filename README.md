@@ -9,11 +9,16 @@ Also includes:
 ## Features
 
 - Execute with multiple cursors
+- Search Help directly from Sublime Text
 - Post window can open in a new tab, group, window, or output panel (see settings file)
 - Optional max length for post window
 - Post window scrolls if at the bottom, doesn't if user scrolls up
 - Fancy block evaluation, expands to lines containing brackets, e.g. executing with the cursor inside a SynthDef will evaluate it without containing parentheses.
 - Near parity with SCIDE commands, e.g. Open User Support Directory, and Open Startup File
+
+See SuperCollider.sublime-settings for options
+
+All commands are available in the Tools > SuperCollider Menu
 
 ## Testing TODO
 
