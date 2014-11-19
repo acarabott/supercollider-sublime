@@ -1,9 +1,7 @@
 import sublime, sublime_plugin
 import os
-import sys
 import subprocess
 import threading
-import tempfile
 from queue import Queue, Empty
 
 sc = None
@@ -315,7 +313,7 @@ class SuperColliderUpdatePostViewCommand(sublime_plugin.TextCommand):
         line_h = self.view.line_height()
 
         view_taller_than_content = layout_h <= view_h
-        at_bottom_of_content = view_y + view_h >= layout_h - line_h
+        at_bottom_of_content = view_y + view_h >= layout_h - (line_h * 2)
 
         return view_taller_than_content or at_bottom_of_content
 
