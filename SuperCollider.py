@@ -177,6 +177,42 @@ class SuperColliderProcess():
         else:
             return None
 
+    def focus_on_existing_post_window(self, original_window, original_view):
+        # show panel if used
+        if self.open_post_view_in == 'panel':
+            sublime.active_window().run_command("show_panel", {
+                "panel": "output." + self.post_view_name
+            })
+            return
+
+        # show view if not using panel
+        old = self.post_view
+        window = old.window()
+        if window is not None:
+            window.focus_view(old)
+            # focus on original view
+            original_window.focus_view(original_view)
+            return
+
+        self.cache_post_view(old.substr(sublime.Region(0, old.size())))
+        self.deactivate_post_view('Sublime Text: Window deactivated!\n')
+
+    def create_post_view(self, window):
+        self.post_view = window.new_file()
+        self.post_view.set_name(self.post_view_name)
+        # move post view to new pane if set
+        if self.open_post_view_in == 'group':
+            if window.num_groups() is 1:
+                window.run_command('new_pane')
+            else:
+                window.set_view_index(self.post_view, 1, 0)
+
+        # set post view attributes
+        self.post_view.set_name(self.post_view_name)
+        self.post_view.set_scratch(True)
+        self.post_view.settings().set('rulers', 0)
+        self.post_view.settings().set('line_numbers', False)
+
     def open_post_view(self):
         # create a new window if necessary
         if len(sublime.windows()) is 0:
@@ -188,25 +224,8 @@ class SuperColliderProcess():
 
         # focus the post window if it currently open
         if self.has_post_view():
-            # show panel if used
-            if self.open_post_view_in == 'panel':
-                sublime.active_window().run_command("show_panel", {
-                    "panel": "output." + self.post_view_name
-                })
-                return
-
-            # show view if not using panel
-            old = self.post_view
-            window = old.window()
-            if window is not None:
-                window.focus_view(old)
-                # focus on original view
-                focus_window.focus_view(prev_view)
-                return
-            else:
-                # cache old post view contents
-                self.cache_post_view(old.substr(sublime.Region(0, old.size())))
-                self.deactivate_post_view('Sublime Text: Window deactivated!\n')
+            focus_on_existing_post_window(focus_window, prev_view)
+            return
 
         # create a new window if post window should open in it
         if self.open_post_view_in == 'window':
@@ -221,20 +240,7 @@ class SuperColliderProcess():
                 "panel": "output." + self.post_view_name
             })
         else:
-            self.post_view = window.new_file()
-            self.post_view.set_name(self.post_view_name)
-            # move post view to new pane if set
-            if self.open_post_view_in == 'group':
-                if window.num_groups() is 1:
-                    window.run_command('new_pane')
-                else:
-                    window.set_view_index(self.post_view, 1, 0)
-
-            # set post view attributes
-            self.post_view.set_name(self.post_view_name)
-            self.post_view.set_scratch(True)
-            self.post_view.settings().set('rulers', 0)
-            self.post_view.settings().set('line_numbers', False)
+            self.create_post_view(window)
 
         # update the view with previous view content if possible
         if self.post_view_cache is not None:
