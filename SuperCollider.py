@@ -308,31 +308,44 @@ class SuperColliderStopInterpreterCommand(sublime_plugin.ApplicationCommand):
 
 class SuperColliderUpdatePostViewCommand(sublime_plugin.TextCommand):
     global sc
+
+    update_count = 0
+    update_every = 20
+    inf = float('inf')
+    # updating and re-using regions is more performant than creating on the fly
+    all_region = sublime.Region(0, 0)
+    erase_region = sublime.Region(0, 0)
+
     def view_is_at_bottom(self):
-        layout_h = self.view.layout_extent()[1]
-        view_h = self.view.viewport_extent()[1]
-        view_y = self.view.viewport_position()[1]
-        line_h = self.view.line_height()
-
-        view_taller_than_content = layout_h <= view_h
-        at_bottom_of_content = view_y + view_h >= layout_h - (line_h * 2)
-
-        return view_taller_than_content or at_bottom_of_content
+        return self.view.visible_region().b + 100 > self.view.size()
 
     def run(self, edit, content, max_lines=-1, force_scroll=False):
+        scroll = self.view_is_at_bottom()
         # insert text
         self.view.insert(edit, self.view.size(), content)
 
         # erase overspill
-        all_lines = self.view.lines(sublime.Region(0, self.view.size()))
-        total_lines = len(all_lines)
-        if total_lines > max_lines and max_lines >= 1:
-            end = all_lines[total_lines - max_lines].b + 1
-            self.view.erase(edit, sublime.Region(0, end))
+        if max_lines >= 1 and self.update_count is 0:
+            self.all_region.b = self.view.size()
+            all_lines = self.view.lines(self.all_region)
+            total_lines = len(all_lines)
+            if total_lines > max_lines:
+                self.erase_region.b = all_lines[total_lines - max_lines].b + 1
+                self.view.erase(edit, self.erase_region)
 
         # scroll
-        if force_scroll or self.view_is_at_bottom():
-            self.view.show(self.view.size())
+        if scroll or force_scroll:
+            # for some reason set_viewport_position doesn't work when no
+            # scrolling has occured, i.e. with a cleared post window
+            # so we use show in this case
+            # set_viewport_position is preferred as animation can be disabled
+            if self.view.viewport_position()[1] == 0:
+                self.view.show(self.view.size())
+            else:
+                x = self.view.viewport_position()[0]
+                self.view.set_viewport_position((x, self.inf), False)
+
+        self.update_count = (self.update_count + 1) % self.update_every
 
     def is_enabled(self):
         return sc.is_alive()
