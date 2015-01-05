@@ -259,11 +259,8 @@ class SuperColliderProcess():
 
     def update_post_view(self):
         if self.is_alive() and self.has_post_view():
-            try:
+            if not self.sclang_queue.empty():
                 line = self.sclang_queue.get_nowait()
-            except Empty:
-                pass
-            else:
                 self.post_view.run_command('super_collider_update_post_view', {
                     'content': line,
                     'max_lines': self.post_view_max_lines
