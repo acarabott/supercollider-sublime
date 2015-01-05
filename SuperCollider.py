@@ -265,8 +265,7 @@ class SuperColliderProcess():
                     'content': line,
                     'max_lines': self.post_view_max_lines
                 })
-
-        sublime.set_timeout(self.update_post_view, 20)
+            sublime.set_timeout(self.update_post_view, 5)
 
     def cache_post_view(self, content):
         self.post_view_cache = content
