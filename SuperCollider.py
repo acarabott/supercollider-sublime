@@ -485,22 +485,20 @@ class SuperColliderOpenStartupFileCommand(sublime_plugin.ApplicationCommand):
     def is_enabled(self):
         return sc.is_alive()
 
-class SuperColliderOpenHelpForWord(sublime_plugin.TextCommand):
-    global sc
-
-    def run(self, edit):
-        word = self.view.substr(self.view.word(self.view.sel()[0]))
-        sc.open_help_for(word)
-
-class SuperColliderSearchHelp(sublime_plugin.WindowCommand):
+class SuperColliderHelp(sublime_plugin.WindowCommand):
     global sc
 
     def run(self):
-        self.window.show_input_panel(caption = "Search Help for",
-                                     initial_text = "",
-                                     on_done = lambda x: sc.open_help_for(x),
-                                     on_change = None,
-                                     on_cancel = None)
+        view = self.window.active_view()
+        sel = view.sel()[0]
+        if sel.a != sel.b:
+            sc.open_help_for(view.substr(view.word(sel)))
+        else:
+            self.window.show_input_panel(caption = "Search Help for",
+                                         initial_text = "",
+                                         on_done = lambda x:sc.open_help_for(x),
+                                         on_change = None,
+                                         on_cancel = None)
 
 class SuperColliderListener(sublime_plugin.EventListener):
     def on_close(self, view):
