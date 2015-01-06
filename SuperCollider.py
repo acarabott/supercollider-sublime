@@ -404,6 +404,10 @@ class SuperColliderEvaluateCommand(sublime_plugin.TextCommand):
 
     def run(self, edit, expand=False):
         if expand:
+            # store selection for later restoration
+            prev = []
+            for sel in self.view.sel():
+                prev.append(sel)
             self.expand_selections()
 
         for sel in self.view.sel():
@@ -417,6 +421,10 @@ class SuperColliderEvaluateCommand(sublime_plugin.TextCommand):
                 cmd = self.view.substr(sel)
 
             sc.execute(cmd)
+
+        if expand:
+            self.view.sel().clear()
+            self.view.sel().add_all(prev)
 
     def is_enabled(self):
         return sc.is_alive()
