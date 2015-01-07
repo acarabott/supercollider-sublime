@@ -9,6 +9,7 @@ Also includes:
 ## Features
 
 - Execute with multiple cursors
+- Execution highlighting
 - Search Help directly from Sublime Text
 - Post window can open in a new tab, group, window, or output panel (see settings file)
 - Optional max length for post window

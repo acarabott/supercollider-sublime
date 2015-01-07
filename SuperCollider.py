@@ -382,6 +382,9 @@ class SuperColliderCloseInactivePostsCommand(sublime_plugin.ApplicationCommand):
 class SuperColliderEvaluateCommand(sublime_plugin.TextCommand):
     global sc
 
+    HIGHLIGHT_KEY = 'supercollider-eval'
+    HIGHLIGHT_SCOPE = 'supercollider-eval'
+
     def expand_selections(self):
         reached_limit = False
         expanded = False
@@ -416,18 +419,25 @@ class SuperColliderEvaluateCommand(sublime_plugin.TextCommand):
         for sel in self.view.sel():
             cmd = None
 
+            # "selection" is a single point
             if sel.a == sel.b:
-                # "selection" is a single point
-                cmd = self.view.substr(self.view.line(sel))
-            else:
-                # send actual selection
-                cmd = self.view.substr(sel)
+                sel = self.view.line(sel)
+                self.view.sel().add(sel)
 
-            sc.execute(cmd)
+            sc.execute(self.view.substr(sel))
 
-        if expand:
-            self.view.sel().clear()
-            self.view.sel().add_all(prev)
+        # highlighting
+        self.view.add_regions(self.HIGHLIGHT_KEY,
+            self.view.sel(),
+            self.HIGHLIGHT_SCOPE,
+            flags=sublime.DRAW_NO_OUTLINE)
+
+        sublime.set_timeout(
+            lambda: self.view.erase_regions(self.HIGHLIGHT_KEY),
+            500)
+
+        self.view.sel().clear()
+        self.view.sel().add_all(prev)
 
     def is_enabled(self):
         return sc.is_alive()
