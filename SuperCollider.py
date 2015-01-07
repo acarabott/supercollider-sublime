@@ -530,6 +530,8 @@ class SuperColliderListener(sublime_plugin.EventListener):
             sc.remove_post_view()
 
     def on_window_command(self, window, command_name, args):
+        if sc is None:
+            return
         if command_name == "hide_panel":
             value = sc.post_view.substr(sublime.Region(0, sc.post_view.size()))
             sc.cache_post_view(value)
