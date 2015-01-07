@@ -40,6 +40,7 @@ class SuperColliderProcess():
         self.inactive_post_view_name = self.post_view_name + ' - Inactive'
         self.post_view = None
         self.post_view_cache = None
+        self.panel_open = False
         # the post view buffer is kept alive, even when the views into it are
         # closed with this cache, we can restore the previous state when
         # re-opening the window
@@ -177,25 +178,19 @@ class SuperColliderProcess():
         else:
             return None
 
-    def focus_on_existing_post_window(self, original_window, original_view):
-        # show panel if used
-        if self.open_post_view_in == 'panel':
-            sublime.active_window().run_command("show_panel", {
-                "panel": "output." + self.post_view_name
-            })
-            return
+    def get_all_post_views(self):
+        win_views = [window.views() for window in sublime.windows()]
+        return [view for view in win_views for view in view]
 
-        # show view if not using panel
-        old = self.post_view
-        window = old.window()
-        if window is not None:
-            window.focus_view(old)
-            # focus on original view
-            original_window.focus_view(original_view)
-            return
+    def post_view_visible(self):
+        if not self.has_post_view():
+            return False
 
-        self.cache_post_view(old.substr(sublime.Region(0, old.size())))
-        self.deactivate_post_view('Sublime Text: Window deactivated!\n')
+        ids = [view.buffer_id() for view in self.get_all_post_views()]
+        return self.post_view_buffer_id() in ids
+
+    def set_post_view(self, view):
+        self.post_view = view
 
     def create_post_view(self, window):
         self.post_view = window.new_file()
@@ -213,6 +208,9 @@ class SuperColliderProcess():
         self.post_view.settings().set('rulers', 0)
         self.post_view.settings().set('line_numbers', False)
 
+    def remove_post_view(self):
+        self.post_view = None
+
     def open_post_view(self):
         # create a new window if necessary
         if len(sublime.windows()) is 0:
@@ -222,25 +220,31 @@ class SuperColliderProcess():
         focus_window = sublime.active_window()
         prev_view = focus_window.active_view()
 
-        # focus the post window if it currently open
-        if self.has_post_view():
-            self.focus_on_existing_post_window(focus_window, prev_view)
-            return
-
-        # create a new window if post window should open in it
-        if self.open_post_view_in == 'window':
-            sublime.run_command('new_window')
-
-        # create new post view in the active window
-        window = sublime.active_window()
-
         if self.open_post_view_in == 'panel':
-            self.post_view = window.get_output_panel(self.post_view_name)
-            sublime.active_window().run_command("show_panel", {
-                "panel": "output." + self.post_view_name
-            })
+            if not self.panel_open:
+                focus_window.run_command("show_panel", {
+                    "panel": "output." + self.post_view_name
+                })
+                self.post_view = focus_window.get_output_panel(
+                    self.post_view_name)
+                self.panel_open = True
         else:
-            self.create_post_view(window)
+            # focus the post window if it currently open
+            if self.post_view_visible():
+                self.post_view.window().focus_view(self.post_view)
+                if self.post_view.name() != self.inactive_post_view_name:
+                    focus_window.focus_view(prev_view)
+                    return
+                else:
+                    self.post_view.set_name(self.post_view_name)
+            else:
+                # create a new window if post window should open in it
+                if self.open_post_view_in == 'window':
+                    sublime.run_command('new_window')
+
+                # create new post view in the active window
+                window = sublime.active_window()
+                self.create_post_view(window)
 
         # update the view with previous view content if possible
         if self.post_view_cache is not None:
@@ -251,11 +255,11 @@ class SuperColliderProcess():
             })
             self.post_view_cache = None
 
-        # start updating post view
-        self.update_post_view()
-
         # focus on original view
         focus_window.focus_view(prev_view)
+
+        # start updating post view
+        self.update_post_view()
 
     def update_post_view(self):
         if self.is_alive() and self.has_post_view():
@@ -265,7 +269,7 @@ class SuperColliderProcess():
                     'content': line,
                     'max_lines': self.post_view_max_lines
                 })
-            sublime.set_timeout(self.update_post_view, 5)
+        sublime.set_timeout(self.update_post_view, 5)
 
     def cache_post_view(self, content):
         self.post_view_cache = content
@@ -276,8 +280,7 @@ class SuperColliderProcess():
                 'content': msg,
                 'force_scroll': True
             })
-            if self.post_view is not None:
-                self.post_view.set_name(self.inactive_post_view_name)
+            self.post_view.set_name(self.inactive_post_view_name)
 
     def clear_post_view(self, edit):
         if self.has_post_view():
@@ -510,14 +513,24 @@ class SuperColliderHelp(sublime_plugin.WindowCommand):
 
 class SuperColliderListener(sublime_plugin.EventListener):
     global sc
-    def post_view_visible(self):
-        win_views = [window.views() for window in sublime.windows()]
-        ids = [view.buffer_id() for view in win_views for view in view]
-        return sc.post_view_buffer_id() in ids
 
     def on_close(self, view):
-        if sc is not None and view.buffer_id() is sc.post_view_buffer_id():
-            content = view.substr(sublime.Region(0, view.size()))
-            sc.cache_post_view(content)
-            if not self.post_view_visible():
-                sc.post_view = None
+        if sc is None:
+            return
+        if view.buffer_id() != sc.post_view_buffer_id():
+            return;
+        if sc.post_view_visible():
+            if view.id() == sc.post_view.id():
+                sc.set_post_view(
+                    next(view for view
+                         in sc.get_all_post_views()
+                         if view.buffer_id() == sc.post_view_buffer_id()))
+        else:
+            sc.cache_post_view(view.substr(sublime.Region(0, view.size())))
+            sc.remove_post_view()
+
+    def on_window_command(self, window, command_name, args):
+        if command_name == "hide_panel":
+            value = sc.post_view.substr(sublime.Region(0, sc.post_view.size()))
+            sc.cache_post_view(value)
+            sc.panel_open = False
