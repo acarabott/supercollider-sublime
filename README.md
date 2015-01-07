@@ -48,7 +48,6 @@ Occasionally when re-opening the post window, or whenever re-opening in a differ
 - SuperCollider.sublime-commands file
 - Menu: add all commands
 - Add snippets
-- if post window moved to another pane/window, doesn't restore previous content
 - decide on best keymaps
 - default keymaps for other OSs
 - option: boot interpreter on set syntax

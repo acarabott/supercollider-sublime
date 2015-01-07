@@ -171,9 +171,9 @@ class SuperColliderProcess():
     def has_post_view(self):
         return self.post_view is not None
 
-    def post_view_id(self):
+    def post_view_buffer_id(self):
         if self.has_post_view():
-            return self.post_view.id()
+            return self.post_view.buffer_id()
         else:
             return None
 
@@ -224,7 +224,7 @@ class SuperColliderProcess():
 
         # focus the post window if it currently open
         if self.has_post_view():
-            focus_on_existing_post_window(focus_window, prev_view)
+            self.focus_on_existing_post_window(focus_window, prev_view)
             return
 
         # create a new window if post window should open in it
@@ -509,8 +509,15 @@ class SuperColliderHelp(sublime_plugin.WindowCommand):
                                          on_cancel = None)
 
 class SuperColliderListener(sublime_plugin.EventListener):
+    global sc
+    def post_view_visible(self):
+        win_views = [window.views() for window in sublime.windows()]
+        ids = [view.buffer_id() for view in win_views for view in view]
+        return sc.post_view_buffer_id() in ids
+
     def on_close(self, view):
-        global sc
-        if sc is not None and view.id() is sc.post_view_id():
+        if sc is not None and view.buffer_id() is sc.post_view_buffer_id():
             content = view.substr(sublime.Region(0, view.size()))
             sc.cache_post_view(content)
+            if not self.post_view_visible():
+                sc.post_view = None
