@@ -30,12 +30,6 @@ All commands are available in the Tools > SuperCollider Menu
     - 'Open Startup File' command
     - 'Open User Support Directory' command
 
-## Known Issues
-
-### Empty Post window
-
-Occasionally when re-opening the post window, or whenever re-opening in a different window/tab, cached content isn't retrieved and the post window is empty
-
 ## TODO
 
 ### SuperCollider.py
@@ -50,7 +44,6 @@ Occasionally when re-opening the post window, or whenever re-opening in a differ
 - Add snippets
 - decide on best keymaps
 - default keymaps for other OSs
-- option: boot interpreter on set syntax
 - Include schelp syntax by CrucialFelix, in Geoffroy Montel repo
 - Check out Thor's package https://github.com/thormagnusson/Sublime-Supercollider
     - Shift double click
