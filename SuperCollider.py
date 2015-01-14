@@ -386,11 +386,16 @@ class SuperColliderCloseInactivePostsCommand(sublime_plugin.ApplicationCommand):
     global sc
 
     def run(self):
+        active_window = sublime.active_window()
+        active_view = active_window.active_view()
+
         for window in sublime.windows():
             for view in window.views():
                 if view.name() == sc.inactive_post_view_name:
                     view.window().focus_view(view)
                     view.window().run_command('close_file')
+
+        active_window.focus_view(active_view)
 
 class SuperColliderEvaluateCommand(sublime_plugin.TextCommand):
     global sc
