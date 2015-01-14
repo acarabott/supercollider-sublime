@@ -427,16 +427,17 @@ class SuperColliderEvaluateCommand(sublime_plugin.TextCommand):
             self.view.run_command('expand_selection', {'to': 'line'})
 
     def run(self, edit, expand=False):
-        if expand:
-            # store selection for later restoration
-            prev = []
-            for sel in self.view.sel():
-                prev.append(sel)
+
+        # store selection for later restoration
+        prev = []
+        for sel in self.view.sel():
+            prev.append(sel)
+
+        if expand == 'True':
             self.expand_selections()
 
         for sel in self.view.sel():
             cmd = None
-
             # "selection" is a single point
             if sel.a == sel.b:
                 sel = self.view.line(sel)
