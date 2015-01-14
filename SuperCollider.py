@@ -79,8 +79,14 @@ class SuperColliderProcess():
     # Interpreter
     # --------------------------------------------------------------------------
     def is_alive(self):
-        return (self.sclang_thread is not None and
-                self.sclang_thread.isAlive())
+        if (self.sclang_process is None
+            or self.sclang_thread is None
+            or not self.sclang_thread.isAlive()):
+           return False
+
+        self.sclang_process.poll()
+
+        return self.sclang_process.returncode is None
 
     def start(self):
         if self.is_alive():
@@ -144,6 +150,7 @@ class SuperColliderProcess():
     def stop(self):
         if self.is_alive():
             self.execute("0.exit;")
+            self.sclang_process.kill()
         else:
             sublime.status_message("sclang not running")
 
