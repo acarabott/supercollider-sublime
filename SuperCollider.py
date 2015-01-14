@@ -19,14 +19,21 @@ def plugin_unloaded():
 class SuperColliderProcess():
     def __init__(self):
         self.settings = sublime.load_settings("SuperCollider.sublime-settings")
+
         # load settings
         self.sc_dir = self.settings.get("sc_dir")
+        self.settings.add_on_change('sc_dir', self.update_sc_dir)
+
         self.sc_exe = self.settings.get("sc_exe")
+        self.settings.add_on_change('sc_exe', self.update_sc_exe)
+
         self.post_view_max_lines = self.settings.get('max_post_view_lines')
         self.settings.add_on_change('max_post_view_lines',
                                     self.update_post_view_max_lines)
+
         self.stdout_flag = self.settings.get('stdout_flag')
         self.settings.add_on_change('stdout_flag', self.update_stdout_flag)
+
         self.open_post_view_in = self.settings.get('open_post_view_in')
         self.settings.add_on_change('open_post_view_in',
                                     self.update_open_post_view_in)
@@ -53,6 +60,12 @@ class SuperColliderProcess():
 
     # Settings callbacks
     # --------------------------------------------------------------------------
+
+    def update_sc_dir(self):
+        self.sc_dir = self.settings.get('sc_dir')
+
+    def update_sc_exe(self):
+        self.sc_exe = self.settings.get('sc_exe')
 
     def update_post_view_max_lines(self):
         self.post_view_max_lines = self.settings.get('max_post_view_lines')
