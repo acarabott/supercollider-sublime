@@ -282,14 +282,27 @@ class SuperColliderProcess():
         self.update_post_view()
 
     def update_post_view(self):
-        if self.is_alive() and self.has_post_view():
-            if not self.sclang_queue.empty():
+        sublime.set_timeout_async(self.update_post_view, 5)
+
+        if (not self.is_alive()
+            or not self.has_post_view()
+            or self.sclang_queue.empty()):
+                return
+
+        get_max = 10
+
+        print("geting", min(get_max, self.sclang_queue.qsize()))
+        for i in range(0, min(get_max, self.sclang_queue.qsize())):
+            try:
+                print(i)
                 line = self.sclang_queue.get_nowait()
+            except Empty:
+                break
+            finally:
                 self.post_view.run_command('super_collider_update_post_view', {
-                    'content': line,
-                    'max_lines': self.post_view_max_lines
-                })
-        sublime.set_timeout(self.update_post_view, 5)
+                'content': line,
+                'max_lines': self.post_view_max_lines
+            })
 
     def cache_post_view(self, content):
         self.post_view_cache = content
@@ -444,7 +457,6 @@ class SuperColliderEvaluateCommand(sublime_plugin.TextCommand):
             self.expand_selections()
 
         for sel in self.view.sel():
-            cmd = None
             # "selection" is a single point
             if sel.a == sel.b:
                 sel = self.view.line(sel)
