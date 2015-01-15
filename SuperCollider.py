@@ -2,7 +2,7 @@ import sublime, sublime_plugin
 import os
 import subprocess
 import threading
-from queue import Queue
+from collections import deque
 
 sc = None
 
@@ -128,13 +128,13 @@ class SuperColliderProcess():
                 decoded = line.decode('utf-8')
                 if self.stdout_flag in decoded:
                     self.handle_flagged_output(decoded)
-                queue.put(decoded)
+                queue.append(decoded)
             input.close()
             if self.has_post_view():
                 self.deactivate_post_view('SublimeText: sclang terminated!\n')
 
         # queue and thread for getting sclang output
-        self.sclang_queue = Queue()
+        self.sclang_queue = deque()
         self.sclang_thread = threading.Thread(
             target = enqueue_output,
             args = (
@@ -285,16 +285,15 @@ class SuperColliderProcess():
         sublime.set_timeout(self.update_post_view, 5)
         if (not self.is_alive()
             or not self.has_post_view()
-            or self.sclang_queue.empty()):
+            or len(self.sclang_queue) is 0):
                 return
 
         # single thread means
-        get_max = min(10, self.sclang_queue.qsize())
+        get_max = min(10, len(self.sclang_queue))
 
         for i in range(0, get_max):
-            line = self.sclang_queue.get_nowait()
             self.post_view.run_command('super_collider_update_post_view', {
-                'content': line,
+                'content': self.sclang_queue.popleft(),
                 'max_lines': self.post_view_max_lines
             })
 
