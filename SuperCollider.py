@@ -2,7 +2,7 @@ import sublime, sublime_plugin
 import os
 import subprocess
 import threading
-from queue import Queue, Empty
+from queue import Queue
 
 sc = None
 
@@ -282,24 +282,18 @@ class SuperColliderProcess():
         self.update_post_view()
 
     def update_post_view(self):
-        sublime.set_timeout_async(self.update_post_view, 5)
-
+        sublime.set_timeout(self.update_post_view, 5)
         if (not self.is_alive()
             or not self.has_post_view()
             or self.sclang_queue.empty()):
                 return
 
-        get_max = 10
+        # single thread means
+        get_max = min(10, self.sclang_queue.qsize())
 
-        print("geting", min(get_max, self.sclang_queue.qsize()))
-        for i in range(0, min(get_max, self.sclang_queue.qsize())):
-            try:
-                print(i)
-                line = self.sclang_queue.get_nowait()
-            except Empty:
-                break
-            finally:
-                self.post_view.run_command('super_collider_update_post_view', {
+        for i in range(0, get_max):
+            line = self.sclang_queue.get_nowait()
+            self.post_view.run_command('super_collider_update_post_view', {
                 'content': line,
                 'max_lines': self.post_view_max_lines
             })
