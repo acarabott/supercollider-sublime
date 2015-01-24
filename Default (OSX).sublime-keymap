@@ -1,68 +1,133 @@
 [
+    // interpreter -------------------------------------------------------------
     {
-        "keys": ["ctrl+s","ctrl+s"],
         "command": "super_collider_start_interpreter",
-        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
+        "keys":    ["ctrl+s","ctrl+s"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
     },
     {
-        "keys": ["ctrl+s","ctrl+t","ctrl+t"],
         "command": "super_collider_stop_interpreter",
-        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
+        "keys":    ["ctrl+s","ctrl+t","ctrl+t"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
     },
     {
-        "keys": ["shift+enter"],
         "command": "super_collider_evaluate",
-        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
+        "keys":    ["shift+enter"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
     },
     {
-        "keys": ["super+enter"],
         "command": "super_collider_evaluate",
-        "args": { "expand": "True" },
-        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
+        "keys":    ["super+enter"],
+        "args":    { "expand": "True" },
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
     },
+    // post view ---------------------------------------------------------------
     {
-        "keys": ["ctrl+s","ctrl+p"],
         "command": "super_collider_open_post_view",
-        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
+        "keys":    ["ctrl+s","ctrl+p"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
     },
     {
-        "keys": ["super+shift+c"],
         "command": "super_collider_clear_post_view",
-        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
+        "keys":    ["super+shift+c"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
     },
+    // server ------------------------------------------------------------------
     {
-        "keys": ["super+b"],
         "command": "super_collider_start_server",
-        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
+        "keys":    ["super+b"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
     },
     {
-        "keys": ["ctrl+s", "ctrl+b", "ctrl+b"],
         "command": "super_collider_reboot_server",
-        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
+        "keys":    ["ctrl+s", "ctrl+b", "ctrl+b"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
     },
     {
-        "keys": ["super+."],
-        "command": "super_collider_stop",
-        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
-    },
-    {
-        "keys": ["ctrl+s", "ctrl+m"],
         "command": "super_collider_show_server_meter",
-        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
+        "keys":    ["ctrl+s", "ctrl+m"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
     },
     {
-        "keys": ["ctrl+s", "ctrl+k"],
+        "command": "super_collider_show_server_window",
+        "keys":    ["ctrl+s", "ctrl+w"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    // sclang ------------------------------------------------------------------
+    {
+        "command": "super_collider_stop",
+        "keys":    ["super+."],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
         "command": "super_collider_recompile",
-        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
+        "keys":    ["ctrl+s", "ctrl+k"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
     },
     {
-        "keys": ["ctrl+s", "ctrl+d"],
         "command": "super_collider_open_help_for_word",
-        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
+        "keys":    ["ctrl+s", "ctrl+d"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
     },
     {
-        "keys": ["ctrl+s", "ctrl+h"],
         "command": "super_collider_search_help",
-        "context": [{"key": "selector", "operator": "equal", "operand": "source.supercollider" }]
+        "keys":    ["ctrl+s", "ctrl+h"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
     },
 ]
