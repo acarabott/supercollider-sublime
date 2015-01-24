@@ -147,12 +147,18 @@ class SuperColliderProcess():
         self.sclang_thread.start()
         sublime.status_message("Starting SuperCollider")
 
+    def kill(self):
+        try:
+            self.sclang_process.kill()
+        except:
+            pass
+
     def stop(self):
         if self.is_alive():
             self.execute("0.exit;")
-            self.sclang_process.kill()
+            sublime.set_timeout(self.kill, 1000)
         else:
-            sublime.status_message("sclang not running")
+            sublime.status_message("stop: sclang not running")
 
     def execute(self, cmd):
         if self.is_alive():
