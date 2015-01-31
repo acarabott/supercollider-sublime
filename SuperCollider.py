@@ -229,6 +229,8 @@ class SuperColliderProcess():
                 window.set_view_index(self.post_view, 1, 0)
 
         # set post view attributes
+        self.post_view.set_syntax_file(
+            'Packages/supercollider-sublime/SuperCollider.tmLanguage')
         self.post_view.set_name(self.post_view_name)
         self.post_view.set_scratch(True)
         self.post_view.settings().set('rulers', 0)
