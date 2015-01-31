@@ -113,17 +113,8 @@
         }]
     },
     {
-        "command": "super_collider_open_help_for_word",
+        "command": "super_collider_help",
         "keys":    ["ctrl+s", "ctrl+d"],
-        "context": [{
-            "key":      "selector",
-            "operator": "equal",
-            "operand":  "source.supercollider"
-        }]
-    },
-    {
-        "command": "super_collider_search_help",
-        "keys":    ["ctrl+s", "ctrl+h"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
