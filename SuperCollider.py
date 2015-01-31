@@ -5,6 +5,8 @@ import threading
 from collections import deque
 
 TERMINATE_MSG = 'SublimeText: sclang terminated!\n'
+SYNTAX_SC = 'Packages/supercollider-sublime/SuperCollider.tmLanguage'
+SYNTAX_PLAIN = 'Packages/Text/Plain text.tmLanguage'
 
 sc = None
 
@@ -19,6 +21,8 @@ def plugin_unloaded():
         sc.deactivate_post_view(TERMINATE_MSG)
 
 class SuperColliderProcess():
+    post_view = None
+
     def __init__(self):
         self.settings = sublime.load_settings("SuperCollider.sublime-settings")
 
@@ -39,6 +43,10 @@ class SuperColliderProcess():
         self.open_post_view_in = self.settings.get('open_post_view_in')
         self.settings.add_on_change('open_post_view_in',
                                     self.update_open_post_view_in)
+
+        self.update_highlight_post_view()
+        self.settings.add_on_change('highlight_post_view',
+                                    self.update_highlight_post_view)
 
         self.sclang_thread = None
         self.sclang_process = None
@@ -77,6 +85,13 @@ class SuperColliderProcess():
 
     def update_open_post_view_in(self):
         self.open_post_view_in = self.settings.get('open_post_view_in')
+
+    def update_highlight_post_view(self):
+        self.highlight_post = self.settings.get('highlight_post_view') == 'True'
+
+        if self.has_post_view():
+            syntax = SYNTAX_SC if self.highlight_post else SYNTAX_PLAIN
+            self.post_view.set_syntax_file(syntax)
 
     # Interpreter
     # --------------------------------------------------------------------------
@@ -235,8 +250,9 @@ class SuperColliderProcess():
                 window.set_view_index(self.post_view, 1, 0)
 
         # set post view attributes
-        self.post_view.set_syntax_file(
-            'Packages/supercollider-sublime/SuperCollider.tmLanguage')
+        if self.highlight_post:
+            self.post_view.set_syntax_file(
+                'Packages/supercollider-sublime/SuperCollider.tmLanguage')
         self.post_view.set_name(self.post_view_name)
         self.post_view.set_scratch(True)
         self.post_view.settings().set('rulers', 0)
