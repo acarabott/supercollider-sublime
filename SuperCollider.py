@@ -341,24 +341,27 @@ class SuperColliderProcess():
 
 # Commands
 # ------------------------------------------------------------------------------
+class SuperColliderAliveAbstract():
+    def is_enabled(self):
+        return sc.is_alive()
 
-class SuperColliderStartInterpreterCommand(sublime_plugin.ApplicationCommand):
+class SuperColliderDeadAbstract():
+    def is_enabled(self):
+        return not sc.is_alive()
+
+class SuperColliderStartInterpreterCommand(SuperColliderDeadAbstract,
+                                           sublime_plugin.ApplicationCommand):
     def run(self):
         sc.start()
         sc.open_post_view()
 
-    def is_enabled(self):
-        return not sc.is_alive()
-
-class SuperColliderStopInterpreterCommand(sublime_plugin.ApplicationCommand):
+class SuperColliderStopInterpreterCommand(SuperColliderAliveAbstract,
+                                          sublime_plugin.ApplicationCommand):
     def run(self):
         sc.stop()
 
-    def is_enabled(self):
-        return sc.is_alive()
-
-class SuperColliderUpdatePostViewCommand(sublime_plugin.TextCommand):
-
+class SuperColliderUpdatePostViewCommand(SuperColliderAliveAbstract,
+                                         sublime_plugin.TextCommand):
     update_count = 0
     update_every = 20
     inf = float('inf')
@@ -397,22 +400,15 @@ class SuperColliderUpdatePostViewCommand(sublime_plugin.TextCommand):
 
         self.update_count = (self.update_count + 1) % self.update_every
 
-    def is_enabled(self):
-        return sc.is_alive()
-
-class SuperColliderOpenPostViewCommand(sublime_plugin.ApplicationCommand):
+class SuperColliderOpenPostViewCommand(SuperColliderAliveAbstract,
+                                       sublime_plugin.ApplicationCommand):
     def run(self):
         sc.open_post_view()
 
-    def is_enabled(self):
-        return sc.is_alive()
-
-class SuperColliderClearPostViewCommand(sublime_plugin.TextCommand):
+class SuperColliderClearPostViewCommand(SuperColliderAliveAbstract,
+                                        sublime_plugin.TextCommand):
     def run(self, edit):
         sc.clear_post_view(edit)
-
-    def is_enabled(self):
-        return sc.is_alive()
 
 class SuperColliderCloseInactivePostsCommand(sublime_plugin.ApplicationCommand):
     def run(self):
@@ -427,7 +423,8 @@ class SuperColliderCloseInactivePostsCommand(sublime_plugin.ApplicationCommand):
 
         active_window.focus_view(active_view)
 
-class SuperColliderEvaluateCommand(sublime_plugin.TextCommand):
+class SuperColliderEvaluateCommand(SuperColliderAliveAbstract,
+                                   sublime_plugin.TextCommand):
 
     HIGHLIGHT_KEY = 'supercollider-eval'
     HIGHLIGHT_SCOPE = 'supercollider-eval'
@@ -488,38 +485,28 @@ class SuperColliderEvaluateCommand(sublime_plugin.TextCommand):
                             500)
 
 
-    def is_enabled(self):
-        return sc.is_alive()
-
-class SuperColliderStartServerCommand(sublime_plugin.ApplicationCommand):
+class SuperColliderStartServerCommand(SuperColliderAliveAbstract,
+                                      sublime_plugin.ApplicationCommand):
     def run(self):
         sc.execute("Server.default.boot;")
 
-    def is_enabled(self):
-        return sc.is_alive()
-
-class SuperColliderRebootServerCommand(sublime_plugin.ApplicationCommand):
+class SuperColliderRebootServerCommand(SuperColliderAliveAbstract,
+                                       sublime_plugin.ApplicationCommand):
     def run(self):
         sc.execute("Server.default.reboot;")
 
-    def is_enabled(self):
-        return sc.is_alive()
-
-class SuperColliderShowServerMeterCommand(sublime_plugin.ApplicationCommand):
+class SuperColliderShowServerMeterCommand(SuperColliderAliveAbstract,
+                                          sublime_plugin.ApplicationCommand):
     def run(self):
         sc.execute("Server.default.meter;")
 
-    def is_enabled(self):
-        return sc.is_alive()
-
-class SuperColliderShowServerWindowCommand(sublime_plugin.ApplicationCommand):
+class SuperColliderShowServerWindowCommand(SuperColliderAliveAbstract,
+                                           sublime_plugin.ApplicationCommand):
     def run(self):
         sc.execute("Server.default.makeWindow;")
 
-    def is_enabled(self):
-        return sc.is_alive()
-
-class SuperColliderToggleMute(sublime_plugin.ApplicationCommand):
+class SuperColliderToggleMute(SuperColliderAliveAbstract,
+                              sublime_plugin.ApplicationCommand):
     def run(self):
         sc.execute("""
             if (Server.default.volume.isMuted) {
@@ -531,25 +518,19 @@ class SuperColliderToggleMute(sublime_plugin.ApplicationCommand):
             };
         """)
 
-    def is_enabled(self):
-        return sc.is_alive()
-
-class SuperColliderStopCommand(sublime_plugin.ApplicationCommand):
+class SuperColliderStopCommand(SuperColliderAliveAbstract,
+                               sublime_plugin.ApplicationCommand):
     def run(self):
         sc.execute("CmdPeriod.run;")
 
-    def is_enabled(self):
-        return sc.is_alive()
-
-class SuperColliderRecompileCommand(sublime_plugin.ApplicationCommand):
+class SuperColliderRecompileCommand(SuperColliderAliveAbstract,
+                                    sublime_plugin.ApplicationCommand):
     def run(self):
         sc.execute('\x18')
 
-    def is_enabled(self):
-        return sc.is_alive()
 
-
-class SuperColliderOpenClassCommand(sublime_plugin.WindowCommand):
+class SuperColliderOpenClassCommand(SuperColliderAliveAbstract,
+                                    sublime_plugin.WindowCommand):
     def run(self):
         view = self.window.active_view()
         sel = view.sel()[0]
@@ -562,25 +543,19 @@ class SuperColliderOpenClassCommand(sublime_plugin.WindowCommand):
                                          on_change = None,
                                          on_cancel = None)
 
-    def is_enabled(self):
-        return sc.is_alive()
-
-class SuperColliderOpenUserSupportDirCommand(sublime_plugin.ApplicationCommand):
+class SuperColliderOpenUserSupportDirCommand(SuperColliderAliveAbstract,
+                                             sublime_plugin.ApplicationCommand):
     def run(self):
         sc.execute_flagged('open_dir', 'Platform.userConfigDir')
 
-    def is_enabled(self):
-        return sc.is_alive()
-
-class SuperColliderOpenStartupFileCommand(sublime_plugin.ApplicationCommand):
+class SuperColliderOpenStartupFileCommand(SuperColliderAliveAbstract,
+                                          sublime_plugin.ApplicationCommand):
     def run(self):
         sc.execute_flagged('open_startup',
                            'Platform.userConfigDir +/+ "startup.scd"')
 
-    def is_enabled(self):
-        return sc.is_alive()
-
-class SuperColliderHelp(sublime_plugin.WindowCommand):
+class SuperColliderHelpCommand(SuperColliderAliveAbstract,
+                               sublime_plugin.WindowCommand):
     def run(self):
         view = self.window.active_view()
         sel = view.sel()[0]
@@ -591,10 +566,7 @@ class SuperColliderHelp(sublime_plugin.WindowCommand):
                                          initial_text = "",
                                          on_done = lambda x:sc.open_help(x),
                                          on_change = None,
-                                         on_cancel = None)
-
-    def is_enabled(self):
-        return sc.is_alive();
+                                         on_cancel = None);
 
 class SuperColliderListener(sublime_plugin.EventListener):
     def on_close(self, view):
