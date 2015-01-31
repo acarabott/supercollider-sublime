@@ -318,14 +318,16 @@ class SuperColliderProcess():
             or len(self.sclang_queue) is 0):
                 return
 
-        # single thread means
-        get_max = min(10, len(self.sclang_queue))
+        get_max = min(100, len(self.sclang_queue))
 
+        content = ""
         for i in range(0, get_max):
-            self.post_view.run_command('super_collider_update_post_view', {
-                'content': self.sclang_queue.popleft(),
-                'max_lines': self.post_view_max_lines
-            })
+            content += self.sclang_queue.popleft()
+
+        self.post_view.run_command('super_collider_update_post_view', {
+            'content': content,
+            'max_lines': self.post_view_max_lines
+        })
 
     def cache_post_view(self, content):
         self.post_view_cache = content
