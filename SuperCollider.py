@@ -341,8 +341,8 @@ class SuperColliderProcess():
 
 # Commands
 # ------------------------------------------------------------------------------
+
 class SuperColliderStartInterpreterCommand(sublime_plugin.ApplicationCommand):
-    global sc
     def run(self):
         sc.start()
         sc.open_post_view()
@@ -351,8 +351,6 @@ class SuperColliderStartInterpreterCommand(sublime_plugin.ApplicationCommand):
         return not sc.is_alive()
 
 class SuperColliderStopInterpreterCommand(sublime_plugin.ApplicationCommand):
-    global sc
-
     def run(self):
         sc.stop()
 
@@ -360,7 +358,6 @@ class SuperColliderStopInterpreterCommand(sublime_plugin.ApplicationCommand):
         return sc.is_alive()
 
 class SuperColliderUpdatePostViewCommand(sublime_plugin.TextCommand):
-    global sc
 
     update_count = 0
     update_every = 20
@@ -404,7 +401,6 @@ class SuperColliderUpdatePostViewCommand(sublime_plugin.TextCommand):
         return sc.is_alive()
 
 class SuperColliderOpenPostViewCommand(sublime_plugin.ApplicationCommand):
-    global sc
     def run(self):
         sc.open_post_view()
 
@@ -412,7 +408,6 @@ class SuperColliderOpenPostViewCommand(sublime_plugin.ApplicationCommand):
         return sc.is_alive()
 
 class SuperColliderClearPostViewCommand(sublime_plugin.TextCommand):
-    global sc
     def run(self, edit):
         sc.clear_post_view(edit)
 
@@ -420,8 +415,6 @@ class SuperColliderClearPostViewCommand(sublime_plugin.TextCommand):
         return sc.is_alive()
 
 class SuperColliderCloseInactivePostsCommand(sublime_plugin.ApplicationCommand):
-    global sc
-
     def run(self):
         active_window = sublime.active_window()
         active_view = active_window.active_view()
@@ -435,7 +428,6 @@ class SuperColliderCloseInactivePostsCommand(sublime_plugin.ApplicationCommand):
         active_window.focus_view(active_view)
 
 class SuperColliderEvaluateCommand(sublime_plugin.TextCommand):
-    global sc
 
     HIGHLIGHT_KEY = 'supercollider-eval'
     HIGHLIGHT_SCOPE = 'supercollider-eval'
@@ -500,8 +492,6 @@ class SuperColliderEvaluateCommand(sublime_plugin.TextCommand):
         return sc.is_alive()
 
 class SuperColliderStartServerCommand(sublime_plugin.ApplicationCommand):
-    global sc
-
     def run(self):
         sc.execute("Server.default.boot;")
 
@@ -509,8 +499,6 @@ class SuperColliderStartServerCommand(sublime_plugin.ApplicationCommand):
         return sc.is_alive()
 
 class SuperColliderRebootServerCommand(sublime_plugin.ApplicationCommand):
-    global sc
-
     def run(self):
         sc.execute("Server.default.reboot;")
 
@@ -518,8 +506,6 @@ class SuperColliderRebootServerCommand(sublime_plugin.ApplicationCommand):
         return sc.is_alive()
 
 class SuperColliderShowServerMeterCommand(sublime_plugin.ApplicationCommand):
-    global sc
-
     def run(self):
         sc.execute("Server.default.meter;")
 
@@ -527,8 +513,6 @@ class SuperColliderShowServerMeterCommand(sublime_plugin.ApplicationCommand):
         return sc.is_alive()
 
 class SuperColliderShowServerWindowCommand(sublime_plugin.ApplicationCommand):
-    global sc
-
     def run(self):
         sc.execute("Server.default.makeWindow;")
 
@@ -551,8 +535,6 @@ class SuperColliderToggleMute(sublime_plugin.ApplicationCommand):
         return sc.is_alive()
 
 class SuperColliderStopCommand(sublime_plugin.ApplicationCommand):
-    global sc
-
     def run(self):
         sc.execute("CmdPeriod.run;")
 
@@ -560,8 +542,6 @@ class SuperColliderStopCommand(sublime_plugin.ApplicationCommand):
         return sc.is_alive()
 
 class SuperColliderRecompileCommand(sublime_plugin.ApplicationCommand):
-    global sc
-
     def run(self):
         sc.execute('\x18')
 
@@ -570,8 +550,6 @@ class SuperColliderRecompileCommand(sublime_plugin.ApplicationCommand):
 
 
 class SuperColliderOpenClassCommand(sublime_plugin.WindowCommand):
-    global sc
-
     def run(self):
         view = self.window.active_view()
         sel = view.sel()[0]
@@ -588,8 +566,6 @@ class SuperColliderOpenClassCommand(sublime_plugin.WindowCommand):
         return sc.is_alive()
 
 class SuperColliderOpenUserSupportDirCommand(sublime_plugin.ApplicationCommand):
-    global sc
-
     def run(self):
         sc.execute_flagged('open_dir', 'Platform.userConfigDir')
 
@@ -597,8 +573,6 @@ class SuperColliderOpenUserSupportDirCommand(sublime_plugin.ApplicationCommand):
         return sc.is_alive()
 
 class SuperColliderOpenStartupFileCommand(sublime_plugin.ApplicationCommand):
-    global sc
-
     def run(self):
         sc.execute_flagged('open_startup',
                            'Platform.userConfigDir +/+ "startup.scd"')
@@ -607,8 +581,6 @@ class SuperColliderOpenStartupFileCommand(sublime_plugin.ApplicationCommand):
         return sc.is_alive()
 
 class SuperColliderHelp(sublime_plugin.WindowCommand):
-    global sc
-
     def run(self):
         view = self.window.active_view()
         sel = view.sel()[0]
@@ -625,8 +597,6 @@ class SuperColliderHelp(sublime_plugin.WindowCommand):
         return sc.is_alive();
 
 class SuperColliderListener(sublime_plugin.EventListener):
-    global sc
-
     def on_close(self, view):
         if sc is None:
             return
