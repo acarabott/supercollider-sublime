@@ -445,6 +445,10 @@ class SuperColliderEvaluateCommand(sublime_plugin.TextCommand):
         if expanded:
             self.view.run_command('expand_selection', {'to': 'line'})
 
+    def clear_highlight(self, prev):
+        self.view.erase_regions(self.HIGHLIGHT_KEY)
+        self.view.sel().add_all(prev)
+
     def run(self, edit, expand=False):
 
         # store selection for later restoration
@@ -463,18 +467,17 @@ class SuperColliderEvaluateCommand(sublime_plugin.TextCommand):
 
             sc.execute(self.view.substr(sel))
 
-        # highlighting
+        # highlight
         self.view.add_regions(self.HIGHLIGHT_KEY,
             self.view.sel(),
             self.HIGHLIGHT_SCOPE,
             flags=sublime.DRAW_NO_OUTLINE)
 
-        sublime.set_timeout(
-            lambda: self.view.erase_regions(self.HIGHLIGHT_KEY),
-            500)
-
+        # clear selection so highlighting will be visible
         self.view.sel().clear()
-        self.view.sel().add_all(prev)
+
+        # remove highlight and restore selection
+        sublime.set_timeout(lambda: self.clear_highlight(prev), 500)
 
     def is_enabled(self):
         return sc.is_alive()
