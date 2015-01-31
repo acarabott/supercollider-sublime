@@ -4,6 +4,8 @@ import subprocess
 import threading
 from collections import deque
 
+TERMINATE_MSG = 'SublimeText: sclang terminated!\n'
+
 sc = None
 
 def plugin_loaded():
@@ -14,7 +16,7 @@ def plugin_unloaded():
     global sc
     if sc is not None:
         sc.stop()
-        sc.deactivate_post_view('SublimeText: sclang terminated!\n')
+        sc.deactivate_post_view(TERMINATE_MSG)
 
 class SuperColliderProcess():
     def __init__(self):
@@ -131,7 +133,7 @@ class SuperColliderProcess():
                 queue.append(decoded)
             input.close()
             if self.has_post_view():
-                self.deactivate_post_view('SublimeText: sclang terminated!\n')
+                self.deactivate_post_view(TERMINATE_MSG)
 
         # queue and thread for getting sclang output
         self.sclang_queue = deque()
