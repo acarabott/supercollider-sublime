@@ -176,9 +176,13 @@ class SuperColliderProcess():
         action = split[1]
         arg = split[2].rstrip()
 
-        if action == 'open_file':
+        if action in ['open_file', 'open_startup']:
             if not os.path.isfile(arg):
-                open(arg, 'a').close()
+                if action == 'open_file':
+                    return
+
+                if action == 'open_startup':
+                    open(arg, 'a').close()
 
             if len(sublime.windows()) is 0:
                 sublime.run_command('new_window')
@@ -320,8 +324,18 @@ class SuperColliderProcess():
         if self.has_post_view():
             self.post_view.erase(edit, sublime.Region(0, self.post_view.size()))
 
-    def open_help_for(self, word):
+    def open_help(self, word):
         self.execute('HelpBrowser.openHelpFor("' + word + '");')
+
+    def open_class(self, klass):
+        cmd = """
+            if('{}'.asClass.notNil) {{
+                '{}'.asClass.filenameSymbol;
+            }} {{
+                "{} is not a Class!".postln;
+            }}
+        """.format(klass, klass, klass)
+        self.execute_flagged('open_file', cmd)
 
 # Commands
 # ------------------------------------------------------------------------------
@@ -537,6 +551,25 @@ class SuperColliderRecompileCommand(sublime_plugin.ApplicationCommand):
     def is_enabled(self):
         return sc.is_alive()
 
+
+class SuperColliderOpenClassCommand(sublime_plugin.WindowCommand):
+    global sc
+
+    def run(self):
+        view = self.window.active_view()
+        sel = view.sel()[0]
+        if sel.a != sel.b:
+            sc.open_class(view.substr(view.word(sel)));
+        else:
+            self.window.show_input_panel(caption = "Open Class File for",
+                                         initial_text = "",
+                                         on_done = lambda x:sc.open_class(x),
+                                         on_change = None,
+                                         on_cancel = None)
+
+    def is_enabled(self):
+        return sc.is_alive()
+
 class SuperColliderOpenUserSupportDirCommand(sublime_plugin.ApplicationCommand):
     global sc
 
@@ -550,7 +583,7 @@ class SuperColliderOpenStartupFileCommand(sublime_plugin.ApplicationCommand):
     global sc
 
     def run(self):
-        sc.execute_flagged('open_file',
+        sc.execute_flagged('open_startup',
                            'Platform.userConfigDir +/+ "startup.scd"')
 
     def is_enabled(self):
@@ -563,11 +596,11 @@ class SuperColliderHelp(sublime_plugin.WindowCommand):
         view = self.window.active_view()
         sel = view.sel()[0]
         if sel.a != sel.b:
-            sc.open_help_for(view.substr(view.word(sel)))
+            sc.open_help(view.substr(view.word(sel)))
         else:
             self.window.show_input_panel(caption = "Search Help for",
                                          initial_text = "",
-                                         on_done = lambda x:sc.open_help_for(x),
+                                         on_done = lambda x:sc.open_help(x),
                                          on_change = None,
                                          on_cancel = None)
 
