@@ -130,4 +130,13 @@
             "operand":  "source.supercollider"
         }]
     },
+    {
+        "command": "super_collider_open_class",
+        "keys":    ["ctrl+s", "ctrl+c"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
 ]
