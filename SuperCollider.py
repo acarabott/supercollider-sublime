@@ -604,6 +604,9 @@ class SuperColliderHelp(sublime_plugin.WindowCommand):
                                          on_change = None,
                                          on_cancel = None)
 
+    def is_enabled(self):
+        return sc.is_alive();
+
 class SuperColliderListener(sublime_plugin.EventListener):
     global sc
 
