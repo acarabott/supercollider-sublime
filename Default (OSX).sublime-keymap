@@ -56,6 +56,15 @@
             "operand":  "source.supercollider"
         }]
     },
+    {
+        "command": "super_collider_close_inactive_posts",
+        "keys":    ["ctrl+s,ctrl+x"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
     // server ------------------------------------------------------------------
     {
         "command": "super_collider_start_server",
