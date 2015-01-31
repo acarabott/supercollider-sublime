@@ -44,7 +44,6 @@ All commands are available in the Tools > SuperCollider Menu
 - command: increase volume
 - command: decrease volume
 - command: restore volume to 0db
-- command: mute
 - command: evaluate file
 - command: kill all servers
 - command: toggle dumpOSC

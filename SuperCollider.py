@@ -533,6 +533,21 @@ class SuperColliderShowServerWindowCommand(sublime_plugin.ApplicationCommand):
     def is_enabled(self):
         return sc.is_alive()
 
+class SuperColliderToggleMute(sublime_plugin.ApplicationCommand):
+    def run(self):
+        sc.execute("""
+            if (Server.default.volume.isMuted) {
+                Server.default.unmute();
+                "Server unmuted".postln;
+            } {
+                Server.default.mute();
+                "Server muted".postln;
+            };
+        """)
+
+    def is_enabled(self):
+        return sc.is_alive()
+
 class SuperColliderStopCommand(sublime_plugin.ApplicationCommand):
     global sc
 

@@ -102,6 +102,15 @@
             "operand":  "source.supercollider"
         }]
     },
+    {
+        "command": "super_collider_toggle_mute",
+        "keys":    ["ctrl+s", "ctrl+m"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
     // sclang ------------------------------------------------------------------
     {
         "command": "super_collider_stop",

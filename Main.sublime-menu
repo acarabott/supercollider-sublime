@@ -28,6 +28,10 @@
                 "caption": "Show Server Meter"
             },
             {
+                "command": "super_collider_toggle_mute",
+                "caption": "Mute/Unmute Server"
+            },
+            {
                 "command": "super_collider_recompile",
                 "caption": "Recompile Class Library"
             },
