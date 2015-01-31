@@ -36,14 +36,23 @@ All commands are available in the Tools > SuperCollider Menu
 ### SuperCollider.py
 
 - command: look up references
-- command: look up implementations for selection
 - command: dump node terminated
 - command: dump node tree with controls
-- command: show server gui
+- command: show scope
+- command: show freqscope
+- command: show node tree
+- command: increase volume
+- command: decrease volume
+- command: restore volume to 0db
+- command: mute
+- command: evaluate file
+- command: kill all servers
+- command: toggle dumpOSC
 - SuperCollider.sublime-commands file
 - Menu: add all commands
 - Add snippets
 - decide on best keymaps
+- add user keymap
 - default keymaps for other OSs
 - Include schelp syntax by CrucialFelix, in Geoffroy Montel repo
 - Check out Thor's package https://github.com/thormagnusson/Sublime-Supercollider
