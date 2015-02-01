@@ -532,15 +532,25 @@ class SuperColliderCloseInactivePostsCommand(sublime_plugin.ApplicationCommand):
 # ------------------------------------------------------------------------------
 # Server Commands
 # ------------------------------------------------------------------------------
-class SuperColliderStartServerCommand(SuperColliderAliveAbstract,
-                                      sublime_plugin.ApplicationCommand):
+class SuperColliderBootServerCommand(SuperColliderAliveAbstract,
+                                     sublime_plugin.ApplicationCommand):
     def run(self):
         sc.execute("Server.default.boot;")
+
+class SuperColliderKillServerCommand(SuperColliderAliveAbstract,
+                                     sublime_plugin.ApplicationCommand):
+    def run(self):
+        sc.execute('"Server killed".postln; Server.default.quit;')
+
+class SuperColliderKillAllServersCommand(SuperColliderAliveAbstract,
+                                         sublime_plugin.ApplicationCommand):
+    def run(self):
+        sc.execute('"All servers killed".postln; Server.killAll;')
 
 class SuperColliderRebootServerCommand(SuperColliderAliveAbstract,
                                        sublime_plugin.ApplicationCommand):
     def run(self):
-        sc.execute("Server.default.reboot;")
+        sc.execute('"Server rebooted".postln; Server.default.reboot;')
 
 class SuperColliderShowServerMeterCommand(SuperColliderAliveAbstract,
                                           sublime_plugin.ApplicationCommand):

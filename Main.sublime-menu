@@ -16,7 +16,7 @@
                 "caption": "Stop Interpreter"
             },
             {
-                "command": "super_collider_start_server",
+                "command": "super_collider_boot_server",
                 "caption": "Boot Server"
             },
             {

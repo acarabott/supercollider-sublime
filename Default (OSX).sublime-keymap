@@ -67,8 +67,26 @@
     },
     // server ------------------------------------------------------------------
     {
-        "command": "super_collider_start_server",
+        "command": "super_collider_boot_server",
         "keys":    ["super+b"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_kill_server",
+        "keys":    ["super+ctrl+s", "super+ctrl+k"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_kill_all_servers",
+        "keys":    ["super+ctrl+s", "super+ctrl+l"],
         "context": [{
             "key":      "selector",
             "operator": "equal",

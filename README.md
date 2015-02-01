@@ -42,7 +42,6 @@ All commands are available in the Tools > SuperCollider Menu
 - command: show freqscope
 - command: show node tree
 - command: evaluate file
-- command: kill all servers
 - command: toggle dumpOSC
 - SuperCollider.sublime-commands file
 - Menu: add all commands
@@ -53,7 +52,7 @@ All commands are available in the Tools > SuperCollider Menu
 - Include schelp syntax by CrucialFelix, in Geoffroy Montel repo
 - Check out Thor's package https://github.com/thormagnusson/Sublime-Supercollider
     - Shift double click
-
+- Write up list of commands
 
 ### Auto complete
 
