@@ -532,7 +532,7 @@ class SuperColliderShowServerWindowCommand(SuperColliderAliveAbstract,
 class SuperColliderToggleMute(SuperColliderAliveAbstract,
                               sublime_plugin.ApplicationCommand):
     def run(self):
-        sc.execute("""
+        sc.execute_silently("""
             if (Server.default.volume.isMuted) {
                 Server.default.unmute();
                 "Server unmuted".postln;
