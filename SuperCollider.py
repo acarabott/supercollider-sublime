@@ -637,7 +637,7 @@ class SuperColliderHelpCommand(SuperColliderAliveAbstract,
                                                   sc.open_help)
 
 class SuperColliderDumpInterfaceCommand(SuperColliderAliveAbstract,
-                                         SuperColliderSelectionOrInputAbstract):
+                                        SuperColliderSelectionOrInputAbstract):
     def run(self):
         cmd = """
             (
@@ -655,6 +655,13 @@ class SuperColliderDumpInterfaceCommand(SuperColliderAliveAbstract,
         super(SuperColliderDumpInterfaceCommand, self).run(
             "Dump interface for",
             lambda x: sc.execute_silently(cmd.format(x)))
+
+class SuperColliderDumpFullInterfaceCommand(SuperColliderAliveAbstract,
+                                         SuperColliderSelectionOrInputAbstract):
+    def run(self):
+        super(SuperColliderDumpFullInterfaceCommand, self).run(
+            "Dump full interface for",
+            lambda x: sc.execute_silently("{}.dumpFullInterface;".format(x)))
 
 
 # ==============================================================================
