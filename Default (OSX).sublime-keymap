@@ -104,7 +104,34 @@
     },
     {
         "command": "super_collider_toggle_mute",
-        "keys":    ["ctrl+s", "ctrl+m"],
+        "keys":    ["super+ctrl+m"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_increase_volume",
+        "keys":    ["super+ctrl+="],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_decrease_volume",
+        "keys":    ["super+ctrl+-"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_restore_volume",
+        "keys":    ["super+ctrl+0"],
         "context": [{
             "key":      "selector",
             "operator": "equal",

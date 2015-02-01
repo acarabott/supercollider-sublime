@@ -542,6 +542,29 @@ class SuperColliderToggleMute(SuperColliderAliveAbstract,
             };
         """)
 
+class SuperColliderChangeVolume(SuperColliderAliveAbstract,
+                                  sublime_plugin.ApplicationCommand):
+    def run(self, change):
+        sc.execute_silently("""
+            s.volume.volume_({});
+            ("Server volume:" + s.volume.volume).postln;
+        """.format(change))
+
+class SuperColliderIncreaseVolume(SuperColliderChangeVolume):
+    def run(self):
+        new_vol = "s.volume.volume + 1.5"
+        return super(SuperColliderIncreaseVolume, self).run(new_vol)
+
+class SuperColliderDecreaseVolume(SuperColliderChangeVolume):
+    def run(self):
+        new_vol = "s.volume.volume - 1.5"
+        return super(SuperColliderDecreaseVolume, self).run(new_vol)
+
+class SuperColliderRestoreVolume(SuperColliderChangeVolume):
+    def run(self):
+        new_vol = "0"
+        return super(SuperColliderRestoreVolume, self).run(new_vol)
+
 class SuperColliderStopCommand(SuperColliderAliveAbstract,
                                sublime_plugin.ApplicationCommand):
     def run(self):
