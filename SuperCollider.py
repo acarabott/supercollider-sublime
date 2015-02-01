@@ -601,13 +601,13 @@ class SuperColliderStopRecording(SuperColliderAliveAbstract,
 # Open/Info Commands
 # ------------------------------------------------------------------------------
 class SuperColliderSelectionOrInputAbstract(sublime_plugin.WindowCommand):
-    def run(self, callback):
+    def run(self, caption, callback):
         view = self.window.active_view()
         sel = view.sel()[0]
         if sel.a != sel.b:
             callback(view.substr(view.word(sel)))
         else:
-            self.window.show_input_panel(caption = "Open Class File for",
+            self.window.show_input_panel(caption = caption,
                                          initial_text = "",
                                          on_done = callback,
                                          on_change = None,
@@ -616,7 +616,8 @@ class SuperColliderSelectionOrInputAbstract(sublime_plugin.WindowCommand):
 class SuperColliderOpenClassCommand(SuperColliderAliveAbstract,
                                     SuperColliderSelectionOrInputAbstract):
     def run(self):
-        super(SuperColliderOpenClassCommand, self).run(sc.open_class)
+        super(SuperColliderOpenClassCommand, self).run("Open Class File for",
+                                                       sc.open_class)
 
 class SuperColliderOpenUserSupportDirCommand(SuperColliderAliveAbstract,
                                              sublime_plugin.ApplicationCommand):
@@ -632,21 +633,28 @@ class SuperColliderOpenStartupFileCommand(SuperColliderAliveAbstract,
 class SuperColliderHelpCommand(SuperColliderAliveAbstract,
                                SuperColliderSelectionOrInputAbstract):
     def run(self):
-        super(SuperColliderHelpCommand, self).run(sc.open_help)
+        super(SuperColliderHelpCommand, self).run("Open Help File for",
+                                                  sc.open_help)
 
-class SuperColliderDumpinterfaceCommand(SuperColliderAliveAbstract,
-                                        sublime_plugin.WindowCommand):
+class SuperColliderDumpInterfaceCommand(SuperColliderAliveAbstract,
+                                         SuperColliderSelectionOrInputAbstract):
     def run(self):
-        view = self.window.active_view()
-        sel = view.sel()[0]
-        if sel.a != sel.b:
-            sc.open_class(view.substr(view.word(sel)));
-        else:
-            self.window.show_input_panel(caption = "Open Class File for",
-                                         initial_text = "",
-                                         on_done = lambda x:sc.open_class(x),
-                                         on_change = None,
-                                         on_cancel = None)
+        cmd = """
+            (
+                "Class":    {0}.class,
+                "Instance": {0}
+            ).keysValuesDo {{ |type, class|
+                if(class.methods.notNil) {{
+                    ("="!80).join.postln;
+                    (type + "Methods:").postln;
+                    ("="!80).join.postln;
+                    class.dumpInterface;
+                }};
+            }};
+        """
+        super(SuperColliderDumpInterfaceCommand, self).run(
+            "Dump interface for",
+            lambda x: sc.execute_silently(cmd.format(x)))
 
 
 # ==============================================================================
