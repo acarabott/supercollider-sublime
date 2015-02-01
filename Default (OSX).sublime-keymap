@@ -202,4 +202,13 @@
             "operand":  "source.supercollider"
         }]
     },
+    {
+        "command": "super_collider_dump_full_interface",
+        "keys":    ["ctrl+s", "ctrl+o"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
 ]
