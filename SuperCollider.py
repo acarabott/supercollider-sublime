@@ -363,7 +363,12 @@ class SuperColliderProcess():
         """.format(klass, klass, klass)
         self.execute_flagged('open_file', cmd)
 
+# ==============================================================================
 # Commands
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# Abstract Command Classes
 # ------------------------------------------------------------------------------
 class SuperColliderAliveAbstract():
     def is_enabled(self):
@@ -373,6 +378,9 @@ class SuperColliderDeadAbstract():
     def is_enabled(self):
         return not sc.is_alive()
 
+# ------------------------------------------------------------------------------
+# Interpreter Commands
+# ------------------------------------------------------------------------------
 class SuperColliderStartInterpreterCommand(SuperColliderDeadAbstract,
                                            sublime_plugin.ApplicationCommand):
     def run(self):
@@ -384,6 +392,80 @@ class SuperColliderStopInterpreterCommand(SuperColliderAliveAbstract,
     def run(self):
         sc.stop()
 
+class SuperColliderEvaluateCommand(SuperColliderAliveAbstract,
+                                   sublime_plugin.TextCommand):
+
+    HIGHLIGHT_KEY = 'supercollider-eval'
+    HIGHLIGHT_SCOPE = 'supercollider-eval'
+
+    def expand_selections(self):
+        reached_limit = False
+        expanded = False
+        # expand selection to brackets until the selections are the same as
+        # the previous selections (no further expansion possible)
+        while not reached_limit:
+            old = list(map(lambda s: sublime.Region(s.a, s.b), self.view.sel()))
+
+            # nested selections get merged by this, so number of selections can
+            # get reduced
+            self.view.run_command('expand_selection', {'to': 'brackets'})
+
+            reached_limit = all(s.a == old[i].a and s.b == old[i].b
+                                for i, s, in enumerate(self.view.sel()))
+
+            if not reached_limit:
+                expanded = True
+
+        # if we expanded, expand further to whole line, makes it possible
+        # to execute blocks without surrouding with parenthesis
+        if expanded:
+            self.view.run_command('expand_selection', {'to': 'line'})
+
+    def run(self, edit, expand=False):
+
+        # store selection for later restoration
+        prev = []
+        for sel in self.view.sel():
+            prev.append(sel)
+
+        if expand == 'True':
+            self.expand_selections()
+
+        for sel in self.view.sel():
+            # "selection" is a single point
+            if sel.a == sel.b:
+                sel = self.view.line(sel)
+                self.view.sel().add(sel)
+
+            sc.execute(self.view.substr(sel))
+
+        # highlight
+        self.view.add_regions(self.HIGHLIGHT_KEY,
+            self.view.sel(),
+            self.HIGHLIGHT_SCOPE,
+            flags=sublime.DRAW_NO_OUTLINE)
+
+        # clear selection so highlighting will be visible
+        self.view.sel().clear()
+
+        sublime.set_timeout(lambda: self.view.sel().add_all(prev), 10)
+        # remove highlight and restore selection
+        sublime.set_timeout(lambda: self.view.erase_regions(self.HIGHLIGHT_KEY),
+                            500)
+
+class SuperColliderStopCommand(SuperColliderAliveAbstract,
+                               sublime_plugin.ApplicationCommand):
+    def run(self):
+        sc.execute("CmdPeriod.run;")
+
+class SuperColliderRecompileCommand(SuperColliderAliveAbstract,
+                                    sublime_plugin.ApplicationCommand):
+    def run(self):
+        sc.execute('\x18')
+
+# ------------------------------------------------------------------------------
+# Post View Commands
+# ------------------------------------------------------------------------------
 class SuperColliderUpdatePostViewCommand(SuperColliderAliveAbstract,
                                          sublime_plugin.TextCommand):
     update_count = 0
@@ -447,68 +529,9 @@ class SuperColliderCloseInactivePostsCommand(sublime_plugin.ApplicationCommand):
 
         active_window.focus_view(active_view)
 
-class SuperColliderEvaluateCommand(SuperColliderAliveAbstract,
-                                   sublime_plugin.TextCommand):
-
-    HIGHLIGHT_KEY = 'supercollider-eval'
-    HIGHLIGHT_SCOPE = 'supercollider-eval'
-
-    def expand_selections(self):
-        reached_limit = False
-        expanded = False
-        # expand selection to brackets until the selections are the same as
-        # the previous selections (no further expansion possible)
-        while not reached_limit:
-            old = list(map(lambda s: sublime.Region(s.a, s.b), self.view.sel()))
-
-            # nested selections get merged by this, so number of selections can
-            # get reduced
-            self.view.run_command('expand_selection', {'to': 'brackets'})
-
-            reached_limit = all(s.a == old[i].a and s.b == old[i].b
-                                for i, s, in enumerate(self.view.sel()))
-
-            if not reached_limit:
-                expanded = True
-
-        # if we expanded, expand further to whole line, makes it possible
-        # to execute blocks without surrouding with parenthesis
-        if expanded:
-            self.view.run_command('expand_selection', {'to': 'line'})
-
-    def run(self, edit, expand=False):
-
-        # store selection for later restoration
-        prev = []
-        for sel in self.view.sel():
-            prev.append(sel)
-
-        if expand == 'True':
-            self.expand_selections()
-
-        for sel in self.view.sel():
-            # "selection" is a single point
-            if sel.a == sel.b:
-                sel = self.view.line(sel)
-                self.view.sel().add(sel)
-
-            sc.execute(self.view.substr(sel))
-
-        # highlight
-        self.view.add_regions(self.HIGHLIGHT_KEY,
-            self.view.sel(),
-            self.HIGHLIGHT_SCOPE,
-            flags=sublime.DRAW_NO_OUTLINE)
-
-        # clear selection so highlighting will be visible
-        self.view.sel().clear()
-
-        sublime.set_timeout(lambda: self.view.sel().add_all(prev), 10)
-        # remove highlight and restore selection
-        sublime.set_timeout(lambda: self.view.erase_regions(self.HIGHLIGHT_KEY),
-                            500)
-
-
+# ------------------------------------------------------------------------------
+# Server Commands
+# ------------------------------------------------------------------------------
 class SuperColliderStartServerCommand(SuperColliderAliveAbstract,
                                       sublime_plugin.ApplicationCommand):
     def run(self):
@@ -565,17 +588,9 @@ class SuperColliderRestoreVolume(SuperColliderChangeVolume):
         new_vol = "0"
         return super(SuperColliderRestoreVolume, self).run(new_vol)
 
-class SuperColliderStopCommand(SuperColliderAliveAbstract,
-                               sublime_plugin.ApplicationCommand):
-    def run(self):
-        sc.execute("CmdPeriod.run;")
-
-class SuperColliderRecompileCommand(SuperColliderAliveAbstract,
-                                    sublime_plugin.ApplicationCommand):
-    def run(self):
-        sc.execute('\x18')
-
-
+# ------------------------------------------------------------------------------
+# Open Commands
+# ------------------------------------------------------------------------------
 class SuperColliderOpenClassCommand(SuperColliderAliveAbstract,
                                     sublime_plugin.WindowCommand):
     def run(self):
@@ -615,6 +630,9 @@ class SuperColliderHelpCommand(SuperColliderAliveAbstract,
                                          on_change = None,
                                          on_cancel = None);
 
+# ==============================================================================
+# Event Listener
+# ==============================================================================
 class SuperColliderListener(sublime_plugin.EventListener):
     def on_close(self, view):
         if sc is None:
