@@ -177,16 +177,22 @@ class SuperColliderProcess():
         else:
             sublime.status_message("stop: sclang not running")
 
-    def execute(self, cmd):
+    def write_out(self, cmd, token):
         if self.is_alive():
-            self.sclang_process.stdin.write(bytes(cmd + '\x0c', 'utf-8'))
+            self.sclang_process.stdin.write(bytes(cmd + token, 'utf-8'))
             self.sclang_process.stdin.flush()
+
+    def execute(self, cmd):
+        self.write_out(cmd, '\x0c')
+
+    def execute_silently(self, cmd):
+        self.write_out(cmd, '\x1b')
 
     def execute_flagged(self, flag, cmd):
         msg = '"' + self.stdout_flag + flag + self.stdout_flag + '".post;'
         msg += '(' + cmd + ').postln;'
 
-        self.execute(msg)
+        self.execute_silently(msg)
 
     def handle_flagged_output(self, output):
         split = output.split(self.stdout_flag)
