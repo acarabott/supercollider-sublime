@@ -566,7 +566,7 @@ class SuperColliderToggleMute(SuperColliderAliveAbstract,
         """)
 
 class SuperColliderChangeVolume(SuperColliderAliveAbstract,
-                                  sublime_plugin.ApplicationCommand):
+                                sublime_plugin.ApplicationCommand):
     def run(self, change):
         sc.execute_silently("""
             s.volume.volume_({});
@@ -588,6 +588,15 @@ class SuperColliderRestoreVolume(SuperColliderChangeVolume):
         new_vol = "0"
         return super(SuperColliderRestoreVolume, self).run(new_vol)
 
+class SuperColliderStartRecording(SuperColliderAliveAbstract,
+                          sublime_plugin.ApplicationCommand):
+    def run(self):
+        sc.execute_silently("Server.default.record;")
+
+class SuperColliderStopRecording(SuperColliderAliveAbstract,
+                          sublime_plugin.ApplicationCommand):
+    def run(self):
+        sc.execute_silently("Server.default.stopRecording;")
 # ------------------------------------------------------------------------------
 # Open Commands
 # ------------------------------------------------------------------------------

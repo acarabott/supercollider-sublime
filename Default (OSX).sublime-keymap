@@ -138,6 +138,24 @@
             "operand":  "source.supercollider"
         }]
     },
+    {
+        "command": "super_collider_start_recording",
+        "keys":    ["ctrl+s", "ctrl+r"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_stop_recording",
+        "keys":    ["ctrl+s", "ctrl+p"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
     // sclang ------------------------------------------------------------------
     {
         "command": "super_collider_stop",
