@@ -355,12 +355,12 @@ class SuperColliderProcess():
 
     def open_class(self, klass):
         cmd = """
-            if('{}'.asClass.notNil) {{
-                '{}'.asClass.filenameSymbol;
+            if('{0}'.asClass.notNil) {{
+                '{0}'.asClass.filenameSymbol;
             }} {{
-                "{} is not a Class!".postln;
+                "{0} is not a Class!".postln;
             }}
-        """.format(klass, klass, klass)
+        """.format(klass)
         self.execute_flagged('open_file', cmd)
 
 # ==============================================================================
