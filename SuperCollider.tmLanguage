@@ -19,9 +19,21 @@
   <array>
     <dict>
       <key>match</key>
-      <string>\b(arg|var|classvar|this|thisThread|thisMethod|thisFunction|thisProcess|true|false|inf|nil|if|switch)\b</string>
+      <string>\b(this|thisThread|thisMethod|thisFunction|thisProcess|true|false|inf|nil|if|switch)\b</string>
       <key>name</key>
       <string>keyword.control.supercollider</string>
+    </dict>
+    <dict>
+      <key>match</key>
+      <string>\b(var|classvar)\b</string>
+      <key>name</key>
+      <string>keyword.var.supercollider</string>
+    </dict>
+    <dict>
+      <key>match</key>
+      <string>\b(arg)\b</string>
+      <key>name</key>
+      <string>keyword.arg.supercollider</string>
     </dict>
     <dict>
       <key>begin</key>
