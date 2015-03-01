@@ -40,9 +40,6 @@ All commands are available in the Tools > SuperCollider Menu
 - decide on best keymaps
 - add user keymap
 - default keymaps for other OSs
-- Check out Thor's package https://github.com/thormagnusson/Sublime-Supercollider
-    - Shift double click
-
 
 ### Future
 - command: show node tree
