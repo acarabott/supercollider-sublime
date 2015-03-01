@@ -141,7 +141,7 @@
       <key>match</key>
       <string>\~[a-zA-Z0-9_]+</string>
       <key>name</key>
-      <string>variable.language.supercollider</string>
+      <string>glvariable.language.supercollider</string>
     </dict>
     <dict>
       <key>match</key>
