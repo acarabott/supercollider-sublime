@@ -40,7 +40,7 @@
     // post view ---------------------------------------------------------------
     {
         "command": "super_collider_open_post_view",
-        "keys":    ["ctrl+s","ctrl+p"],
+        "keys":    ["ctrl+s","ctrl+o"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -222,7 +222,7 @@
     },
     {
         "command": "super_collider_dump_full_interface",
-        "keys":    ["ctrl+s", "ctrl+o"],
+        "keys":    ["ctrl+s", "ctrl+u"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
