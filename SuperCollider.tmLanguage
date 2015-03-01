@@ -30,12 +30,6 @@
       <string>keyword.var.supercollider</string>
     </dict>
     <dict>
-      <key>match</key>
-      <string>\b(arg)\b</string>
-      <key>name</key>
-      <string>keyword.arg.supercollider</string>
-    </dict>
-    <dict>
       <key>begin</key>
       <string>"</string>
       <key>end</key>
