@@ -126,7 +126,7 @@
 
     <dict>
       <key>match</key>
-      <string>!|\$|%|&amp;|\*|\-\-|\-|\+\+|\+|~|==|=|!=|!==|&lt;=|&gt;=|&lt;&lt;=|&gt;&gt;=|&gt;&gt;&gt;=|&lt;&gt;|&lt;|&gt;|!|&amp;&amp;|\|\||\?\:|\*=|(?&lt;!\()/=|%=|\+=|\-=|&amp;=|\^=|\b(|this|thisThread|thisMethod|thisFunction|thisProcess|true|false|inf|nil|)\b</string>
+      <string>!|%|&amp;|\*|\-|\+|==|=|!=|!=|&lt;=|&lt;!|&gt;=|&lt;|&gt;|!|&amp;&amp;|\|\||\b(|this|thisThread|thisMethod|thisFunction|thisProcess|true|false|inf|nil|)\b</string>
       <key>name</key>
       <string>keyword.operator.supercollider</string>
     </dict>
