@@ -146,7 +146,8 @@ class SuperColliderProcess():
                 decoded = line.decode('utf-8')
                 if self.stdout_flag in decoded:
                     self.handle_flagged_output(decoded)
-                queue.append(decoded)
+                else:
+                    queue.append(decoded)
             input.close()
             if self.has_post_view():
                 self.deactivate_post_view(TERMINATE_MSG)
