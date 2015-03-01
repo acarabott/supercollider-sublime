@@ -121,6 +121,24 @@
         }]
     },
     {
+        "command": "super_collider_show_server_scope",
+        "keys":    ["ctrl+s", "ctrl+g"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_show_server_freq_scope",
+        "keys":    ["ctrl+s", "ctrl+f"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
         "command": "super_collider_toggle_mute",
         "keys":    ["super+ctrl+m"],
         "context": [{

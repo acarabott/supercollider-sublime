@@ -563,6 +563,16 @@ class SuperColliderShowServerWindowCommand(SuperColliderAliveAbstract,
     def run(self):
         sc.execute("Server.default.makeWindow;")
 
+class SuperColliderShowServerScopeCommand(SuperColliderAliveAbstract,
+                                          sublime_plugin.ApplicationCommand):
+    def run(self):
+        sc.execute("Server.default.scope;")
+
+class SuperColliderShowServerFreqScopeCommand(SuperColliderAliveAbstract,
+                                             sublime_plugin.ApplicationCommand):
+    def run(self):
+        sc.execute("Server.default.freqscope;")
+
 class SuperColliderToggleMute(SuperColliderAliveAbstract,
                               sublime_plugin.ApplicationCommand):
     def run(self):
