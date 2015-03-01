@@ -101,10 +101,26 @@
     </dict>
     <dict>
       <key>begin</key>
-      <string>\|</string>
+      <string>{[\s]*(\|)</string>
+      <key>beginCaptures</key>
+      <dict>
+        <key>1</key>
+        <dict>
+          <key>name</key>
+          <string>variable.parameter.function.supercollider</string>
+        </dict>
+      </dict>
       <key>end</key>
-      <string>\|</string>
-      <key>name</key>
+      <string>(\|)</string>
+      <key>endCaptures</key>
+      <dict>
+        <key>1</key>
+        <dict>
+          <key>name</key>
+          <string>variable.parameter.function.supercollider</string>
+        </dict>
+      </dict>
+      <key>contentName</key>
       <string>variable.parameter.function.supercollider</string>
     </dict>
 
