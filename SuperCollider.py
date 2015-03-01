@@ -626,7 +626,7 @@ class SuperColliderSelectionOrInputAbstract(sublime_plugin.WindowCommand):
         view = self.window.active_view()
         sel = view.sel()[0]
         if sel.a != sel.b:
-            callback(view.substr(view.word(sel)))
+            callback(view.substr(sel))
         else:
             self.window.show_input_panel(caption = caption,
                                          initial_text = "",
