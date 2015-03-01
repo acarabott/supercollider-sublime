@@ -42,6 +42,7 @@ All commands are available in the Tools > SuperCollider Menu
 - default keymaps for other OSs
 
 ### Future
+- Provide syntax error feedback
 - command: show node tree
 - command: dump node terminated
 - command: dump node tree with controls
