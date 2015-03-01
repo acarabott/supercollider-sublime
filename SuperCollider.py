@@ -287,6 +287,7 @@ class SuperColliderProcess():
         else:
             # focus the post window if it currently open
             if self.post_view_visible():
+                sublime.status_message("Post window already open!")
                 self.post_view.window().focus_view(self.post_view)
                 if self.post_view.name() != self.inactive_post_view_name:
                     focus_window.focus_view(prev_view)
