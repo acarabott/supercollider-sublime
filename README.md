@@ -35,7 +35,6 @@ All commands are available in the Tools > SuperCollider Menu
 
 ### Release
 - SuperCollider.sublime-commands file
-- command: toggle dumpOSC
 - Menu: add all commands
 - Add snippets
 - decide on best keymaps

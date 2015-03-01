@@ -22,6 +22,7 @@ def plugin_unloaded():
 
 class SuperColliderProcess():
     post_view = None
+    tracing_osc = False
 
     def __init__(self):
         self.settings = sublime.load_settings("SuperCollider.sublime-settings")
@@ -466,6 +467,20 @@ class SuperColliderRecompileCommand(SuperColliderAliveAbstract,
     def run(self):
         sc.execute('\x18')
 
+class SuperColliderToggleTraceOsc(SuperColliderAliveAbstract,
+                                  sublime_plugin.ApplicationCommand):
+    def run(self, hide_status):
+        sc.tracing_osc = not sc.tracing_osc
+        enable = "true" if sc.tracing_osc else "false"
+
+        if hide_status == 'True':
+            hide_status = 'true'
+        else:
+            hide_status = 'false'
+
+        cmd = "OSCFunc.trace(" + enable + "," + hide_status + ");"
+        sc.execute_silently(cmd);
+
 # ------------------------------------------------------------------------------
 # Post View Commands
 # ------------------------------------------------------------------------------
@@ -612,14 +627,15 @@ class SuperColliderRestoreVolume(SuperColliderChangeVolume):
         return super(SuperColliderRestoreVolume, self).run(new_vol)
 
 class SuperColliderStartRecording(SuperColliderAliveAbstract,
-                          sublime_plugin.ApplicationCommand):
+                                  sublime_plugin.ApplicationCommand):
     def run(self):
         sc.execute_silently("Server.default.record;")
 
 class SuperColliderStopRecording(SuperColliderAliveAbstract,
-                          sublime_plugin.ApplicationCommand):
+                                 sublime_plugin.ApplicationCommand):
     def run(self):
         sc.execute_silently("Server.default.stopRecording;")
+
 # ------------------------------------------------------------------------------
 # Open/Info Commands
 # ------------------------------------------------------------------------------

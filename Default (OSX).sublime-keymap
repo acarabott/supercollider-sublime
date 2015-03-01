@@ -202,6 +202,26 @@
             "operand":  "source.supercollider"
         }]
     },
+    {
+        "command": "super_collider_evaluate",
+        "keys":    ["super+enter"],
+        "args":    { "expand": "True" },
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_toggle_trace_osc",
+        "keys":    ["ctrl+s", "ctrl+l"],
+        "args":    { "hide_status": "True" },
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
     // sclang ------------------------------------------------------------------
     {
         "command": "super_collider_stop",
