@@ -123,16 +123,32 @@
         <key>1</key>
         <dict>
           <key>name</key>
-          <string>variable.parameter.function.supercollider</string>
+          <string>variable.parameter.supercollider</string>
         </dict>
       </dict>
       <key>contentName</key>
-      <string>variable.parameter.function.supercollider</string>
+      <string>variable.parameter.supercollider</string>
+    </dict>
+    <dict>
+      <key>begin</key>
+      <string>{[\s]*(arg)</string>
+      <key>beginCaptures</key>
+      <dict>
+        <key>1</key>
+        <dict>
+          <key>name</key>
+          <string>variable.parameter.supercollider</string>
+        </dict>
+      </dict>
+      <key>end</key>
+      <string>;</string>
+      <key>contentName</key>
+      <string>variable.parameter.supercollider</string>
     </dict>
 
     <dict>
       <key>match</key>
-      <string>!|%|&amp;|\*|\-|\+|==|=|!=|!=|&lt;=|&lt;!|&gt;=|&lt;|&gt;|!|&amp;&amp;|\|\||\b(|this|thisThread|thisMethod|thisFunction|thisProcess|true|false|inf|nil|)\b</string>
+      <string>!|%|&amp;|\*|\-|\+|==|=|!=|!=|&lt;=|&lt;!|&gt;=|&lt;|&gt;|!|&amp;&amp;|\|\|</string>
       <key>name</key>
       <string>keyword.operator.supercollider</string>
     </dict>
@@ -149,6 +165,14 @@
       <key>match</key>
       <string>[^a-zA-Z0-9\\]([A-Z_]{1}[a-zA-Z0-9_]*)[^a-zA-Z0-9_]</string>
     </dict>
+
+    <dict>
+      <key>match</key>
+      <string>\b(|inf|nil|true|false)\b</string>
+      <key>name</key>
+      <string>constant.language.supercollider</string>
+    </dict>
+
     <dict>
       <key>match</key>
       <string>\\[a-zA-Z0-9\_]+</string>
@@ -171,7 +195,13 @@
       <key>match</key>
       <string>\~[a-zA-Z0-9_]+</string>
       <key>name</key>
-      <string>glvariable.language.supercollider</string>
+      <string>variable.other.supercollider</string>
+    </dict>
+    <dict>
+      <key>match</key>
+      <string>\b(this|thisThread|thisMethod|thisFunction|thisProcess)\b</string>
+      <key>name</key>
+      <string>variable.language.supercollider</string>
     </dict>
     <dict>
       <key>match</key>
