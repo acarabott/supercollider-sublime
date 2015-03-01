@@ -422,14 +422,16 @@ class SuperColliderEvaluateCommand(SuperColliderAliveAbstract,
         if expanded:
             self.view.run_command('expand_selection', {'to': 'line'})
 
-    def run(self, edit, expand=False):
+    def run(self, edit, expand=False, all=False):
 
         # store selection for later restoration
         prev = []
         for sel in self.view.sel():
             prev.append(sel)
 
-        if expand == 'True':
+        if all == 'True':
+            self.view.sel().add(sublime.Region(0, self.view.size()))
+        elif expand == 'True':
             self.expand_selections()
 
         for sel in self.view.sel():

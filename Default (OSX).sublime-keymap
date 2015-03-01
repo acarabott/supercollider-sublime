@@ -37,6 +37,16 @@
             "operand":  "source.supercollider"
         }]
     },
+    {
+        "command": "super_collider_evaluate",
+        "keys":    ["ctrl+s", "ctrl+a"],
+        "args":    { "all": "True", "expand": "False" },
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
     // post view ---------------------------------------------------------------
     {
         "command": "super_collider_open_post_view",
