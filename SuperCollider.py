@@ -654,8 +654,7 @@ class SuperColliderOpenStartupFileCommand(SuperColliderAliveAbstract,
 class SuperColliderHelpCommand(SuperColliderAliveAbstract,
                                SuperColliderSelectionOrInputAbstract):
     def run(self):
-        super(SuperColliderHelpCommand, self).run("Open Help for",
-                                                  sc.open_help)
+        super(SuperColliderHelpCommand, self).run("Open Help for", sc.open_help)
 
 class SuperColliderDumpInterfaceCommand(SuperColliderAliveAbstract,
                                         SuperColliderSelectionOrInputAbstract):
