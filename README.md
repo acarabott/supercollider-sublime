@@ -34,7 +34,6 @@ All commands are available in the Tools > SuperCollider Menu
 ## TODO
 
 ### Release
-- SuperCollider.sublime-commands file
 - Menu: add all commands
 - Add snippets
 - decide on best keymaps
