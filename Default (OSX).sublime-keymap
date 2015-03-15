@@ -68,7 +68,7 @@
     },
     {
         "command": "super_collider_close_inactive_posts",
-        "keys":    ["ctrl+s,ctrl+x"],
+        "keys":    ["ctrl+s", "ctrl+x"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
