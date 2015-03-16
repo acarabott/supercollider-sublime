@@ -11,7 +11,7 @@ Also includes:
 - Execute with multiple cursors
 - Execution highlighting
 - Search Help directly from Sublime Text
-- Post window can open in a new tab, group, window, or output panel (see settings file)
+- Post window in a new tab, group, window, or output panel (see settings file)
 - Optional max length for post window
 - Post window scrolls if at the bottom, doesn't if user scrolls up
 - Fancy block evaluation, expands to lines containing brackets, e.g. executing with the cursor inside a SynthDef will evaluate it without containing parentheses.
@@ -34,14 +34,13 @@ All commands are available in the Tools > SuperCollider Menu
 ## TODO
 
 ### Release
-- Menu: add all commands
 - Add snippets
 - decide on best keymaps
 - add user keymap
 - default keymaps for other OSs
 
 ### Future
-- Provide syntax error feedback
+- Provide syntax error feedback in open document
 - command: show node tree
 - command: dump node terminated
 - command: dump node tree with controls
@@ -56,7 +55,9 @@ All commands are available in the Tools > SuperCollider Menu
 
 ### Multiple sclang instances
 
-In theory this plugin could support multiple instances of sclang, however some mechanism would be required to tell the commands (start, stop execute etc) which instance to send the message to.
+In theory this plugin could support multiple instances of sclang, however some
+mechanism would be required to tell the commands (start, stop execute etc) which
+instance to send the message to.
 
 #### Possibile approaches:
 
