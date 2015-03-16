@@ -1,54 +1,125 @@
 [
-{
-  "id": "tools",
-  "children":
-  [
     {
-        "caption": "SuperCollider",
-        "children":
-        [
+        "id": "tools",
+        "children": [
             {
-                "command": "super_collider_start_interpreter",
-                "caption": "Start Interpreter"
-            },
-            {
-                "command": "super_collider_stop_interpreter",
-                "caption": "Stop Interpreter"
-            },
-            {
-                "command": "super_collider_boot_server",
-                "caption": "Boot Server"
-            },
-            {
-                "command": "super_collider_reboot_server",
-                "caption": "Reboot Server"
-            },
-            {
-                "command": "super_collider_show_server_meter",
-                "caption": "Show Server Meter"
-            },
-            {
-                "command": "super_collider_toggle_mute",
-                "caption": "Mute/Unmute Server"
-            },
-            {
-                "command": "super_collider_recompile",
-                "caption": "Recompile Class Library"
-            },
-            {
-                "command": "super_collider_open_user_support_dir",
-                "caption": "Open User Support Directory"
-            },
-            {
-                "command": "super_collider_open_startup_file",
-                "caption": "Open Startup File"
-            },
-            {
-                "command": "super_collider_close_inactive_posts",
-                "caption": "Close Inactive Post Views"
+                "id:": "supercollider",
+                "caption": "SuperCollider",
+                "children": [
+                    {
+                        "caption": "Start Interpreter",
+                        "command": "super_collider_start_interpreter"
+                    },
+                    {
+                        "caption": "Stop Interpreter",
+                        "command": "super_collider_stop_interpreter"
+                    },
+
+                    { "caption": "-"},
+
+                    {
+                        "caption": "Evaluate",
+                        "command": "super_collider_evaluate"
+                    },
+                    {
+                        "caption": "Stop",
+                        "command": "super_collider_stop"
+                    },
+
+                    { "caption": "-"},
+
+                    {
+                        "caption": "Boot Server",
+                        "command": "super_collider_boot_server"
+                    },
+                    {
+                        "caption": "Reboot Server",
+                        "command": "super_collider_reboot_server"
+                    },
+                    {
+                        "caption": "Kill Server",
+                        "command": "super_collider_kill_server"
+                    },
+                    {
+                        "caption": "Kill All Servers",
+                        "command": "super_collider_kill_all_servers"
+                    },
+
+                    {
+                        "caption": "Show Server Meter",
+                        "command": "super_collider_show_server_meter"
+                    },
+                    {
+                        "caption": "Show Server Window",
+                        "command": "super_collider_show_server_window"
+                    },
+                    {
+                        "caption": "Show Server Scope",
+                        "command": "super_collider_show_server_scope"
+                    },
+                    {
+                        "caption": "Show Server Freq Scope",
+                        "command": "super_collider_show_server_freq_scope"
+                    },
+
+
+                    { "caption": "-"},
+
+                    {
+                        "caption": "Open Post View",
+                        "command": "super_collider_open_post_view"
+                    },
+                    {
+                        "caption": "Clear Post View",
+                        "command": "super_collider_clear_post_view"
+                    },
+                    {
+                        "caption": "Close Inactive Post Views",
+                        "command": "super_collider_close_inactive_posts"
+                    },
+
+                    { "caption": "-"},
+
+                    {
+                        "caption": "Recompile",
+                        "command": "super_collider_recompile"
+                    },
+
+                    { "caption": "-"},
+
+                    {
+                        "caption": "Open Help",
+                        "command": "super_collider_help"
+                    },
+
+                    {
+                        "caption": "Open Class",
+                        "command": "super_collider_open_class"
+                    },
+
+                    { "caption": "-"},
+
+                    {
+                        "caption": "Dump Interface",
+                        "command": "super_collider_dump_interface"
+                    },
+                    {
+                        "caption": "Dump Full Interface",
+                        "command": "super_collider_dump_full_interface"
+                    },
+
+                    { "caption": "-"},
+
+                    {
+                        "caption": "Open User Support Dir",
+                        "command": "super_collider_open_user_support_dir"
+                    },
+                    {
+                        "caption": "Open Startup File",
+                        "command": "super_collider_open_startup_file"
+                    }
+                ]
             }
         ]
     }
-  ]
-}
 ]
