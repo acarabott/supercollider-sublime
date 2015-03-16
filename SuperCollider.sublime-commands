@@ -9,8 +9,6 @@
       "command": "super_collider_stop" },
     { "caption": "SuperCollider: Recompile",
       "command": "super_collider_recompile" },
-    { "caption": "SuperCollider: Update Post View",
-      "command": "super_collider_update_post_view" },
     { "caption": "SuperCollider: Open Post View",
       "command": "super_collider_open_post_view" },
     { "caption": "SuperCollider: Clear Post View",
