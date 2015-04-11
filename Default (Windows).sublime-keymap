@@ -1,0 +1,23 @@
+[
+  {
+    "keys": ["ctrl+alt+s","ctrl+alt+s"], "command": "sc_start"
+  },
+  {
+    "keys": ["ctrl+alt+s","ctrl+alt+p"], "command": "sc_stop"
+  },
+  {
+    "keys": ["ctrl+enter"], "command": "sc_send"
+  },
+  {
+    "keys": ["ctrl+."], "command": "sc_stop_all_sounds"
+  },
+  {
+    "keys": ["ctrl+alt+s","ctrl+alt+c"], "command": "sc_show_console"
+  },
+  {
+    "keys": ["ctrl+alt+s","ctrl+alt+l"], "command": "sc_clear_console"
+  },
+  {
+    "keys": ["ctrl+alt+s","ctrl+alt+h"], "command": "sc_search_help"
+  }
+]
