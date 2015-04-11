@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>ServerTreeGui.makeWindow(s);</string>
+	<key>name</key>
+	<string>ServerTreeGui</string>
+	<key>scope</key>
+	<string>source.supercollider</string>
+	<key>tabTrigger</key>
+	<string>stg</string>
+	<key>uuid</key>
+	<string>AC87E20B-5158-437F-ABF5-B33CA8F45191</string>
+</dict>
+</plist>

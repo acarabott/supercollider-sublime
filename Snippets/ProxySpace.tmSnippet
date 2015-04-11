@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>p = ProxySpace.push(s.boot);</string>
+	<key>name</key>
+	<string>ProxySpace</string>
+	<key>scope</key>
+	<string>source.supercollider</string>
+	<key>tabTrigger</key>
+	<string>px</string>
+	<key>uuid</key>
+	<string>A925561E-FE60-43C8-BC89-A1CCBE1EB93C</string>
+</dict>
+</plist>

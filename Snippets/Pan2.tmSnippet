@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>Pan2.ar(${1:sig}, ${2:0});</string>
+	<key>name</key>
+	<string>Pan2</string>
+	<key>scope</key>
+	<string>source.supercollider</string>
+	<key>tabTrigger</key>
+	<string>pan</string>
+	<key>uuid</key>
+	<string>1CFF62A4-9780-4786-93B5-A21C40380AFC</string>
+</dict>
+</plist>

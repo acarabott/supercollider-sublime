@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>OSCdef(\\${1:foo}, {|msg, time, addr, recvPort|
+	${2:msg.postln;}
+}, '${3:/tr}');</string>
+	<key>name</key>
+	<string>OSCdef</string>
+	<key>scope</key>
+	<string>source.supercollider</string>
+	<key>tabTrigger</key>
+	<string>oscd</string>
+	<key>uuid</key>
+	<string>86F166DF-580C-4DE3-80F7-EF9F24FDAF61</string>
+</dict>
+</plist>

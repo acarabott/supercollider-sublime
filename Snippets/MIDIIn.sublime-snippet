@@ -1,0 +1,14 @@
+<snippet>
+	<content><![CDATA[
+MIDIClient.init;
+MIDIIn.connectAll;
+
+MIDIdef.${1:noteOn}(\\${1:noteOn}, {|val, num, chan, src|
+	${0:num.postln;}
+});
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>midiin</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.supercollider</scope>
+</snippet>

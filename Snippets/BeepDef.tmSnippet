@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>SynthDef(\beep) { |out=0, freq=440, amp=0.1, pan=0|
+	var saw = LFSaw.ar(freq, 0, amp/3);
+	var sin = SinOsc.ar(freq, 0, amp);
+	var env = EnvGen.ar(Env.new([0,1,0,],[0.01,0.2]), doneAction:2);
+	var sig = Mix.new([saw, sin]);
+	
+	Out.ar(out,
+		Pan2.ar(sig*env, pan);
+	);
+}.load(s);
+</string>
+	<key>name</key>
+	<string>BeepDef</string>
+	<key>scope</key>
+	<string>source.supercollider</string>
+	<key>tabTrigger</key>
+	<string>beepdef</string>
+	<key>uuid</key>
+	<string>043CA2C4-F0A8-4915-A93A-40B645D6B946</string>
+</dict>
+</plist>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>Button(${1:parent}, ${2:Rect(${3:0},${4:0},${5:20},${6:20})})
+	.states_([
+		["${7:State 0}", Color.${8:black}, Color.${9:white}],
+		${10:["${11:State 1}", Color.${12:black}, Color.${13:white}]}
+	])
+	.action_({|${14:butt}|
+		${15:${14:butt}.value.postln;}	
+	});</string>
+	<key>name</key>
+	<string>Button</string>
+	<key>scope</key>
+	<string>source.supercollider</string>
+	<key>tabTrigger</key>
+	<string>bbut</string>
+	<key>uuid</key>
+	<string>9605D005-1E22-4E63-ABEB-6AF4BE49E6E7</string>
+</dict>
+</plist>

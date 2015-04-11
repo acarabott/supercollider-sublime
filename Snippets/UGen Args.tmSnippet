@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>class.findRespondingMethodFor(\\${1:ar}).argNames;
+</string>
+	<key>name</key>
+	<string>UGen Args</string>
+	<key>scope</key>
+	<string>source.supercollider</string>
+	<key>tabTrigger</key>
+	<string>uargs</string>
+	<key>uuid</key>
+	<string>196801F7-D3E6-4778-9F10-9CD590245C74</string>
+</dict>
+</plist>

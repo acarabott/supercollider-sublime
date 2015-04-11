@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>${1:a} = EZSlider(${2:w, 280@20, }label:"${3:label}");
+$1.action_({|ez|
+	${4:ez.value.postln;}
+});</string>
+	<key>name</key>
+	<string>EZSlider</string>
+	<key>scope</key>
+	<string>source.supercollider</string>
+	<key>tabTrigger</key>
+	<string>slider</string>
+	<key>uuid</key>
+	<string>2D27447D-2DD7-44B8-BBE0-62EB170E4344</string>
+</dict>
+</plist>

@@ -1,0 +1,9 @@
+<snippet>
+	<content><![CDATA[
+block {|break|
+	$0
+};
+]]></content>
+	<tabTrigger>block</tabTrigger>
+	<scope>source.supercollider</scope>
+</snippet>

@@ -1,0 +1,9 @@
+<snippet>
+	<content><![CDATA[
+TempoClock.default.tempo = ${1:1}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>tempodefault</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.supercollider</scope>
+</snippet>
