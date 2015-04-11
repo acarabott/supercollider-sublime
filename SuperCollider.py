@@ -287,23 +287,14 @@ class SuperColliderProcess():
                     self.post_view_name)
                 self.panel_open = True
         else:
-            # focus the post window if it currently open
-            if self.post_view_visible():
-                sublime.status_message("Post window already open!")
-                self.post_view.window().focus_view(self.post_view)
-                if self.post_view.name() != self.inactive_post_view_name:
-                    focus_window.focus_view(prev_view)
-                    return
-                else:
-                    self.post_view.set_name(self.post_view_name)
-            else:
-                # create a new window if post window should open in it
-                if self.open_post_view_in == 'window':
-                    sublime.run_command('new_window')
+            self.deactivate_post_view('New post view created')
+            # create a new window if post window should open in it
+            if self.open_post_view_in == 'window':
+                sublime.run_command('new_window')
 
-                # create new post view in the active window
-                window = sublime.active_window()
-                self.create_post_view(window)
+            # create new post view in the active window
+            window = sublime.active_window()
+            self.create_post_view(window)
 
         # update the view with previous view content if possible
         if self.post_view_cache is not None:
