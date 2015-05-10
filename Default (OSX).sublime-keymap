@@ -2,7 +2,7 @@
     // interpreter -------------------------------------------------------------
     {
         "command": "super_collider_start_interpreter",
-        "keys":    ["ctrl+s","ctrl+s"],
+        "keys":    ["ctrl+s", "ctrl+s"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -11,7 +11,7 @@
     },
     {
         "command": "super_collider_stop_interpreter",
-        "keys":    ["ctrl+s","ctrl+t","ctrl+t"],
+        "keys":    ["ctrl+s", "ctrl+t", "ctrl+t"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -50,7 +50,7 @@
     // post view ---------------------------------------------------------------
     {
         "command": "super_collider_open_post_view",
-        "keys":    ["ctrl+s","ctrl+o"],
+        "keys":    ["ctrl+s", "ctrl+o"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
