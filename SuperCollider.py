@@ -693,6 +693,52 @@ class SuperColliderDumpFullInterfaceCommand(SuperColliderAliveAbstract,
             "Dump full interface for",
             lambda x: sc.execute_silently("{}.dumpFullInterface;".format(x)))
 
+class SuperColliderGetMethodArgs(SuperColliderAliveAbstract,
+                                 SuperColliderSelectionOrInputAbstract):
+
+    def callback(self, c):
+        action = '''
+        "{0}:{1}: ".post;
+        {0}.findRespondingMethodFor(\\{1}).argNames
+                                        .asString
+                                        .replace("SymbolArray", "")
+                                        .replace("this, ", "")
+                                        .replace("this", "")
+                                        .postln;
+        '''
+        super(SuperColliderGetMethodArgs, self).run(
+            "Get arguments for {}'s Method".format(c),
+            lambda x: sc.execute_silently(action.format(c, x)))
+
+    def run(self):
+        super(SuperColliderGetMethodArgs, self).run(
+            "Get arguments for Class",
+            self.callback)
+
+class SuperColliderGetUgenArgs(SuperColliderAliveAbstract,
+                               SuperColliderSelectionOrInputAbstract):
+    def run(self):
+        action = '''
+        {0}.class.methods.do {{|item, i|
+            if (item.name != 'categories') {{
+                ("{0}:" ++ item.name ++ ": ").post;
+                {0}.class.findRespondingMethodFor(item.name)
+                    .argNames
+                    .asString
+                    .replace("SymbolArray", "")
+                    .replace("this, ", "")
+                    .postln;
+            }}
+        }} ?? {{
+            "UGen may get all methods from a superclass, try one of: ".post;
+            {0}.superclasses.asString.replace("class ", "").postln;
+        }};
+        '''
+
+        super(SuperColliderGetUgenArgs, self).run(
+            "Get arguments for UGen",
+            lambda ugen: sc.execute_silently(action.format(ugen)))
+
 
 # ==============================================================================
 # Event Listener

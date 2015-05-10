@@ -42,5 +42,9 @@
     { "caption": "SuperCollider: Dump Interface",
       "command": "super_collider_dump_interface" },
     { "caption": "SuperCollider: Dump Full Interface",
-      "command": "super_collider_dump_full_interface"}
+      "command": "super_collider_dump_full_interface"},
+    { "caption": "SuperCollider: Get Method Arguments",
+      "command": "super_collider_get_method_args" },
+    { "caption": "SuperCollider: Get UGen Arguments",
+      "command": "super_collider_get_ugen_args" }
 ]

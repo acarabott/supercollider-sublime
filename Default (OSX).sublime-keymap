@@ -277,4 +277,22 @@
             "operand":  "source.supercollider"
         }]
     },
+    {
+        "command": "super_collider_get_method_args",
+        "keys":    ["ctrl+s", "ctrl+e"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_get_ugen_args",
+        "keys":    ["ctrl+s", "ctrl+j"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    }
 ]
