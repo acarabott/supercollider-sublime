@@ -1,0 +1,7 @@
+<snippet>
+    <content><![CDATA[
+ServerTreeGui.makeWindow(s);
+]]></content>
+    <tabTrigger>stg</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

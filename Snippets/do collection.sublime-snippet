@@ -1,9 +1,9 @@
 <snippet>
 	<content><![CDATA[
-do {|${1:i}|
+do {|${1:i}tem, $1|
 	$0
 }
 ]]></content>
-	<tabTrigger>do</tabTrigger>
+	<tabTrigger>doc</tabTrigger>
 	<scope>source.supercollider</scope>
 </snippet>

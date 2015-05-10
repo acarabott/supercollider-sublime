@@ -1,8 +1,0 @@
-<snippet>
-	<content><![CDATA[
-{begin nostudent}$0
-{end nostudent}
-]]></content>
-	<tabTrigger>nostd</tabTrigger>
-	<scope>source.supercollider</scope>
-</snippet>

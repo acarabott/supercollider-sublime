@@ -1,0 +1,10 @@
+<snippet>
+    <content><![CDATA[
+Pbind(
+  \instrument, ${1:\foo},
+  \dur, 1
+)
+]]></content>
+    <tabTrigger>pb</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

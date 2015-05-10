@@ -1,0 +1,7 @@
+<snippet>
+    <content><![CDATA[
+instVarNames.dump;
+]]></content>
+    <tabTrigger>ivars</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

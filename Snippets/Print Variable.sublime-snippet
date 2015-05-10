@@ -1,0 +1,7 @@
+<snippet>
+    <content><![CDATA[
+"${1:val}: ".post; ($1).postln;
+]]></content>
+<tabTrigger>vpost</tabTrigger>
+<scope>source.supercollider</scope>
+</snippet>

@@ -1,0 +1,10 @@
+<snippet>
+    <content><![CDATA[
+case
+	{$1}	{$2}
+	{$3}	{$4};
+
+]]></content>
+    <tabTrigger>case</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

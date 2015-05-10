@@ -1,0 +1,9 @@
+<snippet>
+    <content><![CDATA[
+OSCdef(\\${1:foo}, {|msg, time, addr, recvPort|
+	${0:msg.postln;}
+}, '/${2:tr}');
+]]></content>
+    <tabTrigger>odef</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

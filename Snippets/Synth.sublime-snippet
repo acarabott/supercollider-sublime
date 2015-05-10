@@ -1,0 +1,7 @@
+<snippet>
+    <content><![CDATA[
+Synth(\\${1:foobar}, [\\${2:arg}, ${3:value}]);
+]]></content>
+    <tabTrigger>syn</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

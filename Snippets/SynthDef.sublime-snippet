@@ -1,9 +1,9 @@
 <snippet>
 	<content><![CDATA[
-do {|${1:i}|
+SynthDef(\\${1:foobar}, {|${2:out=0}$3|
 	$0
-}
+}).add;
 ]]></content>
-	<tabTrigger>do</tabTrigger>
+	<tabTrigger>sdef</tabTrigger>
 	<scope>source.supercollider</scope>
 </snippet>

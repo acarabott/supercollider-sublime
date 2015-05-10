@@ -1,0 +1,7 @@
+<snippet>
+    <content><![CDATA[
+Pan2.ar(${1:sig}, ${2:0});
+]]></content>
+    <tabTrigger>pan</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

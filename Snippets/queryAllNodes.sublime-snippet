@@ -1,0 +1,7 @@
+<snippet>
+    <content><![CDATA[
+s.queryAllNodes
+]]></content>
+    <tabTrigger>s.q</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

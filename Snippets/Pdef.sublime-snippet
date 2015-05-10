@@ -1,0 +1,12 @@
+<snippet>
+    <content><![CDATA[
+Pdef(${1:\foo},
+    Pbind(
+        \instrument, ${2:\bar},
+        \dur, 1
+    )
+).play;
+]]></content>
+    <tabTrigger>pd</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

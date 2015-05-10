@@ -1,0 +1,7 @@
+<snippet>
+    <content><![CDATA[
+Bus.${1:audio}(s, ${2:1});
+]]></content>
+    <tabTrigger>bus</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

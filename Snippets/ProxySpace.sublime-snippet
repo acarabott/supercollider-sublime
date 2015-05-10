@@ -1,0 +1,7 @@
+<snippet>
+    <content><![CDATA[
+p = ProxySpace.push(s.boot);
+]]></content>
+    <tabTrigger>px</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

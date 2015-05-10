@@ -1,0 +1,12 @@
+<snippet>
+    <content><![CDATA[
+Tdef(\\${1:foo}, {
+	${2:inf}.do {|i|
+		$0
+		0.5.wait;
+	}
+}).play(quant:Quant(${3:1}));
+]]></content>
+    <tabTrigger>tdef</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

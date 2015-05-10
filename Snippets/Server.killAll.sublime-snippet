@@ -1,0 +1,7 @@
+<snippet>
+    <content><![CDATA[
+Server.killAll; Server.default.boot
+]]></content>
+    <tabTrigger>sk</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

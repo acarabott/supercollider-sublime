@@ -1,0 +1,12 @@
+<snippet>
+    <content><![CDATA[
+${1:~win} = Window("${3:a gui}", Rect(128, 64, 300, 300)).front;
+$1.addFlowLayout;
+
+${0:// add gui code}
+
+$1.onClose = {};
+]]></content>
+    <tabTrigger>gui</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

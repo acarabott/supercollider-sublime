@@ -1,0 +1,7 @@
+<snippet>
+    <content><![CDATA[
+Buffer.read(${1:s}, Platform.userExtensionDir+/+"${2:sounds/${3:amen}.${4:wav}}");
+]]></content>
+    <tabTrigger>buf</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

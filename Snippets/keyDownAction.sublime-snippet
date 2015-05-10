@@ -1,0 +1,9 @@
+<snippet>
+    <content><![CDATA[
+keyDownAction_({|view, char, mod, uni, key|
+	$0
+})
+]]></content>
+    <tabTrigger>keyd</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

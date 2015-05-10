@@ -1,0 +1,7 @@
+<snippet>
+    <content><![CDATA[
+{|${1:i}tem, $1| $2
+]]></content>
+    <tabTrigger>{ii</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

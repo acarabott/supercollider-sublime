@@ -1,0 +1,7 @@
+<snippet>
+    <content><![CDATA[
+{ ${1:SinOsc.ar} }.play
+]]></content>
+    <tabTrigger>play</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

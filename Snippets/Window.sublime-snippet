@@ -1,0 +1,7 @@
+<snippet>
+    <content><![CDATA[
+Window("${1:window title}", Rect(${2:100}, ${3:100}, ${4:400}, ${5:300})).front;
+]]></content>
+    <tabTrigger>win</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

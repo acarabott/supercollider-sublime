@@ -1,0 +1,9 @@
+<snippet>
+    <content><![CDATA[
+MIDIdef.${1:noteOn}(\\${1:noteOn}, {|val, num, chan, src|
+    ${0:num.postln;}
+});
+]]></content>
+    <tabTrigger>mdef</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

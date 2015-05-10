@@ -1,0 +1,7 @@
+<snippet>
+    <content><![CDATA[
+setn(\\${1:arg}, [${2:val}, ${3:val}]);
+]]></content>
+    <tabTrigger>setn</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

@@ -1,0 +1,9 @@
+<snippet>
+    <content><![CDATA[
+var sig = In.ar(${1:0}, 1);
+var verb = FreeVerb.ar(sig, 1, 0.85, 0.5);
+var mix = Mix([sig, verb]);
+]]></content>
+    <tabTrigger>fverb</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

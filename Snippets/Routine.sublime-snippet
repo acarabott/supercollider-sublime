@@ -1,0 +1,12 @@
+<snippet>
+    <content><![CDATA[
+Routine {
+	${1:inf}.do {|${3:i}|
+		$4
+		${5:1}.wait;
+	};
+};
+]]></content>
+    <tabTrigger>rout</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

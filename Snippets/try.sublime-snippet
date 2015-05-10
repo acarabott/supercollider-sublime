@@ -1,0 +1,12 @@
+<snippet>
+    <content><![CDATA[
+try {
+	${1://code}
+} {|error|
+	${2:error.postln;}
+}
+
+]]></content>
+    <tabTrigger>try</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

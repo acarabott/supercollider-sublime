@@ -1,0 +1,17 @@
+<snippet>
+    <content><![CDATA[
+SynthDef(\beep) { |out=0, freq=440, att=0.01, rel=0.2, mul=0.1, pan=0|
+	var saw = LFTri.ar(freq, 0, mul/2);
+	var sin = SinOsc.ar(freq, 0, mul/2);
+	var env = EnvGen.ar(Env.new([0, 1, 0],[att, rel]), doneAction:2);
+	var sig = Mix.new([saw, sin]);
+
+	Out.ar(out,
+		Pan2.ar(sig * env, pan);
+	);
+}.load(s);
+
+]]></content>
+    <tabTrigger>beepdef</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

@@ -1,0 +1,7 @@
+<snippet>
+    <content><![CDATA[
+EnvGen.${1:a}r(${2:env}, doneAction: ${3:2})
+]]></content>
+    <tabTrigger>egen</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>

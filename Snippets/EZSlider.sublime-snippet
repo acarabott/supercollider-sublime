@@ -1,0 +1,10 @@
+<snippet>
+    <content><![CDATA[
+${1:a} = EZSlider(${2:w}, ${3:280@20}, label:"${4:label}");
+$1.action_({|ez|
+	${5:ez.value.postln;}
+});
+]]></content>
+    <tabTrigger>slider</tabTrigger>
+    <scope>source.supercollider</scope>
+</snippet>
