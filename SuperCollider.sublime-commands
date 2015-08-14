@@ -1,50 +1,96 @@
 [
-    { "caption": "SuperCollider: Start Interpreter",
-      "command": "super_collider_start_interpreter" },
-    { "caption": "SuperCollider: Stop Interpreter",
-      "command": "super_collider_stop_interpreter" },
-    { "caption": "SuperCollider: Evaluate",
-      "command": "super_collider_evaluate" },
-    { "caption": "SuperCollider: Stop",
-      "command": "super_collider_stop" },
-    { "caption": "SuperCollider: Recompile",
-      "command": "super_collider_recompile" },
-    { "caption": "SuperCollider: Open Post View",
-      "command": "super_collider_open_post_view" },
-    { "caption": "SuperCollider: Clear Post View",
-      "command": "super_collider_clear_post_view" },
-    { "caption": "SuperCollider: Close Inactive Post Views",
-      "command": "super_collider_close_inactive_posts" },
-    { "caption": "SuperCollider: Boot Server",
-      "command": "super_collider_boot_server" },
-    { "caption": "SuperCollider: Kill Server",
-      "command": "super_collider_kill_server" },
-    { "caption": "SuperCollider: Kill All Servers",
-      "command": "super_collider_kill_all_servers" },
-    { "caption": "SuperCollider: Reboot Server",
-      "command": "super_collider_reboot_server" },
-    { "caption": "SuperCollider: Show Server Meter",
-      "command": "super_collider_show_server_meter" },
-    { "caption": "SuperCollider: Show Server Window",
-      "command": "super_collider_show_server_window" },
-    { "caption": "SuperCollider: Show Server Scope",
-      "command": "super_collider_show_server_scope" },
-    { "caption": "SuperCollider: Show Server Freq Scope",
-      "command": "super_collider_show_server_freq_scope" },
-    { "caption": "SuperCollider: Open Class",
-      "command": "super_collider_open_class" },
-    { "caption": "SuperCollider: Open User Support Dir",
-      "command": "super_collider_open_user_support_dir" },
-    { "caption": "SuperCollider: Open Startup File",
-      "command": "super_collider_open_startup_file" },
-    { "caption": "SuperCollider: Help",
-      "command": "super_collider_help" },
-    { "caption": "SuperCollider: Dump Interface",
-      "command": "super_collider_dump_interface" },
-    { "caption": "SuperCollider: Dump Full Interface",
-      "command": "super_collider_dump_full_interface"},
-    { "caption": "SuperCollider: Get Method Arguments",
-      "command": "super_collider_get_method_args" },
+    {
+      "caption": "SuperCollider: Start Interpreter",
+      "command": "super_collider_start_interpreter"
+    },
+    {
+      "caption": "SuperCollider: Stop Interpreter",
+      "command": "super_collider_stop_interpreter"
+    },
+    {
+      "caption": "SuperCollider: Evaluate",
+      "command": "super_collider_evaluate"
+    },
+    {
+      "caption": "SuperCollider: Stop",
+      "command": "super_collider_stop"
+    },
+    {
+      "caption": "SuperCollider: Recompile",
+      "command": "super_collider_recompile"
+    },
+    {
+      "caption": "SuperCollider: Open Post View",
+      "command": "super_collider_open_post_view"
+    },
+    {
+      "caption": "SuperCollider: Clear Post View",
+      "command": "super_collider_clear_post_view"
+    },
+    {
+      "caption": "SuperCollider: Close Inactive Post Views",
+      "command": "super_collider_close_inactive_posts"
+    },
+    {
+      "caption": "SuperCollider: Boot Server",
+      "command": "super_collider_boot_server"
+    },
+    {
+      "caption": "SuperCollider: Kill Server",
+      "command": "super_collider_kill_server"
+    },
+    {
+      "caption": "SuperCollider: Kill All Servers",
+      "command": "super_collider_kill_all_servers"
+    },
+    {
+      "caption": "SuperCollider: Reboot Server",
+      "command": "super_collider_reboot_server"
+    },
+    {
+      "caption": "SuperCollider: Show Server Meter",
+      "command": "super_collider_show_server_meter"
+    },
+    {
+      "caption": "SuperCollider: Show Server Window",
+      "command": "super_collider_show_server_window"
+    },
+    {
+      "caption": "SuperCollider: Show Server Scope",
+      "command": "super_collider_show_server_scope"
+    },
+    {
+      "caption": "SuperCollider: Show Server Freq Scope",
+      "command": "super_collider_show_server_freq_scope"
+    },
+    {
+      "caption": "SuperCollider: Open Class",
+      "command": "super_collider_open_class"
+    },
+    {
+      "caption": "SuperCollider: Open User Support Dir",
+      "command": "super_collider_open_user_support_dir"
+    },
+    {
+      "caption": "SuperCollider: Open Startup File",
+      "command": "super_collider_open_startup_file"
+    },
+    {
+      "caption": "SuperCollider: Help",
+      "command": "super_collider_help"
+    },
+    {
+      "caption": "SuperCollider: Dump Interface",
+      "command": "super_collider_dump_interface"
+    },
+    {
+      "caption": "SuperCollider: Dump Full Interface",
+      "command": "super_collider_dump_full_interface"
+    },
+    {
+      "caption": "SuperCollider: Get Method Arguments",
+      "command": "super_collider_get_method_args"
+    },
     { "caption": "SuperCollider: Get UGen Arguments",
       "command": "super_collider_get_ugen_args" }
 ]
