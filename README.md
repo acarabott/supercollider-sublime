@@ -35,7 +35,6 @@ All commands are available in the Tools > SuperCollider Menu
 
 ### Release
 - rename to SuperCollider
-- Add snippets
 - decide on best keymaps
 - add user keymap
 - default keymaps for other OSs
