@@ -55,7 +55,7 @@ class SuperColliderProcess():
         self.sclang_thread = None
 
         self.post_view_name = 'SuperCollider - Post'
-        self.inactive_post_view_name = self.post_view_name + ' - Inactive'
+        self.inactive_post_view_name = '{} - Inactive'.format(self.post_view_name)
         self.post_view = None
         self.post_view_cache = None
         self.panel_open = False
@@ -280,7 +280,7 @@ class SuperColliderProcess():
         if self.open_post_view_in == 'panel':
             if not self.panel_open:
                 focus_window.run_command('show_panel', {
-                    'panel': 'output.' + self.post_view_name
+                    'panel': 'output.{}'.format(self.post_view_name)
                 })
                 self.post_view = focus_window.get_output_panel(
                     self.post_view_name)
@@ -344,7 +344,7 @@ class SuperColliderProcess():
             self.post_view.erase(edit, sublime.Region(0, self.post_view.size()))
 
     def open_help(self, word):
-        self.execute('HelpBrowser.openHelpFor("' + word + '");')
+        self.execute('HelpBrowser.openHelpFor("{}");'.format(word))
 
     def open_class(self, klass):
         cmd = '''
@@ -469,7 +469,7 @@ class SuperColliderToggleTraceOsc(SuperColliderAliveAbstract,
         else:
             hide_status = 'false'
 
-        cmd = 'OSCFunc.trace(" + enable + ',' + hide_status + ");'
+        cmd = 'OSCFunc.trace({}, {});'.format(enable, hide_status)
 
         sc.execute_silently(cmd);
 
