@@ -191,9 +191,8 @@ class SuperColliderProcess():
         self.write_out(cmd, '\x1b')
 
     def execute_flagged(self, flag, cmd):
-        msg = '"' + self.stdout_flag + flag + self.stdout_flag + '".post;'
-        msg += '(' + cmd + ').postln;'
-
+        msg = '"{}{}{}".post;({}).postln'.format(
+            self.stdout_flag, flag, self.stdout_flag, cmd)
         self.execute_silently(msg)
 
     def handle_flagged_output(self, output):
