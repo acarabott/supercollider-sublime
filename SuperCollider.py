@@ -1,4 +1,5 @@
-import sublime, sublime_plugin
+import sublime
+import sublime_plugin
 import os
 import subprocess
 import threading
@@ -10,15 +11,18 @@ SYNTAX_PLAIN = 'Packages/Text/Plain text.tmLanguage'
 
 sc = None
 
+
 def plugin_loaded():
     global sc
     sc = SuperColliderProcess()
+
 
 def plugin_unloaded():
     global sc
     if sc is not None:
         sc.stop()
         sc.deactivate_post_view(TERMINATE_MSG)
+
 
 class SuperColliderProcess():
     post_view = None
@@ -55,7 +59,8 @@ class SuperColliderProcess():
         self.sclang_thread = None
 
         self.post_view_name = 'SuperCollider - Post'
-        self.inactive_post_view_name = '{} - Inactive'.format(self.post_view_name)
+        self.inactive_post_view_name = '{} - Inactive'.format(
+            self.post_view_name)
         self.post_view = None
         self.post_view_cache = None
         self.panel_open = False
@@ -67,7 +72,6 @@ class SuperColliderProcess():
         # collected?)
         # Instead using an explicit cache, updated lazily when view is closed
         # and new view being opened
-
 
     # Settings callbacks
     # --------------------------------------------------------------------------
@@ -88,7 +92,8 @@ class SuperColliderProcess():
         self.open_post_view_in = self.settings.get('open_post_view_in')
 
     def update_highlight_post_view(self):
-        self.highlight_post = self.settings.get('highlight_post_view') == 'True'
+        self.highlight_post = self.settings.get(
+            'highlight_post_view') == 'True'
 
         if self.has_post_view():
             syntax = SYNTAX_SC if self.highlight_post else SYNTAX_PLAIN
@@ -98,9 +103,9 @@ class SuperColliderProcess():
     # --------------------------------------------------------------------------
     def is_alive(self):
         if (self.sclang_process is None
-            or self.sclang_thread is None
-            or not self.sclang_thread.isAlive()):
-           return False
+                or self.sclang_thread is None
+                or not self.sclang_thread.isAlive()):
+            return False
 
         self.sclang_process.poll()
 
@@ -128,14 +133,14 @@ class SuperColliderProcess():
             shell = True
 
         self.sclang_process = subprocess.Popen(
-            args = [path, '-i', 'sublime'],
-            cwd = cwd,
-            bufsize = 0,
-            stdin = subprocess.PIPE,
-            stdout = subprocess.PIPE,
-            stderr = subprocess.STDOUT,
-            close_fds = close_fds,
-            shell = shell
+            args=[path, '-i', 'sublime'],
+            cwd=cwd,
+            bufsize=0,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            close_fds=close_fds,
+            shell=shell
         )
 
         # create post window update queue and thread
@@ -155,14 +160,14 @@ class SuperColliderProcess():
         # queue and thread for getting sclang output
         self.sclang_queue = deque()
         self.sclang_thread = threading.Thread(
-            target = enqueue_output,
-            args = (
+            target=enqueue_output,
+            args=(
                 self.sclang_process.stdout,
                 self.sclang_queue
             )
         )
 
-        self.sclang_thread.daemon = True # dies with the program
+        self.sclang_thread.daemon = True  # dies with the program
         self.sclang_thread.start()
         sublime.status_message('Starting SuperCollider')
 
@@ -313,9 +318,9 @@ class SuperColliderProcess():
     def update_post_view(self):
         sublime.set_timeout(self.update_post_view, 5)
         if (not self.is_alive()
-            or not self.has_post_view()
-            or len(self.sclang_queue) is 0):
-                return
+                or not self.has_post_view()
+                or len(self.sclang_queue) is 0):
+            return
 
         get_max = min(100, len(self.sclang_queue))
 
@@ -341,7 +346,8 @@ class SuperColliderProcess():
 
     def clear_post_view(self, edit):
         if self.has_post_view():
-            self.post_view.erase(edit, sublime.Region(0, self.post_view.size()))
+            self.post_view.erase(
+                edit, sublime.Region(0, self.post_view.size()))
 
     def open_help(self, word):
         self.execute('HelpBrowser.openHelpFor("{}");'.format(word))
@@ -363,27 +369,38 @@ class SuperColliderProcess():
 # ------------------------------------------------------------------------------
 # Abstract Command Classes
 # ------------------------------------------------------------------------------
+
+
 class SuperColliderAliveAbstract():
+
     def is_enabled(self):
         return sc.is_alive()
 
+
 class SuperColliderDeadAbstract():
+
     def is_enabled(self):
         return not sc.is_alive()
 
 # ------------------------------------------------------------------------------
 # Interpreter Commands
 # ------------------------------------------------------------------------------
+
+
 class SuperColliderStartInterpreterCommand(SuperColliderDeadAbstract,
                                            sublime_plugin.ApplicationCommand):
+
     def run(self):
         sc.start()
         sc.open_post_view()
 
+
 class SuperColliderStopInterpreterCommand(SuperColliderAliveAbstract,
                                           sublime_plugin.ApplicationCommand):
+
     def run(self):
         sc.stop()
+
 
 class SuperColliderEvaluateCommand(SuperColliderAliveAbstract,
                                    sublime_plugin.TextCommand):
@@ -397,7 +414,8 @@ class SuperColliderEvaluateCommand(SuperColliderAliveAbstract,
         # expand selection to brackets until the selections are the same as
         # the previous selections (no further expansion possible)
         while not reached_limit:
-            old = list(map(lambda s: sublime.Region(s.a, s.b), self.view.sel()))
+            old = list(
+                map(lambda s: sublime.Region(s.a, s.b), self.view.sel()))
 
             # nested selections get merged by this, so number of selections can
             # get reduced
@@ -436,9 +454,9 @@ class SuperColliderEvaluateCommand(SuperColliderAliveAbstract,
 
         # highlight
         self.view.add_regions(self.HIGHLIGHT_KEY,
-            self.view.sel(),
-            self.HIGHLIGHT_SCOPE,
-            flags=sublime.DRAW_NO_OUTLINE)
+                              self.view.sel(),
+                              self.HIGHLIGHT_SCOPE,
+                              flags=sublime.DRAW_NO_OUTLINE)
 
         # clear selection so highlighting will be visible
         self.view.sel().clear()
@@ -448,18 +466,24 @@ class SuperColliderEvaluateCommand(SuperColliderAliveAbstract,
         sublime.set_timeout(lambda: self.view.erase_regions(self.HIGHLIGHT_KEY),
                             500)
 
+
 class SuperColliderStopCommand(SuperColliderAliveAbstract,
                                sublime_plugin.ApplicationCommand):
+
     def run(self):
         sc.execute('CmdPeriod.run;')
 
+
 class SuperColliderRecompileCommand(SuperColliderAliveAbstract,
                                     sublime_plugin.ApplicationCommand):
+
     def run(self):
         sc.execute('\x18')
 
+
 class SuperColliderToggleTraceOsc(SuperColliderAliveAbstract,
                                   sublime_plugin.ApplicationCommand):
+
     def run(self, hide_status):
         sc.tracing_osc = not sc.tracing_osc
         enable = 'true' if sc.tracing_osc else 'false'
@@ -471,7 +495,7 @@ class SuperColliderToggleTraceOsc(SuperColliderAliveAbstract,
 
         cmd = 'OSCFunc.trace({}, {});'.format(enable, hide_status)
 
-        sc.execute_silently(cmd);
+        sc.execute_silently(cmd)
 
         msg = 'Tracing OSC' if sc.tracing_osc else 'Stopped tracing OSC'
         sc.execute('"{}".postln;'.format(msg))
@@ -479,6 +503,8 @@ class SuperColliderToggleTraceOsc(SuperColliderAliveAbstract,
 # ------------------------------------------------------------------------------
 # Post View Commands
 # ------------------------------------------------------------------------------
+
+
 class SuperColliderUpdatePostViewCommand(SuperColliderAliveAbstract,
                                          sublime_plugin.TextCommand):
     update_count = 0
@@ -519,17 +545,23 @@ class SuperColliderUpdatePostViewCommand(SuperColliderAliveAbstract,
 
         self.update_count = (self.update_count + 1) % self.update_every
 
+
 class SuperColliderOpenPostViewCommand(SuperColliderAliveAbstract,
                                        sublime_plugin.ApplicationCommand):
+
     def run(self):
         sc.open_post_view()
 
+
 class SuperColliderClearPostViewCommand(SuperColliderAliveAbstract,
                                         sublime_plugin.TextCommand):
+
     def run(self, edit):
         sc.clear_post_view(edit)
 
+
 class SuperColliderCloseInactivePostsCommand(sublime_plugin.ApplicationCommand):
+
     def run(self):
         active_window = sublime.active_window()
         active_view = active_window.active_view()
@@ -545,48 +577,67 @@ class SuperColliderCloseInactivePostsCommand(sublime_plugin.ApplicationCommand):
 # ------------------------------------------------------------------------------
 # Server Commands
 # ------------------------------------------------------------------------------
+
+
 class SuperColliderBootServerCommand(SuperColliderAliveAbstract,
                                      sublime_plugin.ApplicationCommand):
+
     def run(self):
         sc.execute('Server.default.boot;')
 
+
 class SuperColliderKillServerCommand(SuperColliderAliveAbstract,
                                      sublime_plugin.ApplicationCommand):
+
     def run(self):
         sc.execute('"Server killed".postln; Server.default.quit;')
 
+
 class SuperColliderKillAllServersCommand(SuperColliderAliveAbstract,
                                          sublime_plugin.ApplicationCommand):
+
     def run(self):
         sc.execute('"All servers killed".postln; Server.killAll;')
 
+
 class SuperColliderRebootServerCommand(SuperColliderAliveAbstract,
                                        sublime_plugin.ApplicationCommand):
+
     def run(self):
         sc.execute('"Server rebooted".postln; Server.default.reboot;')
 
+
 class SuperColliderShowServerMeterCommand(SuperColliderAliveAbstract,
                                           sublime_plugin.ApplicationCommand):
+
     def run(self):
         sc.execute('Server.default.meter;')
 
+
 class SuperColliderShowServerWindowCommand(SuperColliderAliveAbstract,
                                            sublime_plugin.ApplicationCommand):
+
     def run(self):
         sc.execute('Server.default.makeWindow;')
 
+
 class SuperColliderShowServerScopeCommand(SuperColliderAliveAbstract,
                                           sublime_plugin.ApplicationCommand):
+
     def run(self):
         sc.execute('Server.default.scope;')
 
+
 class SuperColliderShowServerFreqScopeCommand(SuperColliderAliveAbstract,
-                                             sublime_plugin.ApplicationCommand):
+                                              sublime_plugin.ApplicationCommand):
+
     def run(self):
         sc.execute('Server.default.freqscope;')
 
+
 class SuperColliderToggleMute(SuperColliderAliveAbstract,
                               sublime_plugin.ApplicationCommand):
+
     def run(self):
         sc.execute_silently('''
             if (Server.default.volume.isMuted) {
@@ -598,79 +649,105 @@ class SuperColliderToggleMute(SuperColliderAliveAbstract,
             };
         ''')
 
+
 class SuperColliderChangeVolume(SuperColliderAliveAbstract,
                                 sublime_plugin.ApplicationCommand):
+
     def run(self, change):
         sc.execute_silently('''
             s.volume.volume_({});
             ("Server volume:" + s.volume.volume).postln;
         '''.format(change))
 
+
 class SuperColliderIncreaseVolume(SuperColliderChangeVolume):
+
     def run(self):
         new_vol = 's.volume.volume + 1.5'
         return super(SuperColliderIncreaseVolume, self).run(new_vol)
 
+
 class SuperColliderDecreaseVolume(SuperColliderChangeVolume):
+
     def run(self):
         new_vol = 's.volume.volume - 1.5'
         return super(SuperColliderDecreaseVolume, self).run(new_vol)
 
+
 class SuperColliderRestoreVolume(SuperColliderChangeVolume):
+
     def run(self):
         new_vol = '0'
         return super(SuperColliderRestoreVolume, self).run(new_vol)
 
+
 class SuperColliderStartRecording(SuperColliderAliveAbstract,
                                   sublime_plugin.ApplicationCommand):
+
     def run(self):
         sc.execute_silently('Server.default.record;')
 
+
 class SuperColliderStopRecording(SuperColliderAliveAbstract,
                                  sublime_plugin.ApplicationCommand):
+
     def run(self):
         sc.execute_silently('Server.default.stopRecording;')
 
 # ------------------------------------------------------------------------------
 # Open/Info Commands
 # ------------------------------------------------------------------------------
+
+
 class SuperColliderSelectionOrInputAbstract(sublime_plugin.WindowCommand):
+
     def run(self, caption, callback):
         view = self.window.active_view()
         sel = view.sel()[0]
         if sel.a != sel.b:
             callback(view.substr(sel))
         else:
-            self.window.show_input_panel(caption = caption,
-                                         initial_text = '',
-                                         on_done = callback,
-                                         on_change = None,
-                                         on_cancel = None)
+            self.window.show_input_panel(caption=caption,
+                                         initial_text='',
+                                         on_done=callback,
+                                         on_change=None,
+                                         on_cancel=None)
+
 
 class SuperColliderOpenClassCommand(SuperColliderAliveAbstract,
                                     SuperColliderSelectionOrInputAbstract):
+
     def run(self):
         super(SuperColliderOpenClassCommand, self).run('Open Class File for',
                                                        sc.open_class)
 
+
 class SuperColliderOpenUserSupportDirCommand(SuperColliderAliveAbstract,
                                              sublime_plugin.ApplicationCommand):
+
     def run(self):
         sc.execute_flagged('open_dir', 'Platform.userConfigDir')
 
+
 class SuperColliderOpenStartupFileCommand(SuperColliderAliveAbstract,
                                           sublime_plugin.ApplicationCommand):
+
     def run(self):
         sc.execute_flagged('open_startup',
                            'Platform.userConfigDir +/+ "startup.scd"')
 
+
 class SuperColliderHelpCommand(SuperColliderAliveAbstract,
                                SuperColliderSelectionOrInputAbstract):
+
     def run(self):
-        super(SuperColliderHelpCommand, self).run('Open Help for', sc.open_help)
+        super(SuperColliderHelpCommand, self).run(
+            'Open Help for', sc.open_help)
+
 
 class SuperColliderDumpInterfaceCommand(SuperColliderAliveAbstract,
                                         SuperColliderSelectionOrInputAbstract):
+
     def run(self):
         cmd = '''
             (
@@ -689,12 +766,15 @@ class SuperColliderDumpInterfaceCommand(SuperColliderAliveAbstract,
             'Dump interface for',
             lambda x: sc.execute_silently(cmd.format(x)))
 
+
 class SuperColliderDumpFullInterfaceCommand(SuperColliderAliveAbstract,
-                                         SuperColliderSelectionOrInputAbstract):
+                                            SuperColliderSelectionOrInputAbstract):
+
     def run(self):
         super(SuperColliderDumpFullInterfaceCommand, self).run(
             'Dump full interface for',
             lambda x: sc.execute_silently('{}.dumpFullInterface;'.format(x)))
+
 
 class SuperColliderGetMethodArgs(SuperColliderAliveAbstract,
                                  SuperColliderSelectionOrInputAbstract):
@@ -718,8 +798,10 @@ class SuperColliderGetMethodArgs(SuperColliderAliveAbstract,
             'Get arguments for Class',
             self.callback)
 
+
 class SuperColliderGetUgenArgs(SuperColliderAliveAbstract,
                                SuperColliderSelectionOrInputAbstract):
+
     def run(self):
         action = '''
         {0}.class.methods.do {{|item, i|
@@ -747,11 +829,12 @@ class SuperColliderGetUgenArgs(SuperColliderAliveAbstract,
 # Event Listener
 # ==============================================================================
 class SuperColliderListener(sublime_plugin.EventListener):
+
     def on_close(self, view):
         if sc is None:
             return
         if view.buffer_id() != sc.post_view_buffer_id():
-            return;
+            return
         if sc.post_view_visible():
             if view.id() == sc.post_view.id():
                 sc.set_post_view(
