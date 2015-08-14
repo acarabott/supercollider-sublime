@@ -66,15 +66,6 @@
             "operand":  "source.supercollider"
         }]
     },
-    {
-        "command": "super_collider_close_inactive_posts",
-        "keys":    ["ctrl+s", "ctrl+x"],
-        "context": [{
-            "key":      "selector",
-            "operator": "equal",
-            "operand":  "source.supercollider"
-        }]
-    },
     // server ------------------------------------------------------------------
     {
         "command": "super_collider_boot_server",
@@ -95,53 +86,8 @@
         }]
     },
     {
-        "command": "super_collider_kill_all_servers",
-        "keys":    ["super+ctrl+s", "super+ctrl+l"],
-        "context": [{
-            "key":      "selector",
-            "operator": "equal",
-            "operand":  "source.supercollider"
-        }]
-    },
-    {
         "command": "super_collider_reboot_server",
         "keys":    ["ctrl+s", "ctrl+b", "ctrl+b"],
-        "context": [{
-            "key":      "selector",
-            "operator": "equal",
-            "operand":  "source.supercollider"
-        }]
-    },
-    {
-        "command": "super_collider_show_server_meter",
-        "keys":    ["ctrl+s", "ctrl+m"],
-        "context": [{
-            "key":      "selector",
-            "operator": "equal",
-            "operand":  "source.supercollider"
-        }]
-    },
-    {
-        "command": "super_collider_show_server_window",
-        "keys":    ["ctrl+s", "ctrl+w"],
-        "context": [{
-            "key":      "selector",
-            "operator": "equal",
-            "operand":  "source.supercollider"
-        }]
-    },
-    {
-        "command": "super_collider_show_server_scope",
-        "keys":    ["ctrl+s", "ctrl+g"],
-        "context": [{
-            "key":      "selector",
-            "operator": "equal",
-            "operand":  "source.supercollider"
-        }]
-    },
-    {
-        "command": "super_collider_show_server_freq_scope",
-        "keys":    ["ctrl+s", "ctrl+f"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -212,16 +158,6 @@
             "operand":  "source.supercollider"
         }]
     },
-    {
-        "command": "super_collider_toggle_trace_osc",
-        "keys":    ["ctrl+s", "ctrl+l"],
-        "args":    { "hide_status": "True" },
-        "context": [{
-            "key":      "selector",
-            "operator": "equal",
-            "operand":  "source.supercollider"
-        }]
-    },
     // sclang ------------------------------------------------------------------
     {
         "command": "super_collider_stop",
@@ -253,42 +189,6 @@
     {
         "command": "super_collider_open_class",
         "keys":    ["ctrl+s", "ctrl+c"],
-        "context": [{
-            "key":      "selector",
-            "operator": "equal",
-            "operand":  "source.supercollider"
-        }]
-    },
-    {
-        "command": "super_collider_dump_interface",
-        "keys":    ["ctrl+s", "ctrl+i"],
-        "context": [{
-            "key":      "selector",
-            "operator": "equal",
-            "operand":  "source.supercollider"
-        }]
-    },
-    {
-        "command": "super_collider_dump_full_interface",
-        "keys":    ["ctrl+s", "ctrl+u"],
-        "context": [{
-            "key":      "selector",
-            "operator": "equal",
-            "operand":  "source.supercollider"
-        }]
-    },
-    {
-        "command": "super_collider_get_method_args",
-        "keys":    ["ctrl+s", "ctrl+e"],
-        "context": [{
-            "key":      "selector",
-            "operator": "equal",
-            "operand":  "source.supercollider"
-        }]
-    },
-    {
-        "command": "super_collider_get_ugen_args",
-        "keys":    ["ctrl+s", "ctrl+j"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
