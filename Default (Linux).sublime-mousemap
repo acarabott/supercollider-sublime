@@ -1,0 +1,7 @@
+[
+    {
+        "button": "button1", "count": 2, "modifiers": ["shift"],
+        "command": "expand_selection",
+        "args": {"to": "brackets"}
+    }
+]

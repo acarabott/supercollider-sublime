@@ -1,23 +1,198 @@
 [
-  {
-    "keys": ["ctrl+alt+s","ctrl+alt+s"], "command": "sc_start"
-  },
-  {
-    "keys": ["ctrl+alt+s","ctrl+alt+p"], "command": "sc_stop"
-  },
-  {
-    "keys": ["ctrl+enter"], "command": "sc_send"
-  },
-  {
-    "keys": ["ctrl+."], "command": "sc_stop_all_sounds"
-  },
-  {
-    "keys": ["ctrl+alt+s","ctrl+alt+c"], "command": "sc_show_console"
-  },
-  {
-    "keys": ["ctrl+alt+s","ctrl+alt+l"], "command": "sc_clear_console"
-  },
-  {
-    "keys": ["ctrl+alt+s","ctrl+alt+h"], "command": "sc_search_help"
-  }
+    // interpreter -------------------------------------------------------------
+    {
+        "command": "super_collider_start_interpreter",
+        "keys":    ["ctrl+s", "ctrl+s"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_stop_interpreter",
+        "keys":    ["ctrl+s", "ctrl+t", "ctrl+t"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_evaluate",
+        "keys":    ["shift+enter"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_evaluate",
+        "keys":    ["super+enter"],
+        "args":    { "expand": "True" },
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_evaluate",
+        "keys":    ["super+shift+enter"],
+        "args":    { "all": "True", "expand": "False" },
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    // post view ---------------------------------------------------------------
+    {
+        "command": "super_collider_open_post_view",
+        "keys":    ["ctrl+s", "ctrl+o"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_clear_post_view",
+        "keys":    ["super+shift+c"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    // server ------------------------------------------------------------------
+    {
+        "command": "super_collider_boot_server",
+        "keys":    ["super+b"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_kill_server",
+        "keys":    ["ctrl+s", "ctrl+k", "ctrl+k"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_reboot_server",
+        "keys":    ["ctrl+s", "ctrl+b", "ctrl+b"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_toggle_mute",
+        "keys":    ["super+ctrl+m"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_increase_volume",
+        "keys":    ["super+ctrl+="],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_decrease_volume",
+        "keys":    ["super+ctrl+-"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_restore_volume",
+        "keys":    ["super+ctrl+0"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_start_recording",
+        "keys":    ["ctrl+s", "ctrl+r"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_stop_recording",
+        "keys":    ["ctrl+s", "ctrl+p"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_evaluate",
+        "keys":    ["super+enter"],
+        "args":    { "expand": "True" },
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    // sclang ------------------------------------------------------------------
+    {
+        "command": "super_collider_stop",
+        "keys":    ["super+."],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_recompile",
+        "keys":    ["ctrl+s", "ctrl+l", "ctrl+l"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_help",
+        "keys":    ["ctrl+s", "ctrl+d"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    },
+    {
+        "command": "super_collider_open_class",
+        "keys":    ["ctrl+s", "ctrl+c"],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    }
 ]
