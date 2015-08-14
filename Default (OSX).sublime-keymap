@@ -78,7 +78,7 @@
     },
     {
         "command": "super_collider_kill_server",
-        "keys":    ["super+ctrl+s", "super+ctrl+k"],
+        "keys":    ["ctrl+s", "ctrl+k", "ctrl+k"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
