@@ -39,7 +39,7 @@
     },
     {
         "command": "super_collider_evaluate",
-        "keys":    ["ctrl+s", "ctrl+a"],
+        "keys":    ["super+shift+enter"],
         "args":    { "all": "True", "expand": "False" },
         "context": [{
             "key":      "selector",
