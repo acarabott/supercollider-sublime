@@ -463,7 +463,7 @@ class SuperColliderToggleTraceOsc(SuperColliderAliveAbstract,
                                   sublime_plugin.ApplicationCommand):
     def run(self, hide_status):
         sc.tracing_osc = not sc.tracing_osc
-        enable = "true" if sc.tracing_osc else "false"
+        enable = 'true' if sc.tracing_osc else 'false'
 
         if hide_status == 'True':
             hide_status = 'true'
@@ -471,7 +471,11 @@ class SuperColliderToggleTraceOsc(SuperColliderAliveAbstract,
             hide_status = 'false'
 
         cmd = "OSCFunc.trace(" + enable + "," + hide_status + ");"
+
         sc.execute_silently(cmd);
+
+        msg = 'Tracing OSC' if sc.tracing_osc else 'Stopped tracing OSC'
+        sc.execute('"{}".postln;'.format(msg))
 
 # ------------------------------------------------------------------------------
 # Post View Commands
