@@ -132,16 +132,22 @@ class SuperColliderProcess():
             close_fds = False
             shell = True
 
-        self.sclang_process = subprocess.Popen(
-            args=[path, '-i', 'sublime'],
-            cwd=cwd,
-            bufsize=0,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            close_fds=close_fds,
-            shell=shell
-        )
+        try:
+            self.sclang_process = subprocess.Popen(
+                args=[path, '-i', 'sublime'],
+                cwd=cwd,
+                bufsize=0,
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                close_fds=close_fds,
+                shell=shell
+            )
+        except:
+            msg = """Could not start sclang
+Please check your SuperCollider.sublime-settings file
+Then restart Sublime Text"""
+            sublime.error_message(msg)
 
         # create post window update queue and thread
         # this function is the thread target, it reads input until the process
