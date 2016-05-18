@@ -2,7 +2,7 @@
 	<content><![CDATA[
 Ndef(\\${1:foo}, {
 	$0
-}).play(0, 2);
+}).play(out:${2:0}, numChannels:${3:2}, group:${4:nil});
 ]]></content>
 	<tabTrigger>ndef</tabTrigger>
 	<scope>source.supercollider</scope>
