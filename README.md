@@ -2,24 +2,10 @@
 
 ## Installation
 
-- Either clone this repo into your Sublime Text 3/Packages folder, or install via Package Control
-- Set the path for the sclang executable: go to Preferences > Package Settings > SuperCollider > Settings - User
-- Add the following settings, modifiying the `sc_dir` to match the location of SuperCollider on your machine. e.g. 
-
-### OS X
-To verify the correct path, ctrl click on the SuperCollider applicationa and choose 'Show Package Contents'
-```
-{
-    "sc_dir": "/Applications/SuperCollider/SuperCollider.app/Contents/MacOS/"
-}
-```
-
-### Windows
-```
-{
-    "sc_dir": "C:\\Programs\\SuperCollider\\SuperCollider\\"
-}
-```
+- Either clone this repo into your `Sublime Text 3/Packages` folder, or install via Package Control
+    - If you cloned the repo, make sure to rename the directory `SuperCollider`, full dir should be `Sublime Text 3/Packages/SuperCollider`
+- I recommend *copying* `Packages/SuperCollider/SuperCollider.sublime-settings` to `Packages/User/SuperCollider.sublime-settings` this way you can overwrite any of the preferences easily.
+- If you have installed SuperCollider into a non-standard location, set the path in Package Settings > SuperCollider > Settings - User
 
 ## Features
 
@@ -32,7 +18,7 @@ To verify the correct path, ctrl click on the SuperCollider applicationa and cho
 
 ## Options
 
-See `Preferences > Package Settings > SuperCollider > Settings - Default` for further options, including Post Window settings.
+See `Package Settings > SuperCollider > Settings - Default` for further options, including Post Window settings.
 
 ## Commands
 
@@ -57,9 +43,6 @@ Also includes:
     - 'Open User Support Directory' command
 
 ## TODO
-
-### Release
-- Check Windows path example
 
 - Use new .sublime-syntax format
 - Use system dialog to select SuperCollider application location
