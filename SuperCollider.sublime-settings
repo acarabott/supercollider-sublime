@@ -1,6 +1,6 @@
 {
     // SuperCollider directory (use double \\ in Windows)
-    "sc_dir": "/Applications/SuperCollider3.7/SuperCollider.app/Contents/Resources/",
+    "sc_dir": "/Applications/SuperCollider/SuperCollider.app/Contents/MacOS/",
     // SCLang command name
     "sc_exe": "sclang",
     // Maximum number of lines in for Post window
