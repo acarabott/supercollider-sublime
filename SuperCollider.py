@@ -6,7 +6,7 @@ import threading
 from collections import deque
 
 TERMINATE_MSG = 'SublimeText: sclang terminated!\n'
-SYNTAX_SC = 'Packages/supercollider-sublime/SuperCollider.tmLanguage'
+SYNTAX_SC = 'Packages/SuperCollider/SuperCollider.tmLanguage'
 SYNTAX_PLAIN = 'Packages/Text/Plain text.tmLanguage'
 
 sc = None
@@ -73,6 +73,12 @@ class SuperColliderProcess():
         # Instead using an explicit cache, updated lazily when view is closed
         # and new view being opened
 
+    # Post window syntax
+    # --------------------------------------------------------------------------
+    def set_post_view_syntax(self, highlight=True):
+        syntax = SYNTAX_SC if highlight else SYNTAX_PLAIN
+        self.post_view.set_syntax_file(syntax)
+
     # Settings callbacks
     # --------------------------------------------------------------------------
 
@@ -96,8 +102,7 @@ class SuperColliderProcess():
             'highlight_post_view') == 'True'
 
         if self.has_post_view():
-            syntax = SYNTAX_SC if self.highlight_post else SYNTAX_PLAIN
-            self.post_view.set_syntax_file(syntax)
+            self.set_post_view_syntax(self.highlight_post)
 
     # Interpreter
     # --------------------------------------------------------------------------
@@ -268,9 +273,7 @@ Then restart Sublime Text"""
                 window.set_view_index(self.post_view, 1, 0)
 
         # set post view attributes
-        if self.highlight_post:
-            self.post_view.set_syntax_file(
-                'Packages/supercollider-sublime/SuperCollider.tmLanguage')
+        self.set_post_view_syntax(self.highlight_post)
         self.post_view.set_name(self.post_view_name)
         self.post_view.set_scratch(True)
         self.post_view.settings().set('rulers', 0)
