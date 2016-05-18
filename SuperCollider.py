@@ -32,11 +32,8 @@ class SuperColliderProcess():
         self.settings = sublime.load_settings('SuperCollider.sublime-settings')
 
         # load settings
-        self.update_sc_dir()
-        self.settings.add_on_change('sc_dir', self.update_sc_dir)
-
-        self.update_sc_exe()
-        self.settings.add_on_change('sc_exe', self.update_sc_exe)
+        self.update_sc_path()
+        self.settings.add_on_change('sc_path', self.update_sc_path)
 
         self.update_post_view_max_lines()
         self.settings.add_on_change('max_post_view_lines',
@@ -82,11 +79,10 @@ class SuperColliderProcess():
     # Settings callbacks
     # --------------------------------------------------------------------------
 
-    def update_sc_dir(self):
-        self.sc_dir = self.settings.get('sc_dir')
-
-    def update_sc_exe(self):
-        self.sc_exe = self.settings.get('sc_exe')
+    def update_sc_path(self):
+        path = self.settings.get('sc_path')[sublime.platform()]
+        self.sc_dir = os.path.dirname(path)
+        self.sc_exe = os.path.basename(path)
 
     def update_post_view_max_lines(self):
         self.post_view_max_lines = self.settings.get('max_post_view_lines')
@@ -122,13 +118,9 @@ class SuperColliderProcess():
             return
 
         # create subprocess
-        path = None
-        cwd = None
-        close_fds = None
-        shell = None
-
         if os.name is 'posix':
-            path = self.sc_dir + self.sc_exe
+            path = os.path.join(self.sc_dir, self.sc_exe)
+            cwd = None
             close_fds = True
             shell = False
         else:
@@ -150,8 +142,7 @@ class SuperColliderProcess():
             )
         except:
             msg = """Could not start sclang
-Please check your SuperCollider.sublime-settings file
-Then restart Sublime Text"""
+Please check the *sc_path* setting in your SuperCollider package settings"""
             sublime.error_message(msg)
 
         # create post window update queue and thread

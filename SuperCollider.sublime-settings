@@ -1,8 +1,11 @@
 {
-    // SuperCollider directory (use double \\ in Windows)
-    "sc_dir": "/Applications/SuperCollider/SuperCollider.app/Contents/MacOS/",
-    // SCLang command name
-    "sc_exe": "sclang",
+    // SuperCollider directory
+    // Mac OS X
+    "sc_path": {
+        "osx": "/Applications/SuperCollider/SuperCollider.app/Contents/MacOS/sclang",
+        "windows": "C:\\Program Files\\SuperCollider\\sclang.exe",
+        "linux": "/usr/local/bin/sclang"
+    },
     // Maximum number of lines in for Post window
     // If you are printing a *lot* very quickly then reducing this will reduce
     // CPU load.
