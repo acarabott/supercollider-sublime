@@ -168,7 +168,7 @@
                                 "caption": "Key Bindings – User",
                                 "command": "open_file", "args":
                                 {
-                                    "file": "${packages}/User/Default (OSX).sublime-keymap",
+                                    "file": "${packages}/User/SuperCollider.sublime-keymap",
                                     "platform": "OSX"
                                 }
                             },
@@ -184,7 +184,7 @@
                                 "caption": "Key Bindings – User",
                                 "command": "open_file", "args":
                                 {
-                                    "file": "${packages}/User/Default (Linux).sublime-keymap",
+                                    "file": "${packages}/User/SuperCollider.sublime-keymap",
                                     "platform": "Linux"
                                 }
                             },
@@ -200,7 +200,7 @@
                                 "caption": "Key Bindings – User",
                                 "command": "open_file", "args":
                                 {
-                                    "file": "${packages}/User/Default (Windows).sublime-keymap",
+                                    "file": "${packages}/User/SuperCollider.sublime-keymap",
                                     "platform": "Windows"
                                 }
                             }
