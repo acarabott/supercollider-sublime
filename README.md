@@ -24,6 +24,41 @@ See `Package Settings > SuperCollider > Settings - Default` for further options,
 
 All commands are available in the Tools > SuperCollider Menu, or via the Command Palette
 
+If you want to set key bindings, add an entry to your `Preferences -> Package Settings -> SuperCollider -> Key Bindings - User` e.g.
+
+    {
+        "command": "super_collider_stop",
+        "keys":    ["super+."],
+        "context": [{
+            "key":      "selector",
+            "operator": "equal",
+            "operand":  "source.supercollider"
+        }]
+    }
+
+The available commands are:
+
+- `super_collider_start_interpreter`
+- `super_collider_stop_interpreter`
+- `super_collider_evaluate`
+- `super_collider_open_post_view`
+- `super_collider_clear_post_view`
+- `super_collider_boot_server`
+- `super_collider_kill_server`
+- `super_collider_reboot_server`
+- `super_collider_toggle_mute`
+- `super_collider_increase_volume`
+- `super_collider_decrease_volume`
+- `super_collider_restore_volume`
+- `super_collider_start_recording`
+- `super_collider_stop_recording`
+- `super_collider_evaluate`
+- `super_collider_stop`
+- `super_collider_recompile`
+- `super_collider_help`
+- `super_collider_open_class`
+
+
 ## Credits
 
 Rewritten for Sublime Text 3 based on ST2 plugin by [geoffroymontel](https://github.com/geoffroymontel/supercollider-package-for-sublime-text).

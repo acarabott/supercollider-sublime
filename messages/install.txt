@@ -1,0 +1,27 @@
+# SuperCollider for Sublime Text 3
+
+Welcome to SuperCollider for Sublime Text!
+
+The first thing you'll need to do is set up your sclang executable directory:
+
+- Open Preferences -> Package Settings -> SuperCollider -> Settings - User
+- change the value in "sc_path" that matches your operating system so that it points to where you have SuperCollider installed
+    + On Mac this means *inside* the SuperCollider.app package. You can check this is correct by right/control clicking the app and selecting "Show Package Contents"
+
+## Starting SuperCollider
+
+Menu -> Tools -> SuperCollider -> Start Interpreter
+
+## Options
+
+Check the User settings file above for some options, the ones you may want to play with are
+
+- highlight_post_view: syntax highlighting for the Post window (in group/tab)
+- open_post_view_in: this lets you have your post window as a new sublime group, tab, window, or popup panel
+- max_post_view_lines: adjust how much post window recall you want.
+
+## Windows and Linux Users
+
+Key commands are disabled by default as I don't have a sensible set of defaults. I very much welcome you to set your own key commands in Preferences -> Package Settings -> SuperCollider -> Key Bindings (User) ->
+
+BUT! All commands are accessible from the Menu -> Tools -> SuperCollider

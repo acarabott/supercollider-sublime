@@ -1,0 +1,4 @@
+The default key commands for Linux and Windows have been disabled. 
+
+Please check the README for instructions on setting the key bindings yourself, and feel free to make suggestions for these platforms! 
+https://github.com/acarabott/supercollider-sublime
