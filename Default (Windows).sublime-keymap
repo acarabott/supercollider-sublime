@@ -2,7 +2,7 @@
     // interpreter -------------------------------------------------------------
     {
         "command": "super_collider_start_interpreter",
-        "keys":    ["ctrl+s", "ctrl+s"],
+        // "keys":    ["ctrl+s", "ctrl+s"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -11,7 +11,7 @@
     },
     {
         "command": "super_collider_stop_interpreter",
-        "keys":    ["ctrl+s", "ctrl+t", "ctrl+t"],
+        // "keys":    ["ctrl+s", "ctrl+t", "ctrl+t"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -20,7 +20,7 @@
     },
     {
         "command": "super_collider_evaluate",
-        "keys":    ["shift+enter"],
+        // "keys":    ["shift+enter"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -29,7 +29,7 @@
     },
     {
         "command": "super_collider_evaluate",
-        "keys":    ["super+enter"],
+        // "keys":    ["super+enter"],
         "args":    { "expand": "True" },
         "context": [{
             "key":      "selector",
@@ -39,7 +39,7 @@
     },
     {
         "command": "super_collider_evaluate",
-        "keys":    ["super+shift+enter"],
+        // "keys":    ["super+shift+enter"],
         "args":    { "all": "True", "expand": "False" },
         "context": [{
             "key":      "selector",
@@ -50,7 +50,7 @@
     // post view ---------------------------------------------------------------
     {
         "command": "super_collider_open_post_view",
-        "keys":    ["ctrl+s", "ctrl+o"],
+        // "keys":    ["ctrl+s", "ctrl+o"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -59,7 +59,7 @@
     },
     {
         "command": "super_collider_clear_post_view",
-        "keys":    ["super+shift+c"],
+        // "keys":    ["super+shift+c"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -69,7 +69,7 @@
     // server ------------------------------------------------------------------
     {
         "command": "super_collider_boot_server",
-        "keys":    ["super+b"],
+        // "keys":    ["super+b"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -78,7 +78,7 @@
     },
     {
         "command": "super_collider_kill_server",
-        "keys":    ["ctrl+s", "ctrl+k", "ctrl+k"],
+        // "keys":    ["ctrl+s", "ctrl+k", "ctrl+k"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -87,7 +87,7 @@
     },
     {
         "command": "super_collider_reboot_server",
-        "keys":    ["ctrl+s", "ctrl+b", "ctrl+b"],
+        // "keys":    ["ctrl+s", "ctrl+b", "ctrl+b"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -96,7 +96,7 @@
     },
     {
         "command": "super_collider_toggle_mute",
-        "keys":    ["super+ctrl+m"],
+        // "keys":    ["super+ctrl+m"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -105,7 +105,7 @@
     },
     {
         "command": "super_collider_increase_volume",
-        "keys":    ["super+ctrl+="],
+        // "keys":    ["super+ctrl+="],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -114,7 +114,7 @@
     },
     {
         "command": "super_collider_decrease_volume",
-        "keys":    ["super+ctrl+-"],
+        // "keys":    ["super+ctrl+-"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -123,7 +123,7 @@
     },
     {
         "command": "super_collider_restore_volume",
-        "keys":    ["super+ctrl+0"],
+        // "keys":    ["super+ctrl+0"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -132,7 +132,7 @@
     },
     {
         "command": "super_collider_start_recording",
-        "keys":    ["ctrl+s", "ctrl+r"],
+        // "keys":    ["ctrl+s", "ctrl+r"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -141,7 +141,7 @@
     },
     {
         "command": "super_collider_stop_recording",
-        "keys":    ["ctrl+s", "ctrl+p"],
+        // "keys":    ["ctrl+s", "ctrl+p"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -150,7 +150,7 @@
     },
     {
         "command": "super_collider_evaluate",
-        "keys":    ["super+enter"],
+        // "keys":    ["super+enter"],
         "args":    { "expand": "True" },
         "context": [{
             "key":      "selector",
@@ -161,7 +161,7 @@
     // sclang ------------------------------------------------------------------
     {
         "command": "super_collider_stop",
-        "keys":    ["super+."],
+        // "keys":    ["super+."],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -170,7 +170,7 @@
     },
     {
         "command": "super_collider_recompile",
-        "keys":    ["ctrl+s", "ctrl+l", "ctrl+l"],
+        // "keys":    ["ctrl+s", "ctrl+l", "ctrl+l"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -179,7 +179,7 @@
     },
     {
         "command": "super_collider_help",
-        "keys":    ["ctrl+s", "ctrl+d"],
+        // "keys":    ["ctrl+s", "ctrl+d"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
@@ -188,7 +188,7 @@
     },
     {
         "command": "super_collider_open_class",
-        "keys":    ["ctrl+s", "ctrl+c"],
+        // "keys":    ["ctrl+s", "ctrl+c"],
         "context": [{
             "key":      "selector",
             "operator": "equal",
