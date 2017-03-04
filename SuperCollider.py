@@ -6,7 +6,7 @@ import threading
 from collections import deque
 
 TERMINATE_MSG = 'SublimeText: sclang terminated!\n'
-SYNTAX_SC = 'Packages/SuperCollider/SuperCollider.tmLanguage'
+SYNTAX_SC = 'Installed\ Packages/SuperCollider\ ST3/SuperCollider.tmLanguage'
 SYNTAX_PLAIN = 'Packages/Text/Plain text.tmLanguage'
 
 sc = None
