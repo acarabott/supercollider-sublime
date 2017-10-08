@@ -1,0 +1,80 @@
+%YAML 1.2
+---
+# http://www.sublimetext.com/docs/3/syntax.html
+name: SuperCollider
+file_extensions:
+  - sc
+  - scd
+scope: source.supercollider
+contexts:
+  main:
+    - match: \b(if||while|for|forBy|do|case|switch)\b
+      scope: keyword.control.supercollider
+    - match: \b(var|classvar)\b
+      scope: keyword.var.supercollider
+    - match: '"'
+      push:
+        - meta_scope: string.double.supercollider
+        - match: '"'
+          pop: true
+        - match: \\.
+          scope: constant.character.escape.supercollider
+    - match: "'"
+      push:
+        - meta_scope: constant.other.symbol.supercollider
+        - match: "'"
+          pop: true
+        - match: \\.
+          scope: constant.character.escape.supercollider
+    - match: \$.
+      scope: constant.character.supercollider
+    - match: '[a-z][a-zA-Z0-9_]*\:'
+      scope: entity.name.tag.supercollider
+    - match: '^\s*\+*\s*([A-Z]{1}[a-zA-Z0-9_]*)\s*\:{1}\s*([A-Z]{1}[a-zA-Z0-9_]*)\s*\{'
+      captures:
+        1: entity.name.class.supercollider
+    - match: "^([A-Z_]{1}[a-zA-Z0-9_]*)[^a-zA-Z0-9_]"
+      captures:
+        1: entity.name.class.supercollider
+    - match: '{[\s]*(\|)'
+      captures:
+        1: variable.parameter.supercollider
+      push:
+        - meta_content_scope: variable.parameter.supercollider
+        - match: (\|)
+          captures:
+            1: variable.parameter.supercollider
+          pop: true
+    - match: '{[\s]*(arg)'
+      captures:
+        1: variable.parameter.supercollider
+      push:
+        - meta_content_scope: variable.parameter.supercollider
+        - match: ;
+          pop: true
+    - match: '!|%|&|\*|\-|\+|==|=|!=|!=|<=|<!|>=|<|>|!|&&|\|\|'
+      scope: keyword.operator.supercollider
+    - match: '[^a-zA-Z0-9\\]([A-Z_]{1}[a-zA-Z0-9_]*)[^a-zA-Z0-9_]'
+      captures:
+        1: entity.name.class.supercollider
+    - match: \b(|inf|nil|true|false)\b
+      scope: constant.language.supercollider
+    - match: '\\[a-zA-Z0-9\_]+'
+      scope: constant.other.symbol.supercollider
+    - match: '^\s*(\**[a-z]{1}[a-zA-Z0-9_]*)\s*\{'
+      captures:
+        1: entity.name.function.supercollider
+    - match: '\~[a-zA-Z0-9_]+'
+      scope: variable.other.supercollider
+    - match: \b(this|thisThread|thisMethod|thisFunction|thisProcess)\b
+      scope: variable.language.supercollider
+    - match: \/\/.*
+      scope: comment.single.supercollider
+    - match: \/\*
+      push:
+        - meta_scope: comment.multiline.supercollider
+        - match: \*\/
+          pop: true
+    - match: '\b(0[xX]\h(?>_?\h)*|\d(?>_?\d)*(\.(?![^[:space:][:digit:]])(?>_?\d)*)?([eE][-+]?\d(?>_?\d)*)?|0[bB][01]+)\b'
+      comment: Numbers
+      scope: constant.numeric.supercollider

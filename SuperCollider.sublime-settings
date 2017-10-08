@@ -11,8 +11,6 @@
     // CPU load.
     // -1 for no limit, ok for general use but not for extreme printing
     "max_post_view_lines": 1000,
-    // Whether to syntax highlight the post view, use either "True" or "False"
-    "highlight_post_view": "True",
     // Where to open the post view
     // options: group|tab|window|panel
     "open_post_view_in": "group",

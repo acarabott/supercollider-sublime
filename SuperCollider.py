@@ -6,8 +6,6 @@ import threading
 from collections import deque
 
 TERMINATE_MSG = 'SublimeText: sclang terminated!\n'
-SYNTAX_SC = 'Installed\ Packages/SuperCollider\ ST3/SuperCollider.tmLanguage'
-SYNTAX_PLAIN = 'Packages/Text/Plain text.tmLanguage'
 
 sc = None
 
@@ -46,6 +44,11 @@ class SuperColliderProcess():
         self.settings.add_on_change('open_post_view_in',
                                     self.update_open_post_view_in)
 
+        # Would like to auto syntax-highlight post window, but it doesn't play
+        # nice. Changes the syntax of the view, but doesn't update highlighting
+        # if it works in the future, add the following two lines to settings
+        # // Whether to syntax highlight the post view, use either "True" or "False"
+        # "highlight_post_view": "True",
         self.update_highlight_post_view()
         self.settings.add_on_change('highlight_post_view',
                                     self.update_highlight_post_view)
@@ -70,11 +73,19 @@ class SuperColliderProcess():
         # Instead using an explicit cache, updated lazily when view is closed
         # and new view being opened
 
-    # Post window syntax
+    # Post window syntax - DISABLED see above
     # --------------------------------------------------------------------------
     def set_post_view_syntax(self, highlight=True):
-        syntax = SYNTAX_SC if highlight else SYNTAX_PLAIN
-        self.post_view.set_syntax_file(syntax)
+        return  # disabled
+        syntax_sc = os.path.join(sublime.installed_packages_path(),
+                                 'SuperCollider ST3/SuperCollider.sublime-syntax')
+        syntax_plain = 'Packages/Text/Plain text.tmLanguage'
+
+        syntax = syntax_sc if highlight else syntax_plain
+        try:
+            self.post_view.set_syntax_file(syntax)
+        except Exception:
+            print('Syntax file does not exist at ' + syntax)
 
     # Settings callbacks
     # --------------------------------------------------------------------------
@@ -94,8 +105,7 @@ class SuperColliderProcess():
         self.open_post_view_in = self.settings.get('open_post_view_in')
 
     def update_highlight_post_view(self):
-        self.highlight_post = self.settings.get(
-            'highlight_post_view') == 'True'
+        self.highlight_post = self.settings.get('highlight_post_view') == 'True'
 
         if self.has_post_view():
             self.set_post_view_syntax(self.highlight_post)
@@ -103,9 +113,9 @@ class SuperColliderProcess():
     # Interpreter
     # --------------------------------------------------------------------------
     def is_alive(self):
-        if (self.sclang_process is None
-                or self.sclang_thread is None
-                or not self.sclang_thread.isAlive()):
+        if (self.sclang_process is None or
+                self.sclang_thread is None or not
+                self.sclang_thread.isAlive()):
             return False
 
         self.sclang_process.poll()
@@ -140,7 +150,7 @@ class SuperColliderProcess():
                 close_fds=close_fds,
                 shell=shell
             )
-        except:
+        except OSError:
             msg = """Could not start sclang
 Please check the *sc_path* setting in your SuperCollider package settings"""
             sublime.error_message(msg)
