@@ -183,16 +183,16 @@ Please check the *sc_path* setting in your SuperCollider package settings"""
         self.sclang_thread.start()
         sublime.status_message('Starting SuperCollider')
 
-    def kill(self):
+    def terminate(self):
         try:
-            self.sclang_process.kill()
-        except:
+            self.sclang_process.terminate()
+        except Exception:
             pass
 
     def stop(self):
         if self.is_alive():
             self.execute('0.exit;')
-            sublime.set_timeout(self.kill, 1000)
+            sublime.set_timeout(self.terminate, 1000)
         else:
             sublime.status_message('stop: sclang not running')
 
