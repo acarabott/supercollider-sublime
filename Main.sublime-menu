@@ -140,68 +140,22 @@
                         "children":
                         [
                             {
-                                "caption": "Settings – Default",
-                                "command": "open_file", "args":
+                                "caption": "Settings",
+                                "command": "edit_settings", "args":
                                 {
-                                    "file": "${packages}/supercollider-sublime/SuperCollider.sublime-settings"
-                                }
-                            },
-                            {
-                                "caption": "Settings – User",
-                                "command": "open_file", "args":
-                                {
-                                    "file": "${packages}/User/SuperCollider.sublime-settings"
+                                    "base_file": "${packages}/SuperCollider ST3/SuperCollider.sublime-settings",
+                                    "default": "// SuperCollider Settings - User\n{\n\t$0\n}\n"
                                 }
                             },
                             {
                                 "caption": "-"
                             },
                             {
-                                "caption": "Key Bindings – Default",
-                                "command": "open_file", "args":
+                                "caption": "Key Bindings",
+                                "command": "edit_settings", "args":
                                 {
-                                    "file": "${packages}/supercollider-sublime/Default (OSX).sublime-keymap",
-                                    "platform": "OSX"
-                                }
-                            },
-                            {
-                                "caption": "Key Bindings – User",
-                                "command": "open_file", "args":
-                                {
-                                    "file": "${packages}/User/SuperCollider.sublime-keymap",
-                                    "platform": "OSX"
-                                }
-                            },
-                            {
-                                "caption": "Key Bindings – Default",
-                                "command": "open_file", "args":
-                                {
-                                    "file": "${packages}/supercollider-sublime/Default (Linux).sublime-keymap",
-                                    "platform": "Linux"
-                                }
-                            },
-                            {
-                                "caption": "Key Bindings – User",
-                                "command": "open_file", "args":
-                                {
-                                    "file": "${packages}/User/SuperCollider.sublime-keymap",
-                                    "platform": "Linux"
-                                }
-                            },
-                            {
-                                "caption": "Key Bindings – Default",
-                                "command": "open_file", "args":
-                                {
-                                    "file": "${packages}/supercollider-sublime/Default (Windows).sublime-keymap",
-                                    "platform": "Windows"
-                                }
-                            },
-                            {
-                                "caption": "Key Bindings – User",
-                                "command": "open_file", "args":
-                                {
-                                    "file": "${packages}/User/SuperCollider.sublime-keymap",
-                                    "platform": "Windows"
+                                    "base_file": "${packages}/SuperCollider ST3/Default (${platform}).sublime-keymap",
+                                    "default": "// SuperCollider Keymap - User\n{\n\t$0\n}\n"
                                 }
                             }
                         ]
