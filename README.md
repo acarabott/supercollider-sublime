@@ -64,7 +64,7 @@ The available commands are:
 Rewritten for Sublime Text 3 based on ST2 plugin by [geoffroymontel](https://github.com/geoffroymontel/supercollider-package-for-sublime-text).
 
 Also includes:
-- sclang Syntax by [rfwatson](https://github.com/rfwatson/supercollider-tmbundle)
+- sclang Syntax converted from TextMate syntax by [rfwatson](https://github.com/rfwatson/supercollider-tmbundle)
 - Some snippets and mouse mapping from Thor Magnusson
 
 ## Testing TODO
@@ -79,7 +79,6 @@ Also includes:
 
 ## TODO
 
-- Use new .sublime-syntax format
 - Use system dialog to select SuperCollider application location
 - Provide syntax error feedback in open document (e.g. highlight line with errors)
 - command: show node tree
