@@ -91,6 +91,12 @@
       "caption": "SuperCollider: Get Method Arguments",
       "command": "super_collider_get_method_args"
     },
-    { "caption": "SuperCollider: Get UGen Arguments",
-      "command": "super_collider_get_ugen_args" }
+    {
+      "caption": "SuperCollider: Get UGen Arguments",
+      "command": "super_collider_get_ugen_args"
+    },
+    {
+      "caption": "SuperCollider: Toggle Trace OSC",
+      "command": "super_collider_toggle_trace_osc"
+    }
 ]

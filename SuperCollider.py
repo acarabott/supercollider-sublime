@@ -495,19 +495,10 @@ class SuperColliderRecompileCommand(SuperColliderAliveAbstract,
 class SuperColliderToggleTraceOsc(SuperColliderAliveAbstract,
                                   sublime_plugin.ApplicationCommand):
 
-    def run(self, hide_status):
+    def run(self):
         sc.tracing_osc = not sc.tracing_osc
         enable = 'true' if sc.tracing_osc else 'false'
-
-        if hide_status == 'True':
-            hide_status = 'true'
-        else:
-            hide_status = 'false'
-
-        cmd = 'OSCFunc.trace({}, {});'.format(enable, hide_status)
-
-        sc.execute_silently(cmd)
-
+        sc.execute_silently('OSCFunc.trace({}, false);'.format(enable))
         msg = 'Tracing OSC' if sc.tracing_osc else 'Stopped tracing OSC'
         sc.execute('"{}".postln;'.format(msg))
 
