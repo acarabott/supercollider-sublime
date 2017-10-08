@@ -217,20 +217,24 @@ Please check the *sc_path* setting in your SuperCollider package settings"""
         action = split[1]
         arg = split[2].rstrip()
 
-        if action in ['open_file', 'open_startup']:
-            if not os.path.isfile(arg):
-                if action == 'open_file':
+        def open_file(file, create_if_not_found):
+            if not os.path.isfile(file):
+                if create_if_not_found:
+                    open(file, 'a').close()
+                else:
                     return
 
-                if action == 'open_startup':
-                    open(arg, 'a').close()
-
-            if len(sublime.windows()) is 0:
+            if len(sublime.windows()) == 0:
                 sublime.run_command('new_window')
 
             window = sublime.active_window()
-            window.open_file(arg)
-        elif action == 'open_dir':
+            window.open_file(file)
+
+        if action is 'open_file':
+            open_file(arg, False)
+        elif action is 'open_startup_file':
+            open_file(arg, True)
+        elif action is 'open_dir':
             if sublime.platform() == 'osx':
                 subprocess.Popen(['open', arg])
             elif sublime.platform() == 'linux':
@@ -743,7 +747,7 @@ class SuperColliderOpenStartupFileCommand(SuperColliderAliveAbstract,
                                           sublime_plugin.ApplicationCommand):
 
     def run(self):
-        sc.execute_flagged('open_startup',
+        sc.execute_flagged('open_startup_file',
                            'Platform.userConfigDir +/+ "startup.scd"')
 
 
