@@ -213,9 +213,8 @@ Please check the *sc_path* setting in your SuperCollider package settings"""
         self.execute_silently(msg)
 
     def handle_flagged_output(self, output):
-        split = output.split(self.stdout_flag)
-        action = split[1]
-        arg = split[2].rstrip()
+        _, action, arg = output.split(self.stdout_flag)
+        arg = arg.rstrip()
 
         def open_file(file, create_if_not_found):
             if not os.path.isfile(file):
@@ -230,11 +229,11 @@ Please check the *sc_path* setting in your SuperCollider package settings"""
             window = sublime.active_window()
             window.open_file(file)
 
-        if action is 'open_file':
+        if action == 'open_file':
             open_file(arg, False)
-        elif action is 'open_startup_file':
+        elif action == 'open_startup_file':
             open_file(arg, True)
-        elif action is 'open_dir':
+        elif action == 'open_dir':
             if sublime.platform() == 'osx':
                 subprocess.Popen(['open', arg])
             elif sublime.platform() == 'linux':
@@ -272,7 +271,7 @@ Please check the *sc_path* setting in your SuperCollider package settings"""
         self.post_view.set_name(self.post_view_name)
         # move post view to new pane if set
         if self.open_post_view_in == 'group':
-            if window.num_groups() is 1:
+            if window.num_groups() == 1:
                 window.run_command('new_pane')
             else:
                 window.set_view_index(self.post_view, 1, 0)
@@ -289,7 +288,7 @@ Please check the *sc_path* setting in your SuperCollider package settings"""
 
     def open_post_view(self):
         # create a new window if necessary
-        if len(sublime.windows()) is 0:
+        if len(sublime.windows()) == 0:
             sublime.run_command('new_window')
 
         # remember the original view
@@ -331,9 +330,7 @@ Please check the *sc_path* setting in your SuperCollider package settings"""
 
     def update_post_view(self):
         sublime.set_timeout(self.update_post_view, 5)
-        if (not self.is_alive()
-                or not self.has_post_view()
-                or len(self.sclang_queue) is 0):
+        if (not self.is_alive() or not self.has_post_view() or len(self.sclang_queue) == 0):
             return
 
         get_max = min(100, len(self.sclang_queue))
@@ -537,7 +534,7 @@ class SuperColliderUpdatePostViewCommand(SuperColliderAliveAbstract,
         self.view.insert(edit, self.view.size(), content)
 
         # erase overspill
-        if max_lines >= 1 and self.update_count is 0:
+        if max_lines >= 1 and self.update_count == 0:
             self.all_region.b = self.view.size()
             all_lines = self.view.lines(self.all_region)
             total_lines = len(all_lines)
